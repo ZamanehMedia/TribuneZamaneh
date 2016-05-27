@@ -2,7 +2,7 @@
 
 Follow these steps to setup your dev environment:
 
-1. Checkout securereader git repo
+1. Checkout paik git repo
 2. Init and update git submodules
 
     git submodule update --init --recursive
