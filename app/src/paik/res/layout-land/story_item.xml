@@ -1,0 +1,119 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/marginedRoot"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_marginBottom="0dp"
+    android:layout_marginLeft="0dp"
+    android:layout_marginRight="0dp"
+    android:layout_marginTop="0dp"
+    android:orientation="horizontal" >
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:layout_weight="3"
+        android:background="@drawable/background_news"
+        android:visibility="gone" />
+    
+    <RelativeLayout
+        android:id="@+id/llRoot"
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:layout_weight="26" >
+
+        <View
+            android:id="@+id/strut"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_centerHorizontal="true" />
+
+        <info.guardianproject.securereaderinterface.widgets.NestedViewPager
+            android:id="@+id/horizontalPagerContent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="40dp"
+            android:scrollbars="none" >
+
+        </info.guardianproject.securereaderinterface.widgets.NestedViewPager>
+
+        <LinearLayout
+            android:id="@+id/storyToolbar"
+            style="@style/BottomToolbarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom" >
+
+            <ImageView
+                android:id="@+id/btnComments"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@drawable/bottom_bar_item_background_selector"
+                android:src="@drawable/ic_action2_chat" />
+
+            <ImageView
+                android:id="@+id/btnTextSize"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@drawable/bottom_bar_item_background_selector"
+                android:src="@drawable/ic_action2_font" />
+
+            <info.guardianproject.securereaderinterface.widgets.CheckableImageView
+                android:id="@+id/chkFavorite"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:scaleType="center"
+                android:src="@drawable/favorite_checkbox" />
+
+            <info.guardianproject.securereaderinterface.widgets.NoSelectionSpinner
+                android:id="@+id/spinnerShare"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@drawable/bottom_bar_item_background_selector" />
+        </LinearLayout>
+    
+       	<RelativeLayout
+       		android:id="@+id/textSizePanel"
+        	android:layout_width="match_parent"
+        	android:layout_height="wrap_content"
+        	android:layout_gravity="bottom"
+        	android:layout_marginBottom="43dp"
+        	android:background="#ffffff"
+        	android:padding="10dp" >
+
+        	<TextView
+        	    android:id="@+id/textViewHeader"
+        	    android:layout_width="match_parent"
+        	    android:layout_height="wrap_content"
+        	    android:layout_alignParentTop="true"
+        	    android:layout_marginBottom="20dp"
+        	    android:text="Font Size"
+        	    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+ 	       <SeekBar
+    	        android:id="@+id/seekBarTextSize"
+    	        android:layout_width="match_parent"
+    	        android:layout_height="wrap_content"
+    	        android:layout_below="@id/textViewHeader" />
+
+    	</RelativeLayout>
+    
+    </RelativeLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="3"
+            android:background="@drawable/background_news"
+            android:visibility="gone" />
+        
+</LinearLayout>

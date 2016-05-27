@@ -1,0 +1,81 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/frameRoot"
+    style="@style/CommentsStyle"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:id="@+id/titleBar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:gravity="start"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/title"
+            style="@style/CommentsHeaderStyle"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical|start"
+            android:text="@string/title_activity_comments" />
+
+        <ImageView
+            android:id="@+id/btnCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="20dp"
+            android:src="@drawable/ic_context_cancel" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/commentArea"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="start"
+        android:orientation="horizontal" >
+
+        <EditText
+            android:id="@+id/editComment"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="@string/story_comment_add_hint"
+            android:inputType="textMultiLine" />
+
+        <ImageView
+            android:id="@+id/btnSend"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="10dp"
+            android:src="@android:drawable/ic_menu_send" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/listComments"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_above="@id/commentArea"
+        android:layout_below="@id/titleBar"
+        android:layout_marginTop="10dp" >
+
+    </ListView>
+
+    <info.guardianproject.securereaderinterface.views.CreateAccountView
+        android:id="@+id/createAccount"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/titleBar"
+        android:visibility="gone" >
+    </info.guardianproject.securereaderinterface.views.CreateAccountView>
+    
+</RelativeLayout>

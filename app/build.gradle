@@ -23,8 +23,10 @@ android {
         Master {
             applicationId = "info.guardianproject.securereaderinterface"
         }
-        YakReader {
-            applicationId = "info.guardianproject.yakreader"
+        paik {
+            applicationId = "net.postmodernapps.paik"
+            versionName = "1.1.16"
+            versionCode = 15
         }
     }
 
