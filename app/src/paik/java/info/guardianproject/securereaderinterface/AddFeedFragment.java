@@ -5,7 +5,7 @@ import info.guardianproject.securereaderinterface.adapters.FeedListAdapter;
 import info.guardianproject.securereaderinterface.adapters.FeedListAdapterExplore;
 import info.guardianproject.securereaderinterface.adapters.FeedListAdapterExplore.FeedListAdapterExploreListener;
 import info.guardianproject.securereaderinterface.uiutil.HttpTextWatcher;
-import info.guardianproject.securereaderinterface.widgets.FocusNoHintEditText;
+import info.guardianproject.securereaderinterface.widgets.UrlInputEditText;
 
 import java.util.ArrayList;
 
@@ -33,7 +33,7 @@ public class AddFeedFragment extends Fragment implements FeedFetchedCallback, in
 	public static final boolean LOGGING = false;
 	
 	private ListView mListFeeds;
-	private FocusNoHintEditText mEditManualUrl;
+	private UrlInputEditText mEditManualUrl;
 	private Button mBtnAddManualUrl;
 
 	@Override
@@ -64,7 +64,7 @@ public class AddFeedFragment extends Fragment implements FeedFetchedCallback, in
 				}
 			}
 		});
-		mEditManualUrl = (FocusNoHintEditText) rootView.findViewById(R.id.editManualUrl);
+		mEditManualUrl = (UrlInputEditText) rootView.findViewById(R.id.editManualUrl);
 		mEditManualUrl.setHintRelativeSize(0.7f);
 		mEditManualUrl.addTextChangedListener(new HttpTextWatcher(rootView.getContext(), mBtnAddManualUrl));
 		

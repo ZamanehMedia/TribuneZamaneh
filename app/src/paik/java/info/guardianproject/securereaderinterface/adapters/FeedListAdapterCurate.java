@@ -236,6 +236,10 @@ public class FeedListAdapterCurate extends BaseAdapter
 		    {
 				populateContainerWithSVG(view, R.raw.img_cat_security, R.id.ivIllustration);
 		    }
+			else if (mContext.getString(R.string.feed_category_discussion).equalsIgnoreCase(category.name))
+			{
+				populateContainerWithSVG(view, R.raw.img_cat_discussion, R.id.ivIllustration);
+			}
 		    else
 		    {
 		    	ViewGroup viewGroup = (ViewGroup) view.findViewById(R.id.ivIllustration);

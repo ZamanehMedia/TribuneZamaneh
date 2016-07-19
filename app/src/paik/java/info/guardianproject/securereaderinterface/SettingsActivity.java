@@ -222,7 +222,9 @@ public class SettingsActivity extends FragmentActivityWithMenu implements ICache
 		this.hookupRadioButton(tabView, "readerSwipeDirection", Settings.ReaderSwipeDirection.class, R.id.rbSwipeDirectionRtl, R.id.rbSwipeDirectionLtr,
 				R.id.rbSwipeDirectionAutomatic);
 
-		this.hookupRadioButton(tabView, "uiLanguage", Settings.UiLanguage.class, R.id.rbUiLanguageEnglish, R.id.rbUiLanguageFarsi, 0, 0);
+		this.hookupRadioButtonWithArray(tabView, "uiLanguage", Settings.UiLanguage.class, new ResourceValueMapping[] {
+				new ResourceValueMapping(R.id.rbUiLanguageEnglish, Settings.UiLanguage.English),
+				new ResourceValueMapping(R.id.rbUiLanguageFarsi, Settings.UiLanguage.Farsi)});
 
 		this.hookupRadioButtonWithArray(tabView, "numberOfPasswordAttempts", int.class, new ResourceValueMapping[] {
 				new ResourceValueMapping(R.id.rbNumberOfPasswordAttempts1, 2), new ResourceValueMapping(R.id.rbNumberOfPasswordAttempts2, 3),
@@ -293,7 +295,7 @@ public class SettingsActivity extends FragmentActivityWithMenu implements ICache
 		if (cb == null)
 		{
 			if (LOGGING)
-				Log.v(LOGTAG, "Failed to find checkbox: " + resIdCheckbox);
+				Log.e(LOGTAG, "Failed to find checkbox: " + resIdCheckbox);
 			return;
 		}
 
