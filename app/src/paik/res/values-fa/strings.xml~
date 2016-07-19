@@ -95,5 +95,5 @@
   <string name="feed_category_technology">فن‌آوری</string>
   <string name="feed_category_security">امنیت</string>
   <string name="feed_category_discussion">بحث</string>
-  <string name="feed_category_uncategorized">دسته بندی نشده</string>
+  <string name="feed_category_uncategorized">Uncategorized</string>
 </resources>

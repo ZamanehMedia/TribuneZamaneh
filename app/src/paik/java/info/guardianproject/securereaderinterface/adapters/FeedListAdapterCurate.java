@@ -124,7 +124,7 @@ public class FeedListAdapterCurate extends BaseAdapter
 	private void parseOutlineNode(Element outline, String category)
 	{
 		if (TextUtils.isEmpty(category))
-			category = "Uncategorized";
+			category = mContext.getString(R.string.feed_category_uncategorized);
 		
 		if (!mItemsMap.containsKey(category))
 		{
