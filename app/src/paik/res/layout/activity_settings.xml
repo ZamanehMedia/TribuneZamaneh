@@ -3,7 +3,6 @@
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_news"
     android:fillViewport="true" >
 
     <LinearLayout
@@ -11,7 +10,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical" >
 
-                
+
         <!-- Proxy section -->
 
         <info.guardianproject.securereaderinterface.widgets.GroupView
@@ -43,17 +42,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/settings_proxy_psiphon" />
-                
+
                 <RadioButton
                     android:id="@+id/rbProxyNone"
                     style="@style/SettingsRadioButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/settings_proxy_none" />
-                                
+
             </RadioGroup>
         </info.guardianproject.securereaderinterface.widgets.GroupView>
-        
+
 
         <!-- Chat section -->
 
@@ -68,9 +67,9 @@
             app:header_sub_text="@string/settings_gibberbot_connected"
             app:header_text="@string/settings_heading_chat" />
 
-        
+
         <!-- Panic section -->
-        
+
         <info.guardianproject.securereaderinterface.widgets.GroupView
             android:id="@+id/groupPanicAction"
             android:layout_width="match_parent"
@@ -108,9 +107,9 @@
                     android:layout_height="wrap_content"
                     android:text="@string/settings_panic_wipe_content" />
             </RadioGroup>
-		
+
         </info.guardianproject.securereaderinterface.widgets.GroupView>
-        
+
         <!-- Login section -->
 
         <info.guardianproject.securereaderinterface.widgets.GroupView
@@ -161,7 +160,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/settings_security_passphrase_timeout2" />
-                    
+
                     <RadioButton
                         android:id="@+id/rbPassphraseTimeout3"
                         style="@style/SettingsRadioButtonStyle"
@@ -176,14 +175,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/settings_security_passphrase_timeout4" />
-                    
+
                     <RadioButton
                         android:id="@+id/rbPassphraseTimeout5"
                         style="@style/SettingsRadioButtonStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/settings_security_passphrase_timeout5" />
-                                        
+
                 </RadioGroup>
 
                 <ImageView
@@ -281,7 +280,7 @@
                     android:src="@drawable/ic_context_password" />
 
             </LinearLayout>
-            
+
 
         </info.guardianproject.securereaderinterface.widgets.GroupView>
 
@@ -326,7 +325,7 @@
                     android:button="@drawable/radiobutton_settings_selector"
                     android:enabled="true"
                     android:text="@string/settings_data_article_expiration_1_week" />
-                                
+
                 <RadioButton
                     android:id="@+id/rbExpiration1Month"
                     style="@style/SettingsRadioButtonStyle"
@@ -454,7 +453,7 @@
                 android:id="@+id/rgUiLanguage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" >
-                
+
                 <RadioButton
                     android:id="@+id/rbUiLanguageEnglish"
                     style="@style/SettingsRadioButtonStyle"
@@ -464,53 +463,98 @@
                     android:text="@string/settings_language_english_nt" />
 
                 <RadioButton
+                    android:id="@+id/rbUiLanguageChinese"
+                    style="@style/SettingsRadioButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_language_chinese_nt"
+                    android:visibility="gone"
+                    />
+
+                <RadioButton
+                    android:id="@+id/rbUiLanguageTibetan"
+                    style="@style/SettingsRadioButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_language_tibetan_nt"
+                    android:visibility="gone"
+                    />
+
+                <RadioButton
+                    android:id="@+id/rbUiLanguageUkrainian"
+                    style="@style/SettingsRadioButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_language_ukrainian_nt"
+                    android:visibility="gone"
+                    />
+
+                <RadioButton
+                    android:id="@+id/rbUiLanguageRussian"
+                    style="@style/SettingsRadioButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_language_russian_nt"
+                    android:visibility="gone"
+                    />
+
+                <RadioButton
+                    android:id="@+id/rbUiLanguageJapanese"
+                    style="@style/SettingsRadioButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_language_japanese_nt"
+                    android:visibility="gone"
+                    />
+
+                <RadioButton
+                    android:id="@+id/rbUiLanguageNorwegian"
+                    style="@style/SettingsRadioButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_language_norwegian_nt"
+                    android:visibility="gone"
+                    />
+
+                <RadioButton
+                    android:id="@+id/rbUiLanguageSpanish"
+                    style="@style/SettingsRadioButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_language_spanish_nt"
+                    android:visibility="gone"
+                    />
+
+                <RadioButton
+                    android:id="@+id/rbUiLanguageTurkish"
+                    style="@style/SettingsRadioButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_language_turkish_nt"
+                    android:visibility="gone"
+                    />
+
+                <RadioButton
                     android:id="@+id/rbUiLanguageFarsi"
                     style="@style/SettingsRadioButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/settings_language_farsi_nt" />
 
-                <!--
-                <RadioButton
-                    android:id="@+id/rbUiLanguageJapanese"
-                    style="@style/SettingsRadioButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/settings_language_japanese_nt" />
-                		
-				<RadioButton
-                    android:id="@+id/rbUiLanguageNorwegian"
-                    style="@style/SettingsRadioButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/settings_language_norwegian_nt" />
-		
-				<RadioButton
-                    android:id="@+id/rbUiLanguageSpanish"
-                    style="@style/SettingsRadioButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/settings_language_spanish_nt" />
-				
-				<RadioButton
-                    android:id="@+id/rbUiLanguageTurkish"
-                    style="@style/SettingsRadioButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/settings_language_turkish_nt" />             
-                -->
             </RadioGroup>
 
             <TextView
                 style="@style/SettingsOptionGroupStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/settings_reader_swipe_direction" />
+                android:text="@string/settings_reader_swipe_direction"
+                />
 
             <RadioGroup
                 android:id="@+id/rgReaderSwipeDirection"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                >
 
                 <RadioButton
                     android:id="@+id/rbSwipeDirectionRtl"
@@ -557,16 +601,16 @@
                 android:layout_weight="1"
                 android:text="@string/settings_enable_screenshots" />
 
-    		<CheckBox
-    		    android:id="@+id/chkEnableScreenshots"
-    		    android:layout_width="wrap_content"
-    		    android:layout_height="match_parent"
-    		    android:layout_gravity="right|center_vertical"
-    		    android:button="@drawable/abc_btn_check_material"
-    		    android:buttonTint="@color/checkbox_color_selector"
-    		    android:padding="5dp"
-    		    android:theme="@style/SettingsCheckboxStyle"
-    		    />
+            <CheckBox
+                android:id="@+id/chkEnableScreenshots"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="right|center_vertical"
+                android:button="@drawable/abc_btn_check_material"
+                android:buttonTint="@color/checkbox_color_selector"
+                android:padding="5dp"
+                android:theme="@style/SettingsCheckboxStyle"
+                />
 
         </LinearLayout>
 
