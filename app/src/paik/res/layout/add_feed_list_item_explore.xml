@@ -22,13 +22,17 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="10dp"
             android:scaleType="center"
-            android:src="@drawable/ic_filter_logo_placeholder" />
+            android:src="@drawable/ic_filter_logo_placeholder"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            />
 
         <FrameLayout
             android:id="@+id/frameOperation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp" >
@@ -54,8 +58,12 @@
             android:layout_alignWithParentIfMissing="false"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
             android:layout_toLeftOf="@id/frameOperation"
             android:layout_toRightOf="@id/ivFeedIcon"
+            android:layout_toStartOf="@id/frameOperation"
+            android:layout_toEndOf="@id/ivFeedIcon"
             android:orientation="vertical" >
 
             <TextView
@@ -81,14 +89,18 @@
         android:layout_height="match_parent"
         android:layout_alignBottom="@id/RelativeLayout1"
         android:layout_alignTop="@id/RelativeLayout1"
-        android:gravity="right|center_vertical" >
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:gravity="right|end|center_vertical" >
 
         <ImageButton
             android:id="@+id/btnDelete"
             style="@style/DownloadsOperationText"
             android:layout_width="68dp"
             android:layout_height="match_parent"
-            android:layout_gravity="right|center_vertical"
+            android:layout_gravity="right|end|center_vertical"
             android:background="#ff3507"
             android:src="@drawable/ic_delete" />
 
