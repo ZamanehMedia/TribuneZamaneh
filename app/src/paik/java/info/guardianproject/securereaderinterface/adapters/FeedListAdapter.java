@@ -1,5 +1,6 @@
 package info.guardianproject.securereaderinterface.adapters;
 
+import info.guardianproject.securereaderinterface.App;
 import info.guardianproject.securereaderinterface.R;
 import info.guardianproject.securereaderinterface.models.FeedFilterType;
 import info.guardianproject.securereaderinterface.ui.UICallbacks;
@@ -55,6 +56,8 @@ public class FeedListAdapter extends BaseAdapter
 		mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		filterItems();
 		mOperationButtonsOffsetMax = UIHelpers.dpToPx(136, context);
+		if (App.getInstance().isRTL())
+			mOperationButtonsOffsetMax = -mOperationButtonsOffsetMax;
 	}
 
 	protected void filterItems()
@@ -242,16 +245,23 @@ public class FeedListAdapter extends BaseAdapter
         	}
         	
         	float translate = 0;
-        	if (translateOffsetAtStart == 0)
-        	{
-            	float dx = Math.max(0, e2.getX() - e1.getX());
-            	translate = Math.min(translateOffsetMax, dx);
-        	}
-        	else
-        	{
-            	float dx = Math.max(0, e1.getX() - e2.getX());
-            	translate = Math.max(0, translateOffsetMax - dx);
-        	}
+			if (App.getInstance().isRTL()) {
+				if (translateOffsetAtStart == 0) {
+					float dx = Math.min(0, e2.getX() - e1.getX());
+					translate = Math.max(translateOffsetMax, dx);
+				} else {
+					float dx = Math.min(0, e1.getX() - e2.getX());
+					translate = Math.min(0, translateOffsetMax - dx);
+				}
+			} else {
+				if (translateOffsetAtStart == 0) {
+					float dx = Math.max(0, e2.getX() - e1.getX());
+					translate = Math.min(translateOffsetMax, dx);
+				} else {
+					float dx = Math.max(0, e1.getX() - e2.getX());
+					translate = Math.max(0, translateOffsetMax - dx);
+				}
+			}
         	AnimationHelpers.translateX(mOperationsView, 0, translate, 0);
         	translateOffsetCurrent = translate;
 			return false;
@@ -260,17 +270,19 @@ public class FeedListAdapter extends BaseAdapter
 		@Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
             try {
-            	float dx = Math.abs(e1.getX() - e2.getX());
+            	float dx = e1.getX() - e2.getX();
             	float dy = Math.abs(e1.getY() - e2.getY()); 
-                //if (dx / dy < 1.3f)
-                //    return false;
             	if (dy > this.swipeMaxOffPath)
             	{
             		animateToOpenOrClosed();
             		return false;
             	}
+
+				if (App.getInstance().isRTL())
+					dx = -dx;
+
                 // right to left swipe
-                if(e1.getX() - e2.getX() > swipeMinDistance && Math.abs(velocityX) > swipeThresholdVelocity)
+                if(dx > swipeMinDistance && Math.abs(velocityX) > swipeThresholdVelocity)
                 {
                 	if (this != mCurrentOperationsView)
                 	{
@@ -280,7 +292,7 @@ public class FeedListAdapter extends BaseAdapter
                 	}
                 	showOperationButtons();
                 }
-                else if (e2.getX() - e1.getX() > swipeMinDistance && Math.abs(velocityX) > swipeThresholdVelocity)
+                else if (-dx > swipeMinDistance && Math.abs(velocityX) > swipeThresholdVelocity)
                 {
                 	if (this == mCurrentOperationsView)
             		{
@@ -311,7 +323,7 @@ public class FeedListAdapter extends BaseAdapter
 		{
 			if (translateOffsetAtStart == 0)
 			{
-				if ((translateOffsetCurrent - translateOffsetAtStart)  > this.swipeMinDistance)
+				if (Math.abs(translateOffsetCurrent)  > this.swipeMinDistance)
 				{
 					hideOperationButtons();
 				}
@@ -322,7 +334,7 @@ public class FeedListAdapter extends BaseAdapter
 			}
 			else
 			{
-				if ((translateOffsetMax - translateOffsetCurrent)  < this.swipeMinDistance)
+				if (Math.abs((translateOffsetMax - translateOffsetCurrent))  < this.swipeMinDistance)
 				{
 					hideOperationButtons();
 				}
@@ -335,14 +347,14 @@ public class FeedListAdapter extends BaseAdapter
 			
 		public void showOperationButtons()
 		{
-			long time = (long)((500.0f * translateOffsetCurrent) / translateOffsetMax);
-    		AnimationHelpers.translateX(mOperationsView, translateOffsetCurrent, 0, time);
+			long time = Math.abs((long)((500.0f * translateOffsetCurrent) / translateOffsetMax));
+			AnimationHelpers.translateX(mOperationsView, translateOffsetCurrent, 0, time);
     		translateOffsetCurrent = 0;
 		}
 		
 		public void hideOperationButtons()
 		{
-			long time = (long)((500.0f * (translateOffsetMax - translateOffsetCurrent)) / translateOffsetMax);
+			long time = Math.abs((long)((500.0f * (translateOffsetMax - translateOffsetCurrent)) / translateOffsetMax));
     		AnimationHelpers.translateX(mOperationsView, translateOffsetCurrent, translateOffsetMax, time);
     		translateOffsetCurrent = translateOffsetMax;
 		}

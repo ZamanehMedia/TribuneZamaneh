@@ -119,6 +119,7 @@ public class FragmentActivityWithMenu extends LockableActivity implements FeedFi
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        App.getInstance().setCurrentLanguageInConfig(this);
         super.onCreate(savedInstanceState);
         LayoutInflater inflater = LayoutInflater.from(this);
         mInflater = inflater.cloneInContext(this);

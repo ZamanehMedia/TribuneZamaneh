@@ -6,6 +6,7 @@ import info.guardianproject.securereader.SocialReader.SocialReaderLockListener;
 import info.guardianproject.securereaderinterface.models.FeedFilterType;
 import info.guardianproject.securereaderinterface.ui.UICallbackListener;
 import info.guardianproject.securereaderinterface.ui.UICallbacks;
+import info.guardianproject.securereaderinterface.widgets.AnimatedRelativeLayout;
 import info.guardianproject.securereaderinterface.widgets.CustomFontButton;
 import info.guardianproject.securereaderinterface.widgets.CustomFontEditText;
 import info.guardianproject.securereaderinterface.widgets.CustomFontRadioButton;
@@ -54,6 +55,10 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import info.guardianproject.securereaderinterface.R;
 
@@ -249,6 +254,8 @@ public class App extends MultiDexApplication implements OnSharedPreferenceChange
 	
 	public static View createView(String name, Context context, AttributeSet attrs)
 	{
+		View returnView = null;
+
 		int id = attrs.getAttributeResourceValue("http://schemas.android.com/apk/res/android", "id", -1);
 		if (Build.VERSION.SDK_INT < 11)
 		{
@@ -281,7 +288,91 @@ public class App extends MultiDexApplication implements OnSharedPreferenceChange
 		{
 			return new CustomFontEditText(context, attrs);
 		}
-		return null;
+/*		else if (name.equals("ImageView"))
+		{
+			TypedArray a = context.obtainStyledAttributes(attrs, new int[] { R.attr.doNotMirror });
+			boolean dontMirror = false;
+			if (a != null)
+				dontMirror = a.getBoolean(0, false);
+			a.recycle();
+			if (dontMirror)
+				returnView = new ImageView(context, attrs);
+			else
+				returnView = new MirroringImageView(context, attrs);
+		}*/
+
+		// API 17 still has some trouble with handling RTL layouts automatically.
+		else if (name.equals("FrameLayout") && Build.VERSION.SDK_INT == 17 && getInstance().isRTL()) {
+			if (returnView == null) {
+				returnView = new FrameLayout(context, attrs);
+				returnView.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+				returnView.setTextDirection(View.TEXT_DIRECTION_RTL);
+			}
+		}
+		else if (name.equals("LinearLayout") && Build.VERSION.SDK_INT == 17 && getInstance().isRTL()) {
+			if (returnView == null) {
+				returnView = new LinearLayout(context, attrs);
+				returnView.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+				returnView.setTextDirection(View.TEXT_DIRECTION_RTL);
+			}
+		}
+		else if ((name.equals("RelativeLayout") || name.endsWith("AnimatedRelativeLayout")) && Build.VERSION.SDK_INT == 17 && getInstance().isRTL()) {
+			if (returnView == null) {
+				if (name.equals("RelativeLayout"))
+					returnView = new RelativeLayout(context, attrs);
+				else
+					returnView = new AnimatedRelativeLayout(context, attrs);
+			}
+			RelativeLayout relativeLayout = (RelativeLayout) returnView;
+			relativeLayout.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+			returnView.setTextDirection(View.TEXT_DIRECTION_RTL);
+			relativeLayout.setOnHierarchyChangeListener(new ViewGroup.OnHierarchyChangeListener() {
+				@Override
+				public void onChildViewAdded(View parent, View child) {
+					RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) child.getLayoutParams();
+					if (lp != null) {
+						int[] rules = lp.getRules();
+						if (rules[RelativeLayout.START_OF] != 0) {
+							lp.removeRule(RelativeLayout.LEFT_OF);
+						}
+						if (rules[RelativeLayout.END_OF] != 0) {
+							lp.removeRule(RelativeLayout.RIGHT_OF);
+						}
+						if (rules[RelativeLayout.ALIGN_PARENT_START] != 0) {
+							lp.removeRule(RelativeLayout.ALIGN_PARENT_LEFT);
+						}
+						if (rules[RelativeLayout.ALIGN_PARENT_END] != 0) {
+							lp.removeRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+						}
+					}
+				}
+
+				@Override
+				public void onChildViewRemoved(View parent, View child) {
+				}
+			});
+		}
+		return returnView;
+	}
+
+	public boolean isRTL()
+	{
+		if (Build.VERSION.SDK_INT >= 17)
+		{
+			return (getBaseContext().getResources().getConfiguration().getLayoutDirection() == View.LAYOUT_DIRECTION_RTL);
+		}
+		else
+		{
+			// Handle old devices by looking at current language
+			Configuration config = getBaseContext().getResources().getConfiguration();
+			if (config.locale != null)
+			{
+				String language = config.locale.getLanguage();
+				if (language.startsWith("ar") || language.startsWith("fa"))
+					return true;
+			}
+			return false;
+		}
 	}
 
 	private int mnResumed = 0;

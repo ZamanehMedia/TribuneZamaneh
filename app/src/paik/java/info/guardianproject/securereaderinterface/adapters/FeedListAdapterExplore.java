@@ -1,5 +1,6 @@
 package info.guardianproject.securereaderinterface.adapters;
 
+import info.guardianproject.securereaderinterface.App;
 import info.guardianproject.securereaderinterface.R;
 import info.guardianproject.securereaderinterface.uiutil.UIHelpers;
 import java.util.ArrayList;
@@ -33,6 +34,8 @@ public class FeedListAdapterExplore extends FeedListAdapter
 		super(context, null, feeds);
 		mListener = listener;
 		mOperationButtonsOffsetMax = UIHelpers.dpToPx(68, context);
+		if (App.getInstance().isRTL())
+			mOperationButtonsOffsetMax = -mOperationButtonsOffsetMax;
 	}
 	
 	protected void filterItems()
