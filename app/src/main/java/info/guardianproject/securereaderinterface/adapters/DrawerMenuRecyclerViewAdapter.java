@@ -22,7 +22,9 @@ import java.util.List;
 import info.guardianproject.securereader.Settings;
 import info.guardianproject.securereader.SocialReader;
 import info.guardianproject.securereaderinterface.App;
+import info.guardianproject.securereaderinterface.MainActivity;
 import info.guardianproject.securereaderinterface.R;
+import info.guardianproject.securereaderinterface.models.FeedFilterType;
 import info.guardianproject.securereaderinterface.ui.UICallbacks;
 
 public class DrawerMenuRecyclerViewAdapter
@@ -44,17 +46,16 @@ public class DrawerMenuRecyclerViewAdapter
     private DrawerMenuCallbacks mCallbacks;
     private final Adorner mAdorner;
     private boolean mIsOnline;
-    private String mCountFavorites;
-    private String mCountShared;
 
     private interface MenuItemCallback {
         void onClicked();
         void onRefresh();
         void onShortcutClicked();
         boolean isRefreshing();
+        boolean isSelected();
     }
 
-    private class SimpleMenuItemCallback implements MenuItemCallback {
+    private abstract class SimpleMenuItemCallback implements MenuItemCallback {
 
         @Override
         public void onClicked() {
@@ -93,12 +94,23 @@ public class DrawerMenuRecyclerViewAdapter
 
     public void update(ArrayList<Feed> feeds, int countFavorites, int countShared) {
         mIsOnline = isOnline();
-        //mListFeeds = feeds;
-        mCountFavorites = String.valueOf(countFavorites);
-        mCountShared = String.valueOf(countShared);
         mValues.clear();
 
-        // All feeds
+        addAllFeedsItem();
+        addFavoritesItem(countFavorites);
+        addNearbyItem(countShared);
+
+        // Feeds
+        if (feeds != null && feeds.size() > 0) {
+            for (Feed feed : feeds) {
+                addFeedItem(feed);
+            }
+        }
+
+        notifyDataSetChanged();
+    }
+
+    protected void addAllFeedsItem() {
         mValues.add(new MenuEntry(R.drawable.ic_menu_news, R.string.feed_filter_all_feeds, 0, true, -1, new SimpleMenuItemCallback() {
             @Override
             public boolean isRefreshing() {
@@ -115,19 +127,31 @@ public class DrawerMenuRecyclerViewAdapter
             public void onRefresh() {
                 UICallbacks.requestResync(null);
             }
-        }));
 
-        // Favorites
-        mValues.add(new MenuEntry(R.drawable.ic_filter_favorites, R.string.feed_filter_favorites, 0, false, countFavorites, new SimpleMenuItemCallback() {
+            @Override
+            public boolean isSelected() {
+                return mContext instanceof MainActivity && App.getInstance().getCurrentFeedFilterType() == FeedFilterType.ALL_FEEDS;
+            }
+        }));
+    }
+
+    protected void addFavoritesItem(int count) {
+        mValues.add(new MenuEntry(R.drawable.ic_filter_favorites, R.string.feed_filter_favorites, 0, false, count, new SimpleMenuItemCallback() {
             @Override
             public void onClicked() {
                 if (mCallbacks != null)
                     mCallbacks.viewFavorites();
             }
-        }));
 
-        // Nearby
-        mValues.add(new MenuEntry(R.drawable.ic_filter_secure_share, R.string.feed_filter_shared_stories, R.string.menu_receive_share, false, countShared, new SimpleMenuItemCallback() {
+            @Override
+            public boolean isSelected() {
+                return mContext instanceof MainActivity && App.getInstance().getCurrentFeedFilterType() == FeedFilterType.FAVORITES;
+            }
+        }));
+    }
+
+    protected void addNearbyItem(int count) {
+        mValues.add(new MenuEntry(R.drawable.ic_filter_secure_share, R.string.feed_filter_shared_stories, R.string.menu_receive_share, false, count, new SimpleMenuItemCallback() {
             @Override
             public void onClicked() {
                 if (mCallbacks != null)
@@ -139,35 +163,41 @@ public class DrawerMenuRecyclerViewAdapter
                 if (mCallbacks != null)
                     mCallbacks.receiveShare();
             }
-        }));
 
-        // Feeds
-        if (feeds != null && feeds.size() > 0) {
-            for (final Feed feed : feeds) {
-                mValues.add(new MenuEntry(R.drawable.ic_filter_logo_placeholder,
-                        feed.getTitle(),
-                        0,
-                        true, -1, new SimpleMenuItemCallback() {
-                    @Override
-                    public void onClicked() {
-                        if (mCallbacks != null)
-                            mCallbacks.viewFeed(feed);
-                    }
-
-                    @Override
-                    public boolean isRefreshing() {
-                        return feed.getStatus() == Feed.STATUS_SYNC_IN_PROGRESS;
-                    }
-
-                    @Override
-                    public void onRefresh() {
-                        UICallbacks.requestResync(feed);
-                    }
-                }));
+            @Override
+            public boolean isSelected() {
+                return mContext instanceof MainActivity && App.getInstance().getCurrentFeedFilterType() == FeedFilterType.SHARED;
             }
-        }
+        }));
+    }
 
-        notifyDataSetChanged();
+    protected void addFeedItem(final Feed feed) {
+        mValues.add(new MenuEntry(R.drawable.ic_filter_logo_placeholder,
+                feed.getTitle(),
+                0,
+                true, -1, new SimpleMenuItemCallback() {
+            @Override
+            public void onClicked() {
+                if (mCallbacks != null)
+                    mCallbacks.viewFeed(feed);
+            }
+
+            @Override
+            public boolean isRefreshing() {
+                return feed.getStatus() == Feed.STATUS_SYNC_IN_PROGRESS;
+            }
+
+            @Override
+            public void onRefresh() {
+                UICallbacks.requestResync(feed);
+            }
+
+            @Override
+            public boolean isSelected() {
+                return mContext instanceof MainActivity && App.getInstance().getCurrentFeedFilterType() == FeedFilterType.SINGLE_FEED &&
+                        App.getInstance().getCurrentFeed() != null && App.getInstance().getCurrentFeed().getDatabaseId() == feed.getDatabaseId();
+            }
+        }));
     }
 
     @Override
@@ -193,6 +223,11 @@ public class DrawerMenuRecyclerViewAdapter
                 viewHolder.title.setText(e.resIdTitle);
             else
                 viewHolder.title.setText(e.stringTitle);
+            if (Build.VERSION.SDK_INT >= 23)
+                viewHolder.title.setTextAppearance(e.menuItemCallback.isSelected() ? R.style.LeftSideMenuItemCurrentAppearance : R.style.LeftSideMenuItemAppearance);
+            else
+                viewHolder.title.setTextAppearance(mContext, e.menuItemCallback.isSelected() ? R.style.LeftSideMenuItemCurrentAppearance : R.style.LeftSideMenuItemAppearance);
+
             if (e.count < 0) {
                 viewHolder.count.setVisibility(View.GONE);
             } else {
