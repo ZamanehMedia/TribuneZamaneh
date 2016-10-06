@@ -7,7 +7,7 @@ import android.widget.FrameLayout;
 
 import info.guardianproject.securereaderinterface.R;
 
-public class StoryListHintTorView extends FrameLayout implements View.OnClickListener
+public class StoryListHintProxyView extends FrameLayout implements View.OnClickListener
 {
 	public interface OnButtonClickedListener
 	{
@@ -25,17 +25,17 @@ public class StoryListHintTorView extends FrameLayout implements View.OnClickLis
 	private View mLlConnected;
 	private View mLlNotConnected;
 
-	public StoryListHintTorView(Context context)
+	public StoryListHintProxyView(Context context)
 	{
 		super(context);
 	}
 
-	public StoryListHintTorView(Context context, AttributeSet attrs)
+	public StoryListHintProxyView(Context context, AttributeSet attrs)
 	{
 		super(context, attrs);
 	}
 
-	public StoryListHintTorView(Context context, AttributeSet attrs, int defStyle)
+	public StoryListHintProxyView(Context context, AttributeSet attrs, int defStyle)
 	{
 		super(context, attrs, defStyle);
 	}

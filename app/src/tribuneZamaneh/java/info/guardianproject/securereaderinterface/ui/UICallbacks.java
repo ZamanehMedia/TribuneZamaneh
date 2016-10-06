@@ -1,5 +1,6 @@
 package info.guardianproject.securereaderinterface.ui;
 
+import info.guardianproject.securereaderinterface.MainActivity;
 import info.guardianproject.securereaderinterface.R;
 import info.guardianproject.securereader.SocialReader;
 import info.guardianproject.securereaderinterface.AddFeedActivity;
@@ -9,7 +10,6 @@ import info.guardianproject.securereaderinterface.CommentsActivity;
 import info.guardianproject.securereaderinterface.DownloadEpubReaderActivity;
 import info.guardianproject.securereaderinterface.DownloadsActivity;
 import info.guardianproject.securereaderinterface.HelpActivity;
-import info.guardianproject.securereaderinterface.MainActivity;
 import info.guardianproject.securereaderinterface.PostActivity;
 import info.guardianproject.securereaderinterface.SettingsActivity;
 import info.guardianproject.securereaderinterface.ViewMediaActivity;
@@ -367,6 +367,18 @@ public class UICallbacks
 			if (App.UI_ENABLE_CHAT)
 			{
 				Intent intent = new Intent(context, CommentsActivity.class);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+				context.startActivity(intent);
+			}
+			break;
+		}
+
+		case R.integer.command_comment:
+		{
+			if (App.UI_ENABLE_COMMENTS)
+			{
+				Intent intent = new Intent(context, CommentsActivity.class);
+				intent.putExtra("item", commandParameters.getSerializable("item"));
 				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 				context.startActivity(intent);
 			}

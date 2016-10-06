@@ -49,6 +49,7 @@ public class App extends MultiDexApplication implements OnSharedPreferenceChange
 	public static final boolean UI_ENABLE_POPULAR_ITEMS = false;
 			
 	public static final boolean UI_ENABLE_COMMENTS = false;
+	public static final boolean UI_ENABLE_PROXY_VIEW = false;
 	public static final boolean UI_ENABLE_TAGS = true;
 	public static final boolean UI_ENABLE_POST_LOGIN = false;
 	public static final boolean UI_ENABLE_REPORTER = false;

@@ -3,12 +3,9 @@ package com.tribunezamaneh.rss.adapters;
 import android.content.Context;
 
 import info.guardianproject.securereaderinterface.App;
-import info.guardianproject.securereaderinterface.FragmentActivityWithMenu;
-import info.guardianproject.securereaderinterface.MainActivity;
 import info.guardianproject.securereaderinterface.PostActivity;
 import info.guardianproject.securereaderinterface.R;
 import info.guardianproject.securereaderinterface.adapters.DrawerMenuRecyclerViewAdapter;
-import info.guardianproject.securereaderinterface.models.FeedFilterType;
 import info.guardianproject.securereaderinterface.ui.UICallbacks;
 
 public class DrawerMenuAdapter extends DrawerMenuRecyclerViewAdapter{

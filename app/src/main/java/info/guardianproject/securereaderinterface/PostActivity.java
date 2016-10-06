@@ -6,12 +6,10 @@ import info.guardianproject.securereaderinterface.uiutil.AnimationHelpers;
 import info.guardianproject.securereaderinterface.uiutil.UIHelpers;
 import info.guardianproject.securereaderinterface.uiutil.AnimationHelpers.FadeInFadeOutListener;
 import info.guardianproject.securereaderinterface.views.CreateAccountView;
-import info.guardianproject.securereaderinterface.views.FullScreenStoryItemView;
 import info.guardianproject.securereaderinterface.views.PostSignInView;
 import info.guardianproject.securereaderinterface.views.CreateAccountView.OnActionListener;
 import info.guardianproject.securereaderinterface.views.PostSignInView.OnAgreeListener;
-import info.guardianproject.securereaderinterface.R;
-import android.content.Context;
+
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.drawable.ColorDrawable;

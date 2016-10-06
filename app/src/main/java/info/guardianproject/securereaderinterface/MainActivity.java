@@ -9,9 +9,9 @@ import info.guardianproject.securereaderinterface.models.FeedFilterType;
 import info.guardianproject.securereaderinterface.ui.ActionProviderShare;
 import info.guardianproject.securereaderinterface.ui.UICallbacks;
 import info.guardianproject.securereaderinterface.views.StoryItemView;
-import info.guardianproject.securereaderinterface.views.StoryListHintTorView;
+import info.guardianproject.securereaderinterface.views.StoryListHintProxyView;
 import info.guardianproject.securereaderinterface.views.StoryListView;
-import info.guardianproject.securereaderinterface.views.StoryListHintTorView.OnButtonClickedListener;
+import info.guardianproject.securereaderinterface.views.StoryListHintProxyView.OnButtonClickedListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -208,7 +208,7 @@ public class MainActivity extends ItemExpandActivity
 		}
 
 		// Resume sync if we are back from Orbot
-		updateTorView();
+		updateProxyView();
 		
 		// HockeyApp SDK
 		//checkForCrashes();
@@ -468,7 +468,7 @@ public class MainActivity extends ItemExpandActivity
 		mIsLoading = isLoading;
 		if (mStoryListView != null)
 			mStoryListView.setIsLoading(mIsLoading);
-		updateTorView();
+		updateProxyView();
 		refreshLeftSideMenu();
 	}
 
@@ -610,7 +610,7 @@ public class MainActivity extends ItemExpandActivity
 			refreshLeftSideMenu();
 		}
 	};
-	private StoryListHintTorView mTorView;
+	private StoryListHintProxyView mProxyView;
 	private FeedFilterType mCurrentShownFeedFilterType = null;
 	private Feed mCurrentShownFeed = null;
 	private boolean mBackShouldOpenAllFeeds;
@@ -631,10 +631,10 @@ public class MainActivity extends ItemExpandActivity
 	@Override
 	public void onHeaderCreated(View headerView, int resIdHeader)
 	{
-		if (resIdHeader == R.layout.story_list_hint_tor)
+		if (resIdHeader == R.layout.story_list_hint_proxy)
 		{
-			mTorView = (StoryListHintTorView) headerView;
-			updateTorView();
+			mProxyView = (StoryListHintProxyView) headerView;
+			updateProxyView();
 		}
 	}
 
@@ -659,20 +659,20 @@ public class MainActivity extends ItemExpandActivity
 		}
 	}
 
-	private void updateTorView()
+	private void updateProxyView()
 	{
-		if (mTorView == null)
+		if (mProxyView == null)
 			return;
 
 		if (!App.getSettings().requireProxy() || mIsLoading || !isActivityResumed())
 		{
-			mTorView.setVisibility(View.GONE);
+			mProxyView.setVisibility(View.GONE);
 		}
 		else
 		{
-			mTorView.setOnButtonClickedListener(new OnButtonClickedListener()
+			mProxyView.setOnButtonClickedListener(new OnButtonClickedListener()
 			{
-				private StoryListHintTorView mView;
+				private StoryListHintProxyView mView;
 
 				@Override
 				public void onNoNetClicked()
@@ -688,16 +688,16 @@ public class MainActivity extends ItemExpandActivity
 					onResync();
 				}
 
-				public OnButtonClickedListener init(StoryListHintTorView view)
+				public OnButtonClickedListener init(StoryListHintProxyView view)
 				{
 					mView = view;
 					return this;
 				}
-			}.init(mTorView));
+			}.init(mProxyView));
 			int onlineMode = App.getInstance().socialReader.isOnline();
-			mTorView.setIsOnline(!(onlineMode == SocialReader.NOT_ONLINE_NO_WIFI || onlineMode == SocialReader.NOT_ONLINE_NO_WIFI_OR_NETWORK),
+			mProxyView.setIsOnline(!(onlineMode == SocialReader.NOT_ONLINE_NO_WIFI || onlineMode == SocialReader.NOT_ONLINE_NO_WIFI_OR_NETWORK),
 					onlineMode == SocialReader.ONLINE);
-			mTorView.setVisibility(View.VISIBLE);
+			mProxyView.setVisibility(View.VISIBLE);
 		}
 	}
 
@@ -793,9 +793,10 @@ public class MainActivity extends ItemExpandActivity
 
 				int headerViewId = 0;
 				ArrayList<Item> items = result.get(0).getItems();
-				if (items == null || items.size() == 0)
-				{
-					headerViewId = R.layout.story_list_hint_tor;
+				if (App.UI_ENABLE_PROXY_VIEW) {
+					if (items == null || items.size() == 0) {
+						headerViewId = R.layout.story_list_hint_proxy;
+					}
 				}
 				updateStoryListItems(mContext, items, headerViewId, mIsUpdate);
 				checkShowStoryFullScreen();

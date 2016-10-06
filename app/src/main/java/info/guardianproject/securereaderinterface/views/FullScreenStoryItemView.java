@@ -4,18 +4,17 @@ import info.guardianproject.securereaderinterface.App;
 import info.guardianproject.securereaderinterface.adapters.DownloadsAdapter;
 import info.guardianproject.securereaderinterface.adapters.ShareSpinnerAdapter;
 import info.guardianproject.securereaderinterface.adapters.StoryListAdapter;
-import info.guardianproject.securereaderinterface.adapters.TextSizeSpinnerAdapter;
 import info.guardianproject.securereaderinterface.installer.SecureBluetoothSenderFragment;
 import info.guardianproject.securereaderinterface.ui.UICallbacks;
+import info.guardianproject.securereaderinterface.uiutil.AnimationHelpers;
+import info.guardianproject.securereaderinterface.uiutil.AnimationHelpers.FadeInFadeOutListener;
 import info.guardianproject.securereaderinterface.widgets.CheckableImageView;
 import info.guardianproject.securereaderinterface.widgets.NestedViewPager;
 import info.guardianproject.securereaderinterface.widgets.compat.Spinner;
 import info.guardianproject.securereaderinterface.R;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+
 import java.util.ArrayList;
 
 import android.content.Context;
@@ -34,7 +33,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
+import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 
+import com.tinymission.rss.Feed;
 import com.tinymission.rss.Item;
 
 public class FullScreenStoryItemView extends FrameLayout
@@ -42,14 +44,15 @@ public class FullScreenStoryItemView extends FrameLayout
 	protected static final String LOGTAG = "FullScreenStoryItemView";
 	public static final boolean LOGGING = false;
 	
-	private View mBtnRead;
 	private View mBtnComments;
+	private View mBtnTextSize;
 	private CheckableImageView mBtnFavorite;
 	private ShareSpinnerAdapter mShareAdapter;
-	private TextSizeSpinnerAdapter mTextSizeAdapter;
 	private NestedViewPager mContentPager;
 	private ContentPagerAdapter mContentPagerAdapter;
-
+	private View mPanelTextSize;
+	private SeekBar mSeekBarTextSize;
+	
 	private StoryListAdapter mItemAdapter;
 	private int mCurrentIndex;
 	private SparseArray<Rect> mInitialViewPositions;
@@ -73,6 +76,15 @@ public class FullScreenStoryItemView extends FrameLayout
 	}
 
 
+
+	@Override
+	public boolean onInterceptTouchEvent(MotionEvent ev) {
+		if (ev.getAction() == MotionEvent.ACTION_UP && this.mPanelTextSize.getVisibility() == View.VISIBLE)
+		{
+			hideTextSizePanel();
+		}
+		return super.onInterceptTouchEvent(ev);
+	}
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event)
@@ -101,18 +113,6 @@ public class FullScreenStoryItemView extends FrameLayout
 		
 		View toolbar = findViewById(R.id.storyToolbar);
 
-		// Read story
-		//
-		mBtnRead = toolbar.findViewById(R.id.btnRead);
-		mBtnRead.setOnClickListener(new OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				showContent();
-			}
-		});
-
 		// Read comments
 		//
 		mBtnComments = toolbar.findViewById(R.id.btnComments);
@@ -128,42 +128,62 @@ public class FullScreenStoryItemView extends FrameLayout
 		// Disable comments?
 		if (!App.UI_ENABLE_COMMENTS)
 		{
-			mBtnRead.setVisibility(View.GONE);
 			mBtnComments.setVisibility(View.GONE);
 			// toolbar.findViewById(R.id.separatorComments).setVisibility(View.GONE);
 		}
 
 		// Text Size
 		//
-		final Spinner spinnerTextSize = (Spinner) toolbar.findViewById(R.id.spinnerTextSize);
-		mTextSizeAdapter = new TextSizeSpinnerAdapter(spinnerTextSize, getContext(), R.layout.text_size_story_item_button);
-		spinnerTextSize.setAdapter(mTextSizeAdapter);
-		spinnerTextSize.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+		mBtnTextSize = toolbar.findViewById(R.id.btnTextSize);
+		mBtnTextSize.setOnClickListener(new OnClickListener()
 		{
 			@Override
-			public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+			public void onClick(View v)
 			{
-				int adjustment = App.getSettings().getContentFontSizeAdjustment();
-				if (position == 0 && adjustment < 8)
-					adjustment += 2;
-				else if (position == 1 && adjustment > -8)
-					adjustment -= 2;
-				App.getSettings().setContentFontSizeAdjustment(adjustment);
-				
-				for (int iChild = 0; iChild < mContentPager.getChildCount(); iChild++)
+				if (mPanelTextSize.getVisibility() == View.GONE)
 				{
-					StoryItemView storyItemView = (StoryItemView) mContentPager.getChildAt(iChild).getTag();
-					if (storyItemView != null)
-						storyItemView.updateTextSize();
+					int adjustment = App.getSettings().getContentFontSizeAdjustment();
+					mSeekBarTextSize.setProgress(adjustment + 8);
+					mPanelTextSize.setVisibility(View.VISIBLE);
+					AnimationHelpers.fadeIn(mPanelTextSize, 500, 0, false);
 				}
-				//mContentPager.recreateAllViews();
+				else
+				{
+					hideTextSizePanel();
+				}
+			}
+		});
+		
+		mPanelTextSize = findViewById(R.id.textSizePanel);
+		mSeekBarTextSize = (SeekBar) mPanelTextSize.findViewById(R.id.seekBarTextSize);
+		mSeekBarTextSize.setMax(16);
+		mSeekBarTextSize.setOnSeekBarChangeListener(new OnSeekBarChangeListener()
+		{
+			@Override
+			public void onProgressChanged(SeekBar seekBar, int progress,
+					boolean fromUser) {
+				if (fromUser)
+				{
+					int adjustment = App.getSettings().getContentFontSizeAdjustment() + 8;
+					if (adjustment != progress)
+					{
+						App.getSettings().setContentFontSizeAdjustment(progress - 8);
+						FullScreenStoryItemView.this.removeCallbacks(mUpdateTextSizeInChildren);
+						FullScreenStoryItemView.this.post(mUpdateTextSizeInChildren);
+					}
+				}
 			}
 
 			@Override
-			public void onNothingSelected(AdapterView<?> arg0)
-			{
+			public void onStartTrackingTouch(SeekBar seekBar) {
+			}
+
+			@Override
+			public void onStopTrackingTouch(SeekBar seekBar) {
 			}
 		});
+		AnimationHelpers.fadeOut(mPanelTextSize, 0, 0, false);
+		mPanelTextSize.setVisibility(View.GONE);
 
 		// Favorite
 		//
@@ -257,11 +277,43 @@ public class FullScreenStoryItemView extends FrameLayout
 			{
 			}
 		});
-
-		// Default to show story content
-		showContent();
 	}
 
+	protected void hideTextSizePanel() {
+		AnimationHelpers.fadeOut(mPanelTextSize, 500, 0, false, new FadeInFadeOutListener()
+		{
+			@Override
+			public void onFadeInStarted(View view) {
+			}
+
+			@Override
+			public void onFadeInEnded(View view) {
+			}
+
+			@Override
+			public void onFadeOutStarted(View view) {
+			}
+
+			@Override
+			public void onFadeOutEnded(View view) {
+				view.setVisibility(View.GONE);
+			}
+		}); 
+	}
+
+	private Runnable mUpdateTextSizeInChildren = new Runnable()
+	{
+		@Override
+		public void run() {
+			for (int iChild = 0; iChild < mContentPager.getChildCount(); iChild++)
+			{
+				StoryItemView storyItemView = (StoryItemView) mContentPager.getChildAt(iChild).getTag();
+				if (storyItemView != null)
+					storyItemView.updateTextSize();
+			}
+		}
+	};
+	
 	public Item getCurrentStory()
 	{
 		if (mItemAdapter == null)
@@ -301,6 +353,15 @@ public class FullScreenStoryItemView extends FrameLayout
 			// R.string.share_via_secure_chat, R.drawable.ic_share_sharer);
 			mShareAdapter.addIntentResolvers(shareIntent);
 			DownloadsAdapter.viewed(current.getDatabaseId());
+			
+			Feed tempFeed = new Feed();
+			tempFeed.setDatabaseId(current.getFeedId());
+			if (!App.getInstance().socialReader.isFeedCommentable(tempFeed))
+			{
+				mBtnComments.setVisibility(View.GONE);
+			} else {
+				mBtnComments.setVisibility(View.VISIBLE);
+			}
 		}
 	}
 
@@ -309,47 +370,17 @@ public class FullScreenStoryItemView extends FrameLayout
 		mContentPagerAdapter.notifyDataSetChanged();
 	}
 
-	private void showContent()
-	{
-		mBtnRead.setSelected(true);
-		mBtnComments.setSelected(false);
-		mContentPager.setVisibility(View.VISIBLE);
-	}
-
 	private void showComments()
 	{
 		Item currentStory = getCurrentStory();
 		if (currentStory != null)
 		{
-			String roomName = "story_" + MD5_Hash(currentStory.getGuid());
 			Bundle params = new Bundle();
-			params.putString("room_name", roomName);
+			params.putSerializable("item", currentStory);
 			if (LOGGING)
-				Log.v(LOGTAG, "Show comments, so start the chat application now with room: " + roomName);
-			UICallbacks.handleCommand(getContext(), R.integer.command_chat, params);
+				Log.v(LOGTAG, "Show comments for item: " + currentStory.getDatabaseId());
+			UICallbacks.handleCommand(getContext(), R.integer.command_comment, params);
 		}
-		// mBtnRead.setSelected(false);
-		// mBtnComments.setSelected(true);
-		// mHorizontalPagerContent.setVisibility(View.GONE);
-		// mCurrentPageIndicator.setVisibility(View.GONE);
-	}
-
-	public static String MD5_Hash(String s)
-	{
-		MessageDigest m = null;
-
-		try
-		{
-			m = MessageDigest.getInstance("MD5");
-		}
-		catch (NoSuchAlgorithmException e)
-		{
-			e.printStackTrace();
-		}
-
-		m.update(s.getBytes(), 0, s.length());
-		String hash = new BigInteger(1, m.digest()).toString(16);
-		return hash;
 	}
 
 	public void showFavoriteButton(boolean bShow)

@@ -9,7 +9,6 @@ import info.guardianproject.securereaderinterface.CreateAccountActivity;
 import info.guardianproject.securereaderinterface.DownloadEpubReaderActivity;
 import info.guardianproject.securereaderinterface.DownloadsActivity;
 import info.guardianproject.securereaderinterface.HelpActivity;
-import info.guardianproject.securereaderinterface.MainActivity;
 import info.guardianproject.securereaderinterface.PostActivity;
 import info.guardianproject.securereaderinterface.SettingsActivity;
 import info.guardianproject.securereaderinterface.ViewMediaActivity;

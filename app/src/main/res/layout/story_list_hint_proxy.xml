@@ -1,5 +1,5 @@
 
-    <info.guardianproject.securereaderinterface.views.StoryListHintTorView 
+    <info.guardianproject.securereaderinterface.views.StoryListHintProxyView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
@@ -188,4 +188,4 @@
             android:src="@drawable/ic_context_sync_arrow_pull" />
 
 </LinearLayout>
-    </info.guardianproject.securereaderinterface.views.StoryListHintTorView>
+    </info.guardianproject.securereaderinterface.views.StoryListHintProxyView>

@@ -128,7 +128,7 @@ public class CommentsActivity extends Activity implements OnClickListener, OnAct
 		else
 		{
 			mViewCreateAccount.setVisibility(View.VISIBLE);
-			mViewCreateAccount.focusTextField();
+			//mViewCreateAccount.focusTextField();
 		}
 	}
 

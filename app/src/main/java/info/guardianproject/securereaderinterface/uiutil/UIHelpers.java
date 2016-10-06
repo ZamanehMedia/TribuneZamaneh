@@ -10,6 +10,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.util.Date;
 
@@ -369,5 +372,23 @@ public class UIHelpers
 		View view = activity.getCurrentFocus();
 		if (view != null)
 			inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+	}
+
+	public static String MD5_Hash(String s)
+	{
+		MessageDigest m = null;
+
+		try
+		{
+			m = MessageDigest.getInstance("MD5");
+		}
+		catch (NoSuchAlgorithmException e)
+		{
+			e.printStackTrace();
+		}
+
+		m.update(s.getBytes(), 0, s.length());
+		String hash = new BigInteger(1, m.digest()).toString(16);
+		return hash;
 	}
 }

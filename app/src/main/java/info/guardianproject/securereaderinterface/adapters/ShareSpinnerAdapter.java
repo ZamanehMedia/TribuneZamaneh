@@ -112,7 +112,7 @@ public class ShareSpinnerAdapter extends BaseAdapter implements SpinnerAdapter
 			ai = App.getInstance().getPackageManager().getActivityInfo(new ComponentName(mContext.getPackageName(), MainActivity.class.getName()), 0);
 			info.activityInfo = ai;
 			info.labelRes = R.string.share_via_secure_bluetooth;
-			info.icon = R.drawable.ic_share_sharer;
+			info.icon = R.drawable.ic_share_nearby_gray;
 		}
 		catch (NameNotFoundException e)
 		{
@@ -142,7 +142,7 @@ public class ShareSpinnerAdapter extends BaseAdapter implements SpinnerAdapter
 		catch (NameNotFoundException e)
 		{
 			info.labelRes = R.string.share_via_secure_chat;
-			info.icon = R.drawable.ic_share_sharer;
+			info.icon = R.drawable.ic_share_nearby_gray;
 		}
 		mReceivers.add(info);
 		mReceiverIntents.put(info, mSecureChatShareIntentPlaceholder);

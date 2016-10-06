@@ -21,10 +21,9 @@ import info.guardianproject.securereaderinterface.adapters.StoryListAdapter;
 import info.guardianproject.securereaderinterface.uiutil.AnimationHelpers;
 import info.guardianproject.securereaderinterface.uiutil.UIHelpers;
 import info.guardianproject.securereaderinterface.views.ExpandingFrameLayout;
-import info.guardianproject.securereaderinterface.views.FullScreenStoryItemView;
 import info.guardianproject.securereaderinterface.views.ExpandingFrameLayout.ExpansionListener;
+import info.guardianproject.securereaderinterface.views.FullScreenStoryItemView;
 import info.guardianproject.securereaderinterface.views.StoryListView.StoryListListener;
-import info.guardianproject.securereaderinterface.R;
 
 import com.tinymission.rss.Item;
 

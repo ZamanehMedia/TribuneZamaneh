@@ -1,10 +1,10 @@
 package info.guardianproject.securereaderinterface.installer;
 
+import info.guardianproject.securereaderinterface.MainActivity;
 import info.guardianproject.securereaderinterface.R;
 import info.guardianproject.securereader.SocialReader;
 import info.guardianproject.securereaderinterface.App;
 import info.guardianproject.securereaderinterface.FragmentActivityWithMenu;
-import info.guardianproject.securereaderinterface.MainActivity;
 import info.guardianproject.securereaderinterface.models.FeedFilterType;
 import info.guardianproject.securereaderinterface.views.StoryItemPageView;
 import info.guardianproject.iocipher.File;
