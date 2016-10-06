@@ -65,6 +65,7 @@
                     android:imeOptions="actionDone"
                     android:inputType="text"
                     android:textAppearance="?android:attr/textAppearanceSmall" >
+                    <requestFocus />
                 </EditText>
             </LinearLayout>
 
