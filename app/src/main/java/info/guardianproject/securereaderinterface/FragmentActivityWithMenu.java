@@ -1,6 +1,8 @@
 package info.guardianproject.securereaderinterface;
 
 import java.lang.ref.WeakReference;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 import info.guardianproject.securereader.Settings.ProxyType;
@@ -171,15 +173,14 @@ public class FragmentActivityWithMenu extends LockableActivity implements Drawer
                         if (isClosed && slideOffset > 0) {
                             isClosed = false;
                             updateLeftSideMenu();
-                            //if (mMenuViewHolder != null) {
-                            //    mMenuViewHolder.viewFeedFilter.post(new Runnable() {
-                            //        @Override
-                            //        public void run() {
-                            //            mMenuViewHolder.viewFeedFilter.setSelectionAfterHeaderView();
-                            //        }
-                            //    });
-                            //}
-                            //mMenuViewHolder.viewFeedFilter.invalidateViews();
+                            if (mMenuViewHolder != null) {
+                                mMenuViewHolder.recyclerView.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mMenuViewHolder.recyclerView.scrollToPosition(0);
+                                    }
+                                });
+                            }
                         }
                     }
                 };
@@ -454,8 +455,6 @@ public class FragmentActivityWithMenu extends LockableActivity implements Drawer
     private class MenuViewHolder {
         public CheckableButton btnTorStatus;
         public CheckableButton btnShowPhotos;
-        //public FeedFilterView viewFeedFilter;
-        public NavigationView navigationView;
         public RecyclerView recyclerView;
     }
 
@@ -474,11 +473,19 @@ public class FragmentActivityWithMenu extends LockableActivity implements Drawer
             View menuView = mLeftSideMenu;
             mMenuViewHolder.btnTorStatus = (CheckableButton) menuView.findViewById(R.id.btnMenuTor);
             mMenuViewHolder.btnShowPhotos = (CheckableButton) menuView.findViewById(R.id.btnMenuPhotos);
-            //mMenuViewHolder.navigationView = (NavigationView) menuView.findViewById(R.id.viewFeedFilter);
-            //mMenuViewHolder.viewFeedFilter = (FeedFilterView) menuView.findViewById(R.id.viewFeedFilter);
             mMenuViewHolder.recyclerView = (RecyclerView) menuView.findViewById(R.id.drawerMenuRecyclerView);
             mMenuViewHolder.recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-            mMenuViewHolder.recyclerView.setAdapter(new DrawerMenuRecyclerViewAdapter(this, this));
+
+            Class adapterClass = App.getInstance().getDrawerMenuAdapterClass();
+            try {
+                Constructor cons = adapterClass.getConstructor(Context.class, DrawerMenuRecyclerViewAdapter.DrawerMenuCallbacks.class);
+                Object instance = cons.newInstance(this, this);
+                if (instance instanceof RecyclerView.Adapter) {
+                    mMenuViewHolder.recyclerView.setAdapter((RecyclerView.Adapter) instance);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
             // Hookup events
             mMenuViewHolder.btnTorStatus.setOnClickListener(new View.OnClickListener() {
@@ -530,9 +537,12 @@ public class FragmentActivityWithMenu extends LockableActivity implements Drawer
 
         @Override
         protected void onPostExecute(Void result) {
-            //mMenuViewHolder.viewFeedFilter.updateList(feeds, countFavorites, countShared);
-            //App.getInstance().populateDrawerMenu(mMenuViewHolder.navigationView, feeds, countFavorites, countShared);
-            ((DrawerMenuRecyclerViewAdapter)mMenuViewHolder.recyclerView.getAdapter()).update(feeds, countFavorites, countShared);
+            RecyclerView.Adapter adapter = mMenuViewHolder.recyclerView.getAdapter();
+            if (adapter instanceof DrawerMenuRecyclerViewAdapter) {
+                ((DrawerMenuRecyclerViewAdapter)adapter).update(feeds, countFavorites, countShared);
+            } else {
+                adapter.notifyDataSetChanged();
+            }
 
             // Update TOR connection status
             //
@@ -692,7 +702,7 @@ public class FragmentActivityWithMenu extends LockableActivity implements Drawer
     }
 
     /**
-     * This is a shortcut to {@link App#getCurrentFeedFeedFilterType()} }
+     * This is a shortcut to {@link App#getCurrentFeedFilterType()} }
      *
      * @return the currently displayed feed type
      */

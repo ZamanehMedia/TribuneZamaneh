@@ -3,6 +3,7 @@ package info.guardianproject.securereaderinterface;
 import info.guardianproject.securereader.Settings;
 import info.guardianproject.securereader.Settings.UiLanguage;
 import info.guardianproject.securereader.SocialReader.SocialReaderLockListener;
+import info.guardianproject.securereaderinterface.adapters.DrawerMenuRecyclerViewAdapter;
 import info.guardianproject.securereaderinterface.models.FeedFilterType;
 import info.guardianproject.securereaderinterface.ui.UICallbackListener;
 import info.guardianproject.securereaderinterface.ui.UICallbacks;
@@ -443,5 +444,9 @@ public class App extends MultiDexApplication implements OnSharedPreferenceChange
 	{
 		if (mCurrentFeed != null && mCurrentFeed.getDatabaseId() == feed.getDatabaseId())
 			mCurrentFeed = feed;
+	}
+
+	public Class getDrawerMenuAdapterClass() {
+		return DrawerMenuRecyclerViewAdapter.class;
 	}
 }
