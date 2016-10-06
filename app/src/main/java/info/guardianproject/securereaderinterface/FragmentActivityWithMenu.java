@@ -1,22 +1,5 @@
 package info.guardianproject.securereaderinterface;
 
-import java.lang.ref.WeakReference;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-
-import info.guardianproject.securereader.Settings.ProxyType;
-import info.guardianproject.securereader.Settings.SyncMode;
-import info.guardianproject.securereader.SocialReader;
-import info.guardianproject.securereaderinterface.adapters.DrawerMenuRecyclerViewAdapter;
-import info.guardianproject.securereaderinterface.models.FeedFilterType;
-import info.guardianproject.securereaderinterface.ui.LayoutFactoryWrapper;
-import info.guardianproject.securereaderinterface.ui.UICallbacks;
-import info.guardianproject.securereaderinterface.ui.UICallbacks.OnCallbackListener;
-import info.guardianproject.securereaderinterface.uiutil.ActivitySwitcher;
-import info.guardianproject.securereaderinterface.uiutil.UIHelpers;
-import info.guardianproject.securereaderinterface.widgets.CheckableButton;
-
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -29,7 +12,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.NavigationView;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.LayoutInflaterCompat;
@@ -55,6 +37,22 @@ import android.widget.TextView;
 
 import com.tinymission.rss.Feed;
 import com.tinymission.rss.Item;
+
+import java.lang.ref.WeakReference;
+import java.lang.reflect.Constructor;
+import java.util.ArrayList;
+
+import info.guardianproject.securereader.Settings.ProxyType;
+import info.guardianproject.securereader.Settings.SyncMode;
+import info.guardianproject.securereader.SocialReader;
+import info.guardianproject.securereaderinterface.adapters.DrawerMenuRecyclerViewAdapter;
+import info.guardianproject.securereaderinterface.models.FeedFilterType;
+import info.guardianproject.securereaderinterface.ui.LayoutFactoryWrapper;
+import info.guardianproject.securereaderinterface.ui.UICallbacks;
+import info.guardianproject.securereaderinterface.ui.UICallbacks.OnCallbackListener;
+import info.guardianproject.securereaderinterface.uiutil.ActivitySwitcher;
+import info.guardianproject.securereaderinterface.uiutil.UIHelpers;
+import info.guardianproject.securereaderinterface.widgets.CheckableButton;
 
 public class FragmentActivityWithMenu extends LockableActivity implements DrawerMenuRecyclerViewAdapter.DrawerMenuCallbacks, OnCallbackListener {
     public static final String LOGTAG = "FragmentActivityWithMenu";
@@ -155,8 +153,6 @@ public class FragmentActivityWithMenu extends LockableActivity implements Drawer
             } else {
                 mMenuViewHolder = null;
                 mLeftSideMenu = mDrawerLayout.findViewById(R.id.left_drawer);
-                //if (mLeftSideMenu != null)
-                //    ((FeedFilterView) mLeftSideMenu.findViewById(R.id.viewFeedFilter)).setFeedFilterViewCallbacks(this);
                 mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, 0, 0) {
                     private boolean isClosed = true;
 
@@ -590,89 +586,9 @@ public class FragmentActivityWithMenu extends LockableActivity implements Drawer
         return super.getSystemService(name);
     }
 
-    @Override
-    public void viewAllFeeds() {
-        viewFeed(null);
-    }
 
     @Override
-    public void viewFavorites() {
-        waitForMenuCloseAndRunCommand(new Runnable() {
-            @Override
-            public void run() {
-                UICallbacks.setFeedFilter(FeedFilterType.FAVORITES, 0, FragmentActivityWithMenu.this);
-                UICallbacks.handleCommand(FragmentActivityWithMenu.this, R.integer.command_news_list, null);
-            }
-        });
-    }
-
-    @Override
-    public void viewPopular() {
-        waitForMenuCloseAndRunCommand(new Runnable() {
-            @Override
-            public void run() {
-                UICallbacks.setFeedFilter(FeedFilterType.POPULAR, 0, FragmentActivityWithMenu.this);
-                UICallbacks.handleCommand(FragmentActivityWithMenu.this, R.integer.command_news_list, null);
-            }
-        });
-    }
-
-    @Override
-    public void viewDownloads() {
-        waitForMenuCloseAndRunCommand(new Runnable() {
-            @Override
-            public void run() {
-                UICallbacks.handleCommand(FragmentActivityWithMenu.this, R.integer.command_downloads, null);
-            }
-        });
-    }
-
-    @Override
-    public void viewShared() {
-        waitForMenuCloseAndRunCommand(new Runnable() {
-            @Override
-            public void run() {
-                UICallbacks.setFeedFilter(FeedFilterType.SHARED, 0, FragmentActivityWithMenu.this);
-                UICallbacks.handleCommand(FragmentActivityWithMenu.this, R.integer.command_news_list, null);
-            }
-        });
-    }
-
-    @Override
-    public void receiveShare() {
-        waitForMenuCloseAndRunCommand(new Runnable() {
-            @Override
-            public void run() {
-                UICallbacks.handleCommand(FragmentActivityWithMenu.this, R.integer.command_receiveshare, null);
-            }
-        });
-    }
-
-    @Override
-    public void viewFeed(final Feed feedToView) {
-        waitForMenuCloseAndRunCommand(new Runnable() {
-            @Override
-            public void run() {
-                if (feedToView == null)
-                    UICallbacks.setFeedFilter(FeedFilterType.ALL_FEEDS, 0, this);
-                else
-                    UICallbacks.setFeedFilter(FeedFilterType.SINGLE_FEED, feedToView.getDatabaseId(), this);
-                UICallbacks.handleCommand(FragmentActivityWithMenu.this, R.integer.command_news_list, null);
-            }
-        });
-    }
-
-    @Override
-    public void addNewFeed() {
-        waitForMenuCloseAndRunCommand(new Runnable() {
-            @Override
-            public void run() {
-                UICallbacks.handleCommand(FragmentActivityWithMenu.this, R.integer.command_feed_add, null);
-            }
-        });
-    }
-
-    private void waitForMenuCloseAndRunCommand(Runnable runnable) {
+    public void runAfterMenuClose(Runnable runnable) {
         mDeferredCommands.add(runnable);
         if (mDrawerLayout != null && mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             mDrawerLayout.closeDrawer(GravityCompat.START);
@@ -689,8 +605,6 @@ public class FragmentActivityWithMenu extends LockableActivity implements Drawer
 
     @Override
     public void onFeedSelect(FeedFilterType type, long feedId, Object source) {
-        //if (mMenuViewHolder != null)
-        //    mMenuViewHolder.viewFeedFilter.invalidateViews();
     }
 
     @Override

@@ -17,14 +17,7 @@ public class DrawerMenuRecyclerViewAdapter
         extends DrawerMenuRecyclerViewAdapterBase {
 
     public interface DrawerMenuCallbacks {
-        void viewAllFeeds();
-        void viewFavorites();
-        void viewShared();
-        void receiveShare();
-        void viewPopular();
-        void viewDownloads();
-        void viewFeed(Feed feedToView);
-        void addNewFeed();
+        void runAfterMenuClose(Runnable runnable);
     }
 
     private DrawerMenuCallbacks mCallbacks;
@@ -32,6 +25,8 @@ public class DrawerMenuRecyclerViewAdapter
     public DrawerMenuRecyclerViewAdapter(Context context, DrawerMenuCallbacks callbacks) {
         super(context);
         mCallbacks = callbacks;
+        if (mCallbacks == null)
+            throw new IllegalArgumentException("Callbacks need to be set!");
         setHasStableIds(false);
     }
 
@@ -63,8 +58,13 @@ public class DrawerMenuRecyclerViewAdapter
 
             @Override
             public void onClicked() {
-                if (mCallbacks != null)
-                    mCallbacks.viewAllFeeds();
+                mCallbacks.runAfterMenuClose(new Runnable() {
+                    @Override
+                    public void run() {
+                        UICallbacks.setFeedFilter(FeedFilterType.ALL_FEEDS, 0, this);
+                        UICallbacks.handleCommand(mContext, R.integer.command_news_list, null);
+                    }
+                });
             }
 
             @Override
@@ -83,8 +83,13 @@ public class DrawerMenuRecyclerViewAdapter
         add(new MenuEntry(R.drawable.ic_filter_favorites, R.string.feed_filter_favorites, 0, false, count, new SimpleMenuItemCallback() {
             @Override
             public void onClicked() {
-                if (mCallbacks != null)
-                    mCallbacks.viewFavorites();
+                mCallbacks.runAfterMenuClose(new Runnable() {
+                    @Override
+                    public void run() {
+                        UICallbacks.setFeedFilter(FeedFilterType.FAVORITES, 0, this);
+                        UICallbacks.handleCommand(mContext, R.integer.command_news_list, null);
+                    }
+                });
             }
 
             @Override
@@ -98,14 +103,23 @@ public class DrawerMenuRecyclerViewAdapter
         add(new MenuEntry(R.drawable.ic_filter_secure_share, R.string.feed_filter_shared_stories, R.string.menu_receive_share, false, count, new SimpleMenuItemCallback() {
             @Override
             public void onClicked() {
-                if (mCallbacks != null)
-                    mCallbacks.viewShared();
+                mCallbacks.runAfterMenuClose(new Runnable() {
+                    @Override
+                    public void run() {
+                        UICallbacks.setFeedFilter(FeedFilterType.SHARED, 0, this);
+                        UICallbacks.handleCommand(mContext, R.integer.command_news_list, null);
+                    }
+                });
             }
 
             @Override
             public void onShortcutClicked() {
-                if (mCallbacks != null)
-                    mCallbacks.receiveShare();
+                mCallbacks.runAfterMenuClose(new Runnable() {
+                    @Override
+                    public void run() {
+                        UICallbacks.handleCommand(mContext, R.integer.command_receiveshare, null);
+                    }
+                });
             }
 
             @Override
@@ -122,8 +136,13 @@ public class DrawerMenuRecyclerViewAdapter
                 true, -1, new SimpleMenuItemCallback() {
             @Override
             public void onClicked() {
-                if (mCallbacks != null)
-                    mCallbacks.viewFeed(feed);
+                mCallbacks.runAfterMenuClose(new Runnable() {
+                    @Override
+                    public void run() {
+                        UICallbacks.setFeedFilter(FeedFilterType.SINGLE_FEED, feed.getDatabaseId(), this);
+                        UICallbacks.handleCommand(mContext, R.integer.command_news_list, null);
+                    }
+                });
             }
 
             @Override

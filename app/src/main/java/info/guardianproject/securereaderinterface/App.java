@@ -446,6 +446,20 @@ public class App extends MultiDexApplication implements OnSharedPreferenceChange
 			mCurrentFeed = feed;
 	}
 
+	private Resources mOverrideResources;
+
+	public void setOverrideResources(Resources r)
+	{
+		mOverrideResources = r;
+	}
+
+	@Override
+	public Resources getResources() {
+		if (mOverrideResources != null)
+			return mOverrideResources;
+		return super.getResources();
+	}
+
 	public Class getDrawerMenuAdapterClass() {
 		return DrawerMenuRecyclerViewAdapter.class;
 	}
