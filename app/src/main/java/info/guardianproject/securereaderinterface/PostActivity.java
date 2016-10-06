@@ -6,6 +6,7 @@ import info.guardianproject.securereaderinterface.uiutil.AnimationHelpers;
 import info.guardianproject.securereaderinterface.uiutil.UIHelpers;
 import info.guardianproject.securereaderinterface.uiutil.AnimationHelpers.FadeInFadeOutListener;
 import info.guardianproject.securereaderinterface.views.CreateAccountView;
+import info.guardianproject.securereaderinterface.views.FullScreenStoryItemView;
 import info.guardianproject.securereaderinterface.views.PostSignInView;
 import info.guardianproject.securereaderinterface.views.CreateAccountView.OnActionListener;
 import info.guardianproject.securereaderinterface.views.PostSignInView.OnAgreeListener;

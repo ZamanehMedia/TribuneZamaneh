@@ -1,5 +1,6 @@
 package info.guardianproject.securereaderinterface.ui;
 
+import info.guardianproject.securereaderinterface.MainActivity;
 import info.guardianproject.securereaderinterface.R;
 import info.guardianproject.securereader.SocialReader;
 import info.guardianproject.securereaderinterface.AddFeedActivity;
@@ -101,8 +102,9 @@ public class UICallbacks
 
 		/**
 		 * Called to handle a command.
+		 * Return true to skip default command handling, otherwise false.
 		 */
-		void onCommand(int command, Bundle commandParameters);
+		boolean onCommand(Context context, int command, Bundle commandParameters);
 	}
 
 	private static UICallbacks gInstance;
@@ -160,9 +162,10 @@ public class UICallbacks
 		getInstance().fireCallback("onItemFavoriteStatusChanged", item);
 	}
 
-	private void fireCallback(String methodName, Object... commandParameters)
+	private boolean fireCallback(String methodName, Object... commandParameters)
 	{
 		Class<?>[] paramTypes = null;
+		boolean ret = false;
 
 		try
 		{
@@ -185,7 +188,9 @@ public class UICallbacks
 					try
 					{
 						Method m = listener.getClass().getMethod(methodName, paramTypes);
-						m.invoke(listener, commandParameters);
+						Object retVal = m.invoke(listener, commandParameters);
+						if (retVal != null && retVal instanceof Boolean && ((Boolean)retVal))
+							ret = true;
 					}
 					catch (Exception ex)
 					{
@@ -199,11 +204,14 @@ public class UICallbacks
 			if (LOGGING)
 				Log.d(LOGTAG, "Failed to get callback method info: " + ex.toString());
 		}
+		return ret;
 	}
 
 	public static void handleCommand(Context context, int command, Bundle commandParameters)
 	{
-		getInstance().fireCallback("onCommand", command, commandParameters);
+		boolean ret = getInstance().fireCallback("onCommand", context, command, commandParameters);
+		if (ret)
+			return; // Skip default handling
 
 		switch (command)
 		{

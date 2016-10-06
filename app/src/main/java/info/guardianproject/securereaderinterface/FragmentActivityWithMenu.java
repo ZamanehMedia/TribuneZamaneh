@@ -622,7 +622,8 @@ public class FragmentActivityWithMenu extends LockableActivity implements Drawer
     }
 
     @Override
-    public void onCommand(int command, Bundle commandParameters) {
+    public boolean onCommand(Context context, int command, Bundle commandParameters) {
+        return false;
     }
 
     /**

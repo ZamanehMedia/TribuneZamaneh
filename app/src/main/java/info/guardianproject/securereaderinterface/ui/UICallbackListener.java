@@ -2,6 +2,8 @@ package info.guardianproject.securereaderinterface.ui;
 
 import info.guardianproject.securereaderinterface.models.FeedFilterType;
 import info.guardianproject.securereaderinterface.ui.UICallbacks.OnCallbackListener;
+
+import android.content.Context;
 import android.os.Bundle;
 
 import com.tinymission.rss.Feed;
@@ -35,7 +37,8 @@ public class UICallbackListener implements OnCallbackListener
 	}
 
 	@Override
-	public void onCommand(int command, Bundle commandParameters)
+	public boolean onCommand(Context context, int command, Bundle commandParameters)
 	{
+		return false;
 	}
 }

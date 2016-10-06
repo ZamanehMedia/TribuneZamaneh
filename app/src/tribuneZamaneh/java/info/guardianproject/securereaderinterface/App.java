@@ -37,6 +37,7 @@ import org.xml.sax.InputSource;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.os.Bundle;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 import android.content.Context;
@@ -132,6 +133,36 @@ public class App extends MultiDexApplication implements OnSharedPreferenceChange
 				}
 				mCurrentFeedFilterType = type;
 				mCurrentFeed = feed;
+			}
+
+			@Override
+			public boolean onCommand(Context context, int command, Bundle commandParameters) {
+
+				switch (command) {
+					case R.integer.command_chat:
+					{
+						if (App.UI_ENABLE_CHAT)
+						{
+							Intent intent = new Intent(getContext(), CommentsActivity.class);
+							intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+							context.startActivity(intent);
+						}
+						return true;
+					}
+
+					case R.integer.command_comment:
+					{
+						if (App.UI_ENABLE_COMMENTS)
+						{
+							Intent intent = new Intent(context, CommentsActivity.class);
+							intent.putExtra("item", commandParameters.getSerializable("item"));
+							intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+							context.startActivity(intent);
+						}
+						return true;
+					}
+				}
+				return super.onCommand(context, command, commandParameters);
 			}
 		});
 	}

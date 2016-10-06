@@ -617,7 +617,7 @@ public class MainActivity extends ItemExpandActivity
 	private StoryListAdapter mAdapter;
 
 	@Override
-	public void onCommand(int command, Bundle commandParameters)
+	public boolean onCommand(Context context, int command, Bundle commandParameters)
 	{
 		if (command == R.integer.command_add_feed_manual)
 		{
@@ -625,7 +625,7 @@ public class MainActivity extends ItemExpandActivity
 			App.getInstance().socialReader.addFeedByURL(commandParameters.getString("uri"), MainActivity.this.mFeedFetchedCallback);
 			refreshList();
 		}
-		super.onCommand(command, commandParameters);
+		return super.onCommand(context, command, commandParameters);
 	}
 
 	@Override
