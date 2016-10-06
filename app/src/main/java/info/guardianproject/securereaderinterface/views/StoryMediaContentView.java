@@ -1,7 +1,11 @@
 package info.guardianproject.securereaderinterface.views;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -217,7 +221,8 @@ public class StoryMediaContentView extends FrameLayout implements View.OnClickLi
 		this.addView(mImageView);
 	}
 
-	private void createDownloadView(boolean useFinalSize)
+	@SuppressWarnings("deprecation")
+	@SuppressLint("NewApi") private void createDownloadView(boolean useFinalSize)
 	{
 		if (useFinalSize || placeholderUseFinalSize())
 		{
@@ -229,10 +234,18 @@ public class StoryMediaContentView extends FrameLayout implements View.OnClickLi
 		}
 		mDownloadView.setOnClickListener(this);
 		ImageView iv = ((ImageView) mDownloadView.findViewById(R.id.ivDownloadIcon));
-		iv.setImageResource(placeholderIcon());
+		int icon = placeholderIcon();
+		Drawable d = null;
+		if (Build.VERSION.SDK_INT >= 21)
+			d = getContext().getDrawable(icon).mutate();
+		else
+			d = getContext().getResources().getDrawable(icon).mutate();
+		UIHelpers.colorizeDrawableWithColor(getContext(), Color.argb(77, 0, 0, 0), d);
+		iv.setImageDrawable(d);
 		TextView tv = (TextView) mDownloadView.findViewById(R.id.tvDownload);
 		if (tv != null)
 			tv.setText(placeholderText());
+		mDownloadView.setBackgroundColor(placeholderBackground());
 		this.addView(mDownloadView);
 		iv.clearAnimation();
 	}
@@ -246,7 +259,7 @@ public class StoryMediaContentView extends FrameLayout implements View.OnClickLi
 		if (useFinalSize || placeholderUseFinalSize())
 			mDownloadView.getLayoutParams().height = LayoutParams.MATCH_PARENT;
 		else
-			mDownloadView.getLayoutParams().height = UIHelpers.dpToPx(50, getContext());
+			mDownloadView.getLayoutParams().height = UIHelpers.dpToPx(150, getContext());
 
 		mDownloadView.setOnClickListener(null);
 		ImageView iv = ((ImageView) mDownloadView.findViewById(R.id.ivDownloadIcon));
@@ -254,6 +267,7 @@ public class StoryMediaContentView extends FrameLayout implements View.OnClickLi
 		TextView tv = (TextView) mDownloadView.findViewById(R.id.tvDownload);
 		if (tv != null)
 			tv.setText(null);
+		mDownloadView.setBackgroundColor(placeholderBackground());
 		this.addView(mDownloadView);
 		iv.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.rotate));
 	}
@@ -295,7 +309,21 @@ public class StoryMediaContentView extends FrameLayout implements View.OnClickLi
 		}
 		return R.drawable.ic_load_photo;
 	}
-
+	
+	public int placeholderBackground()
+	{
+		if (mMediaViewCollection != null)
+		{
+			MediaContentLoadInfo info = mMediaViewCollection.getFirstLoadInfo();
+			if (info != null)
+			{
+				if (info.isVideo())
+					return Color.parseColor("#D98BC34A");
+			}
+		}
+		return this.getResources().getColor(R.color.grey_light_light);
+	}
+	
 	public CharSequence placeholderText()
 	{
 		if (mMediaViewCollection != null)
@@ -312,7 +340,7 @@ public class StoryMediaContentView extends FrameLayout implements View.OnClickLi
 	
 	/**
 	 * Some media types need a more user friendly download view, use "final size" for these.
-	 * The rest will use default download view height of 50dp.
+	 * The rest will use default download view height of 150dp.
 	 * @return True if the download view should extend across the whole media content view.
 	 */
 	public boolean placeholderUseFinalSize()

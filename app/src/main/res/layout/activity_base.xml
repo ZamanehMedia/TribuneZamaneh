@@ -29,7 +29,7 @@
        		android:layout_width="300dp"
        		android:layout_height="match_parent"
        		android:layout_gravity="start"
-       		layout="@layout/left_side_menu" />
+       		layout="@layout/drawer_menu" />
 	</android.support.v4.widget.DrawerLayout>
 	
 	<View

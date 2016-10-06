@@ -16,7 +16,10 @@
    <color name="button_primary_selected">#8094103C</color>
    <color name="button_secondary">#CECECC</color>
    <color name="button_secondary_selected">#80CECECC</color>
-   
+
+   <color name="drawer_menu_background_color">#000000</color>
+   <color name="drawer_menu_divider_color">#414042</color>
+
    <color name="lock_screen_background">#dddddd</color>
    
    <color name="feed_list_title_normal">#000000</color>

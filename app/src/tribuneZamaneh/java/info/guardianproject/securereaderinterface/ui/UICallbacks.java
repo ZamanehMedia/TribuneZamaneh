@@ -364,7 +364,7 @@ public class UICallbacks
 
 		case R.integer.command_chat:
 		{
-			if (App.UI_ENABLE_PAIK_TALK)
+			if (App.UI_ENABLE_CHAT)
 			{
 				Intent intent = new Intent(context, CommentsActivity.class);
 				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);

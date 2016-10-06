@@ -63,8 +63,7 @@ android {
     productFlavors.all { flavor ->
         task "preprocessFiles${flavor.name.capitalize()}" << {
             File f = file("lastbuild.flavor");
-            if (!f.exists() || f.text != flavor.name)
-            {
+            if (!f.exists() || f.text != flavor.name) {
                 if (f.exists()) {
                     println "##### Changed flavor from " + f.text + " to " + flavor.name + " #####"
                 } else {
@@ -82,6 +81,93 @@ android {
             outputDir = file('src/preprocessed/java')
             taskFlavor = flavor.name
         }
+        tasks.whenTaskAdded { task ->
+            if (task.name == "process${flavor.name.capitalize()}DebugManifest") {
+                task.doLast {
+                    task.outputs.files.each {
+                        if (file(it).path.endsWith("AndroidManifest.xml") && file(it).exists()) {
+
+                            def fileManifest = file(it)
+                            def fileContents = fileManifest.text
+
+                            ///println "ORIGINAL: " + fileContents
+
+                            flavor.manifestPlaceholders.keySet().each {
+                                if (flavor.manifestPlaceholders.get(it)) {
+                                    fileContents = fileContents.replaceAll("(?s)<!-- #ifnot " + it + " -->.*?<!-- #endif -->", "")
+                                    fileContents = fileContents.replaceAll("(?s)<!-- #if " + it + " -->(.*?)<!-- #endif -->") { all, text ->
+                                        "${text}"
+                                    }
+                                } else {
+                                    fileContents = fileContents.replaceAll("(?s)<!-- #if " + it + " -->.*?<!-- #endif -->", "")
+                                    fileContents = fileContents.replaceAll("(?s)<!-- #ifnot " + it + " -->(.*?)<!-- #endif -->") { all, text ->
+                                        "${text}"
+                                    }
+                                }
+                            }
+
+                            ///println "SISTA: " + fileContents
+                            //fileManifest.write(fileContents, 'UTF-8')
+                            //fileManifest.text = fileContents
+                        }
+                    }
+                }
+
+/*
+                task.doFirst {
+                    def manifestFile = sourceSets.getByName("main").manifest.srcFile
+                    def fileContents = manifestFile.text
+                    String filePath = manifestFile.path
+                    filePath = filePath.replace("src/main/", "src/preprocessed/")
+                    def targetFile = new File(filePath)
+                    println "TARGET: " + targetFile
+                    targetFile.parentFile.mkdirs()
+                    if (!targetFile.exists())
+                        targetFile.createNewFile()
+
+                    //def symbols = []
+                    //groups.each {
+                    //    if (!symbols.contains(it[1]))
+                    //        symbols << it[1];
+                    //}
+                    //if (symbols.contains(taskFlavor))
+                    //    symbols.remove(taskFlavor)
+
+                    flavor.manifestPlaceholders.keySet().each {
+                        if (flavor.manifestPlaceholders.get(it)) {
+                            fileContents = fileContents.replaceAll("(?s)<!-- #ifnot " + it + ".*?-->", "")
+                            fileContents = fileContents.replaceAll("(?s)<!-- #if " + it + "(.*?)-->") { all, text ->
+                                "${text}"
+                            }
+                        } else {
+                            fileContents = fileContents.replaceAll("(?s)<!-- #if " + it + ".*?-->", "")
+                            fileContents = fileContents.replaceAll("(?s)<!-- #ifnot " + it + "(.*?)-->") { all, text ->
+                                "${text}"
+                            }
+                        }
+                    }
+
+                    //println "AFTER PROCESS: " + fileContents
+                    //symbols.each {
+                    //    fileContents = fileContents.replaceAll("(?s)\\/\\*#if FLAVOR_" + it + ".*?#endif\\*\\/", "")
+                    //}
+                    //fileContents = fileContents.replaceAll("(?s)\\/\\*#if FLAVOR_" + taskFlavor + "(.*?)#endif\\*\\/") { all, text ->
+                    //    "${text}"
+                    //}
+                    targetFile.text = fileContents
+                    //sourceSets.getByName("main").manifest.srcFile.path = targetFile.path
+
+                    //println "MANIFEST: " + manifestFile
+
+                    //println "OK: " + flavor.manifestPlaceholders
+                    //def test = flavor.manifestPlaceholders.get('UIUseSplashScreen')
+                    //println test
+                    //flavor.manifestPlaceholders.put('UIUseSplashScreen', 'remove')
+                    //println "OK: " + flavor.manifestPlaceholders
+                }
+*/
+            }
+        }
     }
 
     tasks.withType(JavaCompile) {
@@ -90,7 +176,7 @@ android {
             if (compileTask.name.endsWith("ReleaseJavaWithJavac") || compileTask.name.endsWith("DebugJavaWithJavac")) {
 
                 def flavor = (compileTask.name =~ /compile(.*?)(Release|Debug)JavaWithJavac/)[0][1]
-
+                flavor = flavor.replaceFirst(flavor.substring(0,1), flavor.substring(0,1).toLowerCase());
 
                 task("usePreprocessedAndRemoveDups${compileTask.name.capitalize()}") << {
 
@@ -100,7 +186,7 @@ android {
                     compileTask.source = compileTask.source + fileTree(dir: 'src/preprocessed/java', include: '**/*.java')
 
 
-                    def flavorMatch = "src/" + flavor.toLowerCase() + "/java/"
+                    def flavorMatch = "src/" + flavor + "/java/"
                     def mainMatch = "src/main/java/"
                     def processedMatch = "src/preprocessed/java/"
 
@@ -147,4 +233,91 @@ android {
         delete "src/preprocessed"
     }
 
+    //buildVariants.each { variant ->
+    //    def flavor = variant.productFlavors[0].name
+
+    //    variant.processManifest.doFirst {
+    //        def manifestFile = variant.processResources.manifestFile
+    //        println "MANIFEST: " + manifestFile
+ /*           copy {
+                from("${buildDir}/manifests") {
+                    include "${variant.dirName}/AndroidManifest.xml"
+                }
+                into("${buildDir}/filtered_manifests")
+            }
+
+            def manifestFile = file("${buildDir}/filtered_manifests/${variant.dirName}/AndroidManifest.xml")
+
+            def content = manifestFile.getText()
+
+            def pattern = Pattern.compile("<!-- START: ((?!${flavor.toUpperCase()})).*?<!-- END -->",Pattern.DOTALL);
+            content = pattern.matcher(content).replaceAll("");
+
+            manifestFile.write(content)
+ */   //    }
+
+        //variant.processResources.manifestFile = file("${buildDir}/filtered_manifests/${variant.dirName}/AndroidManifest.xml")
+   //}
+/*    project.android.applicationVariants.all{ variant ->
+        variant.processResources.doFirst {
+            println '' + project.getName() + ', flavorName: ' + flavorName
+            //Processing my resources there
+        }
+    }*/
+
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            output.processManifest.doLast {
+                [output.processManifest.manifestOutputFile,
+                 output.processManifest.instantRunManifestOutputFile
+                ].forEach({ File manifestOutFile ->
+                    if (manifestOutFile.exists()) {
+                        //def newFileContents = manifestOutFile.getText('UTF-8').replace("</application>", "<meta-data ... /></application>")
+                        //manifestOutFile.write(newFileContents, 'UTF-8')
+                        //println "NEWFILE: " + manifestOutFile + " " + newFileContents
+                        //def fileManifest = file(it)
+
+                        // set the path to the modified Manifest:
+                        String filePath = manifestOutFile.path
+                        filePath = filePath.replace("/intermediates/manifests/", "/intermediates/manifests/processed/")
+                        println ">>>>>>>>> 555555 Path " + filePath
+
+                        def fileContents = manifestOutFile.text
+
+                        println "ORIGINAL: " + getMergedFlavor().manifestPlaceholders
+
+                        getMergedFlavor().manifestPlaceholders.keySet().each {
+                            if (getMergedFlavor().manifestPlaceholders.get(it)) {
+                                fileContents = fileContents.replaceAll("(?s)<!-- #ifnot " + it + " -->.*?<!-- #endif -->", "")
+                                fileContents = fileContents.replaceAll("(?s)<!-- #if " + it + " -->(.*?)<!-- #endif -->") { all, text ->
+                                    "${text}"
+                                }
+                            } else {
+                                fileContents = fileContents.replaceAll("(?s)<!-- #if " + it + " -->.*?<!-- #endif -->", "")
+                                fileContents = fileContents.replaceAll("(?s)<!-- #ifnot " + it + " -->(.*?)<!-- #endif -->") { all, text ->
+                                    "${text}"
+                                }
+                            }
+                        }
+                        //println "AFTER: " + fileContents
+                        //manifestOutFile.write(fileContents, 'UTF-8')
+                        //fileManifest.text = fileContents
+                        def manifestFile = file(filePath)
+                        manifestFile.parentFile.mkdirs()
+                        if (!manifestFile.exists())
+                            manifestFile.createNewFile()
+                        manifestFile.write(fileContents, 'UTF-8')
+                        if (manifestOutFile == output.processManifest.manifestOutputFile) {
+                            println "FULL"
+                            output.processManifest.manifestOutputFile = manifestFile
+                        } else {
+                            println "Instant"
+                            output.processManifest.instantRunManifestOutputFile = manifestFile
+                        }
+                    }
+                })
+            }
+        }
+    }
 }
+

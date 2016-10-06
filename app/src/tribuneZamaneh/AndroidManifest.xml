@@ -24,28 +24,6 @@
         
 		<service android:name="info.guardianproject.cacheword.CacheWordService" 
 		    android:enabled="true" android:exported="false" />        
-        
-		<activity
-            android:name="info.guardianproject.securereaderinterface.SplashActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:label="@string/title_activity_main"
-            android:theme="@style/AppThemeNoActionBar"
-            android:noHistory="true"
-            >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="info.guardianproject.securereaderinterface.MainActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:label="@string/title_activity_main">
-            <intent-filter>
-                <action tools:node="remove" android:name="android.intent.action.MAIN" />
-                <category tools:node="remove" android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
         <activity
             android:name="info.guardianproject.securereaderinterface.HelpActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"

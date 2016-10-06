@@ -12,19 +12,23 @@ import java.util.Vector;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
 public class SecureBluetooth
 {
-	public final static String LOGTAG = "SecureBluetooth";
+	public final static String LOGTAG = "SecureBlth";
 	public final static boolean LOGGING = false;
 	
 	public final static String BLUETOOTH_UUID = "00001101-0000-1000-8000-00805F9B31337";
+	//public final static String BLUETOOTH_UUID = "00001101-0000-1000-8000-00805f9b34fb";
 	
 	public final static int EVENT_DATA_RECEIVED = 0;
 	public final static int EVENT_CONNECTED = 1;
@@ -48,15 +52,41 @@ public class SecureBluetooth
 	SecureBluetoothEventListener sbel;
 	Handler eventHandler;
 
-	public SecureBluetooth()
+	Context context;
+
+	public SecureBluetooth(Context _context)
 	{
+		context = _context;
+
 		try
 		{
-			btAdapter = BluetoothAdapter.getDefaultAdapter();
-			if (btAdapter == null)
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
 			{
 				if (LOGGING)
-					Log.e(LOGTAG, "No Bluetooth Adapter found");
+					Log.v(LOGTAG,"Using new BluetoothManager Method");
+
+				//Use getSystemService(java.lang.String) with BLUETOOTH_SERVICE to create an BluetoothManager, then call getAdapter() to obtain the BluetoothAdapter.
+
+				BluetoothManager bm = (BluetoothManager) context.getSystemService(Context.BLUETOOTH_SERVICE);
+
+				btAdapter = bm.getAdapter();
+
+				if (btAdapter == null) {
+					if (LOGGING)
+						Log.e(LOGTAG, "No Bluetooth Adapter found");
+				}
+			}
+			else
+			{
+
+				if (LOGGING)
+					Log.v(LOGTAG,"Using old getDefaultAdapter Method");
+
+				btAdapter = BluetoothAdapter.getDefaultAdapter();
+				if (btAdapter == null) {
+					if (LOGGING)
+						Log.e(LOGTAG, "No Bluetooth Adapter found");
+				}
 			}
 		}
 		catch (Exception e)
@@ -238,6 +268,9 @@ public class SecureBluetooth
 	 */
 	public boolean startDiscovery()
 	{
+		if (LOGGING)
+			Log.v(LOGTAG,"startDiscovery()");
+
 		if (isEnabled() && !btAdapter.isDiscovering())
 		{
 			return btAdapter.startDiscovery();
@@ -576,6 +609,7 @@ public class SecureBluetooth
 				Log.v(LOGTAG, "readLength is " + readLength);
 			} catch (IOException e) {
 				Log.v(LOGTAG, "Got IOException reading the length");
+				e.printStackTrace();
 			} 
 			
 			byte[] buffer = new byte[256]; // buffer store for the stream
@@ -651,13 +685,14 @@ public class SecureBluetooth
 			{
 				try
 				{
-					socket.close();
-					if (LOGGING)
-						Log.v(LOGTAG, "Closed socket");
+					if (socket != null) {
+						socket.close();
+						if (LOGGING)
+							Log.v(LOGTAG, "Closed socket");
 
-					Message msg = eventHandler.obtainMessage(EVENT_DISCONNECTED);
-					eventHandler.sendMessage(msg);
-
+						Message msg = eventHandler.obtainMessage(EVENT_DISCONNECTED);
+						eventHandler.sendMessage(msg);
+					}
 				}
 				catch (IOException e)
 				{

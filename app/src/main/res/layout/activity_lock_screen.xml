@@ -36,7 +36,7 @@
         app:dropdown_background="@drawable/dropdown_spinner_background" >
 
         <ImageView
-            android:id="@+id/imageView1"
+            android:id="@+id/imageViewDropdown"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -67,7 +67,7 @@
         android:text="@string/app_name" />
 
     <ImageView
-        android:id="@+id/imageView1"
+        android:id="@+id/imageViewLogo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/tvTitle"

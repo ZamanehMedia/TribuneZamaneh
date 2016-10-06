@@ -77,10 +77,16 @@ public class StoryListAdapter extends BaseAdapter implements OnMediaLoadedListen
 		}
 	}
 
-	public void updateItems(ArrayList<Item> items)
+	public void updateItems(ArrayList<Item> items, boolean isUpdate)
 	{
 		mStories = items;
+		if (!isUpdate)
+			mFilteredStories = mStories;
 		applyFilters(); // Will call NotifyDataSetChanged when complete
+	}
+
+	public ArrayList<Item> getItems() {
+		return mStories;
 	}
 
 	public void setTagFilter(Feed feed, String tagFilter)

@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
 	<item
         android:id="@+id/menu_search"
-        android:icon="@drawable/abc_ic_search_api_mtrl_alpha"
+        android:icon="@android:drawable/ic_menu_search"
         app:showAsAction="ifRoom"
         android:title="@string/menu_search"/>
     <item android:id="@+id/menu_panic" android:title="@string/menu_panic" android:orderInCategory="101" app:showAsAction="always" android:icon="@drawable/ic_action_panic"/>

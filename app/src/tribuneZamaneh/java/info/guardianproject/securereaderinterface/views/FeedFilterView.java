@@ -1,12 +1,11 @@
 package info.guardianproject.securereaderinterface.views;
 
 import info.guardianproject.securereader.Settings.SyncFrequency;
-import info.guardianproject.securereader.Settings.SyncMode;
+import info.guardianproject.securereaderinterface.AddPostActivity;
 import info.guardianproject.securereaderinterface.App;
-import info.guardianproject.securereaderinterface.adapters.DownloadsAdapter;
+import info.guardianproject.securereaderinterface.PostActivity;
 import info.guardianproject.securereaderinterface.models.FeedFilterType;
 import info.guardianproject.securereaderinterface.ui.UICallbacks;
-import info.guardianproject.securereaderinterface.widgets.CheckableImageView;
 import info.guardianproject.securereader.SocialReader;
 
 import java.util.ArrayList;
@@ -191,7 +190,7 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
 
 	private int getCountSpecials()
 	{
-		return 4 + (App.UI_ENABLE_POPULAR_ITEMS ? 1 : 0) + (App.UI_ENABLE_PAIK_TALK ? 1 : 0);
+		return 4 + (App.UI_ENABLE_POPULAR_ITEMS ? 1 : 0) + (App.UI_ENABLE_CHAT ? 1 : 0);
 	}
 
 	@Override
@@ -237,7 +236,7 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
 			return FeedFilterItemType.SHARED;
 		else if (position == 3)
 			return FeedFilterItemType.POSTS;
-		else if (position == 4 && App.UI_ENABLE_PAIK_TALK)
+		else if (position == 4 && App.UI_ENABLE_CHAT)
 			return FeedFilterItemType.CHAT;
 		return FeedFilterItemType.FEED;
 	}
@@ -291,7 +290,7 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
 				}
 			};
 
-			boolean isChecked = !App.getInstance().isCurrentActivityPosts() && (App.getInstance().getCurrentFeedFilterType() == FeedFilterType.FAVORITES);
+			boolean isChecked = !isCurrentActivityPosts() && (App.getInstance().getCurrentFeedFilterType() == FeedFilterType.FAVORITES);
 			holder.tvName.setTextAppearance(holder.tvName.getContext(), isChecked ? R.style.LeftSideMenuItemCurrentAppearance : R.style.LeftSideMenuItemAppearance);
 			
 			returnView = convertView;
@@ -326,7 +325,7 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
 				}
 			});
 			
-			boolean isChecked = !App.getInstance().isCurrentActivityPosts() && (App.getInstance().getCurrentFeedFilterType() == FeedFilterType.SHARED);
+			boolean isChecked = !isCurrentActivityPosts() && (App.getInstance().getCurrentFeedFilterType() == FeedFilterType.SHARED);
 			holder.tvName.setTextAppearance(holder.tvName.getContext(), isChecked ? R.style.LeftSideMenuItemCurrentAppearance : R.style.LeftSideMenuItemAppearance);
 
 			returnView = convertView;
@@ -362,7 +361,7 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
 				}
 			});
 			
-			boolean isChecked = App.getInstance().isCurrentActivityPosts(); 
+			boolean isChecked = isCurrentActivityPosts();
 			holder.tvName.setTextAppearance(holder.tvName.getContext(), isChecked ? R.style.LeftSideMenuItemCurrentAppearance : R.style.LeftSideMenuItemAppearance);
 
 			returnView = convertView;
@@ -421,7 +420,7 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
 				}
 			};
 			
-			boolean isChecked = !App.getInstance().isCurrentActivityPosts() && (App.getInstance().getCurrentFeedFilterType() == FeedFilterType.ALL_FEEDS);
+			boolean isChecked = !isCurrentActivityPosts() && (App.getInstance().getCurrentFeedFilterType() == FeedFilterType.ALL_FEEDS);
 			holder.tvName.setTextAppearance(holder.tvName.getContext(), isChecked ? R.style.LeftSideMenuItemCurrentAppearance : R.style.LeftSideMenuItemAppearance);
 			
 			returnView = convertView;
@@ -457,7 +456,7 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
 			boolean isChecked = (App.getInstance().getCurrentFeedFilterType() == FeedFilterType.SINGLE_FEED &&
 					App.getInstance().getCurrentFeed() != null 
 					&& App.getInstance().getCurrentFeed().getDatabaseId() == feed.getDatabaseId());
-			isChecked = isChecked && !App.getInstance().isCurrentActivityPosts(); 
+			isChecked = isChecked && !isCurrentActivityPosts();
 			holder.tvName.setTextAppearance(holder.tvName.getContext(), isChecked ? R.style.LeftSideMenuItemCurrentAppearance : R.style.LeftSideMenuItemAppearance);
 			
 			returnView = convertView;
@@ -482,7 +481,7 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
 				}
 			};
 
-			boolean isChecked = !App.getInstance().isCurrentActivityPosts() && (App.getInstance().getCurrentFeedFilterType() == FeedFilterType.POPULAR);
+			boolean isChecked = !isCurrentActivityPosts() && (App.getInstance().getCurrentFeedFilterType() == FeedFilterType.POPULAR);
 			holder.tvName.setTextAppearance(holder.tvName.getContext(), isChecked ? R.style.LeftSideMenuItemCurrentAppearance : R.style.LeftSideMenuItemAppearance);
 
 			returnView = convertView;
@@ -589,5 +588,15 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
 		holder.ivRefresh = view.findViewById(R.id.ivRefresh);
 		holder.shortcutView = (TextView) view.findViewById(R.id.shortcutView);
 		view.setTag(holder);
+	}
+
+	/**
+	 * Used to check if the current topmost activity is either the Posts or AddPost screen.
+	 * This is just so that the menu can easily decide what to show in bold.
+	 * @return true if the current activity is Posts or AddPost.
+	 */
+	private boolean isCurrentActivityPosts()
+	{
+		return((getContext() instanceof PostActivity) || (getContext() instanceof AddPostActivity));
 	}
 }

@@ -69,15 +69,13 @@ import com.tinymission.rss.Feed;
 public class App extends MultiDexApplication implements OnSharedPreferenceChangeListener, SocialReaderLockListener
 {
 	public static final String LOGTAG = "App";
-	public static final boolean LOGGING = true;
+	public static final boolean LOGGING = false;
 	
 	public static final boolean UI_ENABLE_POPULAR_ITEMS = false;
 			
 	public static final boolean UI_ENABLE_COMMENTS = true;
 	public static final boolean UI_ENABLE_TAGS = true;
-	public static final boolean UI_ENABLE_POST_LOGIN = true;
-	public static final boolean UI_ENABLE_REPORTER = true;
-	public static final boolean UI_ENABLE_PAIK_TALK = true;
+	public static final boolean UI_ENABLE_CHAT = true;
 	public static final boolean UI_ENABLE_LANGUAGE_CHOICE = true;
 	
 	public static final String EXIT_BROADCAST_ACTION = "info.guardianproject.securereaderinterface.exit.action";
@@ -483,16 +481,6 @@ public class App extends MultiDexApplication implements OnSharedPreferenceChange
 			mCurrentFeed = feed;
 	}
 
-	/**
-	 * Used to check if the current topmost activity is either the Posts or AddPost screen.
-	 * This is just so that the menu can easily decide what to show in bold.
-	 * @return true if the current activity is Posts or AddPost.
-	 */
-	public boolean isCurrentActivityPosts()
-	{
-		return mLastResumed != null && ((mLastResumed instanceof PostActivity) || (mLastResumed instanceof AddPostActivity));
-	}
-
 	private Resources mOverrideResources;
 
 	public void setOverrideResources(Resources r)
@@ -506,6 +494,4 @@ public class App extends MultiDexApplication implements OnSharedPreferenceChange
 			return mOverrideResources;
 		return super.getResources();
 	}
-	
-
 }

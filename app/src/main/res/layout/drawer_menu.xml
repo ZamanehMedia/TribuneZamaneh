@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="top|start"
-    android:background="@drawable/left_menu_background"
+    android:background="@color/drawer_menu_background_color"
     android:paddingRight="1dp" >
 
     <info.guardianproject.securereaderinterface.widgets.CustomFontCheckableButton
@@ -29,17 +29,12 @@
         android:text="@string/feed_filter_display_photos"
         android:textColor="@drawable/button_photos_text_selector" />
 
-    <info.guardianproject.securereaderinterface.views.FeedFilterView
-        android:id="@+id/viewFeedFilter"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/drawerMenuRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/btnMenuTor"
-        android:choiceMode="singleChoice"
-        android:divider="@drawable/left_menu_divider"
-        android:dividerHeight="1px"
-        android:cacheColorHint="@android:color/transparent"
-        android:fillViewport="true" >
+        >
 
-    </info.guardianproject.securereaderinterface.views.FeedFilterView>
-    
+    </android.support.v7.widget.RecyclerView>
 </RelativeLayout>

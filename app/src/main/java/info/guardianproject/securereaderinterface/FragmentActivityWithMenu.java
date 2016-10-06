@@ -3,19 +3,16 @@ package info.guardianproject.securereaderinterface;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
-import info.guardianproject.securereaderinterface.R;
 import info.guardianproject.securereader.Settings.ProxyType;
 import info.guardianproject.securereader.Settings.SyncMode;
 import info.guardianproject.securereader.SocialReader;
-import info.guardianproject.securereaderinterface.adapters.DownloadsAdapter;
+import info.guardianproject.securereaderinterface.adapters.DrawerMenuRecyclerViewAdapter;
 import info.guardianproject.securereaderinterface.models.FeedFilterType;
 import info.guardianproject.securereaderinterface.ui.LayoutFactoryWrapper;
 import info.guardianproject.securereaderinterface.ui.UICallbacks;
 import info.guardianproject.securereaderinterface.ui.UICallbacks.OnCallbackListener;
 import info.guardianproject.securereaderinterface.uiutil.ActivitySwitcher;
 import info.guardianproject.securereaderinterface.uiutil.UIHelpers;
-import info.guardianproject.securereaderinterface.views.FeedFilterView;
-import info.guardianproject.securereaderinterface.views.FeedFilterView.FeedFilterViewCallbacks;
 import info.guardianproject.securereaderinterface.widgets.CheckableButton;
 
 import android.annotation.SuppressLint;
@@ -30,6 +27,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.NavigationView;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.LayoutInflaterCompat;
@@ -37,8 +35,9 @@ import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewConfigurationCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -55,7 +54,7 @@ import android.widget.TextView;
 import com.tinymission.rss.Feed;
 import com.tinymission.rss.Item;
 
-public class FragmentActivityWithMenu extends LockableActivity implements FeedFilterViewCallbacks, OnCallbackListener {
+public class FragmentActivityWithMenu extends LockableActivity implements DrawerMenuRecyclerViewAdapter.DrawerMenuCallbacks, OnCallbackListener {
     public static final String LOGTAG = "FragmentActivityWithMenu";
     public static final boolean LOGGING = false;
 
@@ -154,8 +153,8 @@ public class FragmentActivityWithMenu extends LockableActivity implements FeedFi
             } else {
                 mMenuViewHolder = null;
                 mLeftSideMenu = mDrawerLayout.findViewById(R.id.left_drawer);
-                if (mLeftSideMenu != null)
-                    ((FeedFilterView) mLeftSideMenu.findViewById(R.id.viewFeedFilter)).setFeedFilterViewCallbacks(this);
+                //if (mLeftSideMenu != null)
+                //    ((FeedFilterView) mLeftSideMenu.findViewById(R.id.viewFeedFilter)).setFeedFilterViewCallbacks(this);
                 mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, 0, 0) {
                     private boolean isClosed = true;
 
@@ -172,15 +171,15 @@ public class FragmentActivityWithMenu extends LockableActivity implements FeedFi
                         if (isClosed && slideOffset > 0) {
                             isClosed = false;
                             updateLeftSideMenu();
-                            if (mMenuViewHolder != null) {
-                                mMenuViewHolder.viewFeedFilter.post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        mMenuViewHolder.viewFeedFilter.setSelectionAfterHeaderView();
-                                    }
-                                });
-                            }
-                            mMenuViewHolder.viewFeedFilter.invalidateViews();
+                            //if (mMenuViewHolder != null) {
+                            //    mMenuViewHolder.viewFeedFilter.post(new Runnable() {
+                            //        @Override
+                            //        public void run() {
+                            //            mMenuViewHolder.viewFeedFilter.setSelectionAfterHeaderView();
+                            //        }
+                            //    });
+                            //}
+                            //mMenuViewHolder.viewFeedFilter.invalidateViews();
                         }
                     }
                 };
@@ -455,7 +454,9 @@ public class FragmentActivityWithMenu extends LockableActivity implements FeedFi
     private class MenuViewHolder {
         public CheckableButton btnTorStatus;
         public CheckableButton btnShowPhotos;
-        public FeedFilterView viewFeedFilter;
+        //public FeedFilterView viewFeedFilter;
+        public NavigationView navigationView;
+        public RecyclerView recyclerView;
     }
 
     private MenuViewHolder mMenuViewHolder;
@@ -473,7 +474,11 @@ public class FragmentActivityWithMenu extends LockableActivity implements FeedFi
             View menuView = mLeftSideMenu;
             mMenuViewHolder.btnTorStatus = (CheckableButton) menuView.findViewById(R.id.btnMenuTor);
             mMenuViewHolder.btnShowPhotos = (CheckableButton) menuView.findViewById(R.id.btnMenuPhotos);
-            mMenuViewHolder.viewFeedFilter = (FeedFilterView) menuView.findViewById(R.id.viewFeedFilter);
+            //mMenuViewHolder.navigationView = (NavigationView) menuView.findViewById(R.id.viewFeedFilter);
+            //mMenuViewHolder.viewFeedFilter = (FeedFilterView) menuView.findViewById(R.id.viewFeedFilter);
+            mMenuViewHolder.recyclerView = (RecyclerView) menuView.findViewById(R.id.drawerMenuRecyclerView);
+            mMenuViewHolder.recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+            mMenuViewHolder.recyclerView.setAdapter(new DrawerMenuRecyclerViewAdapter(this, this));
 
             // Hookup events
             mMenuViewHolder.btnTorStatus.setOnClickListener(new View.OnClickListener() {
@@ -525,7 +530,9 @@ public class FragmentActivityWithMenu extends LockableActivity implements FeedFi
 
         @Override
         protected void onPostExecute(Void result) {
-            mMenuViewHolder.viewFeedFilter.updateList(feeds, countFavorites, countShared);
+            //mMenuViewHolder.viewFeedFilter.updateList(feeds, countFavorites, countShared);
+            //App.getInstance().populateDrawerMenu(mMenuViewHolder.navigationView, feeds, countFavorites, countShared);
+            ((DrawerMenuRecyclerViewAdapter)mMenuViewHolder.recyclerView.getAdapter()).update(feeds, countFavorites, countShared);
 
             // Update TOR connection status
             //
@@ -566,13 +573,8 @@ public class FragmentActivityWithMenu extends LockableActivity implements FeedFi
     }
 
     @Override
-    public void receiveShare() {
-        waitForMenuCloseAndRunCommand(new Runnable() {
-            @Override
-            public void run() {
-                UICallbacks.handleCommand(FragmentActivityWithMenu.this, R.integer.command_receiveshare, null);
-            }
-        });
+    public void viewAllFeeds() {
+        viewFeed(null);
     }
 
     @Override
@@ -619,6 +621,16 @@ public class FragmentActivityWithMenu extends LockableActivity implements FeedFi
     }
 
     @Override
+    public void receiveShare() {
+        waitForMenuCloseAndRunCommand(new Runnable() {
+            @Override
+            public void run() {
+                UICallbacks.handleCommand(FragmentActivityWithMenu.this, R.integer.command_receiveshare, null);
+            }
+        });
+    }
+
+    @Override
     public void viewFeed(final Feed feedToView) {
         waitForMenuCloseAndRunCommand(new Runnable() {
             @Override
@@ -633,7 +645,7 @@ public class FragmentActivityWithMenu extends LockableActivity implements FeedFi
     }
 
     @Override
-    public void addNew() {
+    public void addNewFeed() {
         waitForMenuCloseAndRunCommand(new Runnable() {
             @Override
             public void run() {
@@ -659,8 +671,8 @@ public class FragmentActivityWithMenu extends LockableActivity implements FeedFi
 
     @Override
     public void onFeedSelect(FeedFilterType type, long feedId, Object source) {
-        if (mMenuViewHolder != null)
-            mMenuViewHolder.viewFeedFilter.invalidateViews();
+        //if (mMenuViewHolder != null)
+        //    mMenuViewHolder.viewFeedFilter.invalidateViews();
     }
 
     @Override

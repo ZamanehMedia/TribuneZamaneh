@@ -14,6 +14,7 @@ import java.io.BufferedInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
@@ -24,8 +25,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.DialogInterface.OnShowListener;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,8 +49,10 @@ import com.tinymission.rss.Item;
 
 public class SecureBluetoothSenderFragment extends DialogFragment implements LockableFragment, OnClickListener, SecureBluetoothEventListener, OnItemClickListener
 {
-	public static final String LOGTAG = "SecureBluetoothSenderFragment";
+	public static final String LOGTAG = "SBSenderFragment";
 	public static final boolean LOGGING = false;
+	public static final int ACCESS_LOCATION_PERMISSION_REQUEST = 0;
+	private boolean mHasRequestedPermission;
 
 	private enum UIState
 	{
@@ -83,8 +89,6 @@ public class SecureBluetoothSenderFragment extends DialogFragment implements Loc
 	public SecureBluetoothSenderFragment()
 	{
 		super();
-		sb = new SecureBluetooth();
-		sb.setSecureBluetoothEventListener(this);
 	}
 	
 	@Override
@@ -94,6 +98,42 @@ public class SecureBluetoothSenderFragment extends DialogFragment implements Loc
         int style = DialogFragment.STYLE_NO_TITLE;
         int theme = R.style.AppTheme_Dialog;
         setStyle(style, theme);
+
+	}
+
+	@Override
+	public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+		switch (requestCode) {
+			case ACCESS_LOCATION_PERMISSION_REQUEST: {
+				// If request is cancelled, the result arrays are empty.
+				if (grantResults.length > 0
+						&& grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+					startBluetooth();
+
+				} else {
+
+					Toast.makeText(this.getActivity(), "Sorry, we can not use bluetooth without location permission", Toast.LENGTH_LONG).show();
+					if (mDialog != null)
+						mDialog.dismiss();
+				}
+				return;
+			}
+
+		}
+	}
+
+	private void startBluetooth() {
+		sb = new SecureBluetooth(this.getActivity());
+		sb.setSecureBluetoothEventListener(this);
+
+		// Start by trying to receive
+		if (!sb.isEnabled())
+			sb.enableBluetooth(getActivity());
+		else if (mDialog != null)
+			mDialog.show();
+
+		sb.startDiscovery();
 	}
 	
 	@Override
@@ -153,10 +193,7 @@ public class SecureBluetoothSenderFragment extends DialogFragment implements Loc
 
 		showScanningSpinner(false);
 		
-		// Start by trying to receive
-		if (!sb.isEnabled())
-			sb.enableBluetooth(getActivity());
-		
+
 		return root;
 	}
 
@@ -172,7 +209,7 @@ public class SecureBluetoothSenderFragment extends DialogFragment implements Loc
 				// If BT not enabled, hide us for now. We will prompt the user to enable
 				// BT and handle the result in onUnlockedActivityResult. Based on the
 				// user's choice the dialog will either be dismissed or shown there.
-				if (!sb.isEnabled())
+				if (sb == null || !sb.isEnabled())
 					mDialog.hide();
 			}
 		});
@@ -186,6 +223,9 @@ public class SecureBluetoothSenderFragment extends DialogFragment implements Loc
 		{
 			String action = intent.getAction();
 
+			if (LOGGING)
+				Log.v(LOGTAG, action);
+
 			// When discovery finds a device
 			if (BluetoothDevice.ACTION_FOUND.equals(action))
 			{
@@ -197,6 +237,9 @@ public class SecureBluetoothSenderFragment extends DialogFragment implements Loc
 				mNewDevicesArrayAdapter.add(new DeviceInfo(device.getName(), device.getAddress()));
 				// }
 				// When discovery is finished, change the Activity title
+
+				if (LOGGING)
+					Log.v(LOGTAG, "found:" + device.getName());
 			}
 			else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action))
 			{
@@ -224,9 +267,20 @@ public class SecureBluetoothSenderFragment extends DialogFragment implements Loc
 		super.onResume();
 		updateUi();
 
-		// Start a scan automatically
-		if (mCurrentState == UIState.Scanning)
-			scanButton.performClick();
+		if (!mHasRequestedPermission) {
+			mHasRequestedPermission = true;
+			int permissionCheck = ContextCompat.checkSelfPermission(this.getActivity(),
+					Manifest.permission.ACCESS_FINE_LOCATION);
+
+			if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+
+				requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+						ACCESS_LOCATION_PERMISSION_REQUEST);
+
+			} else {
+				startBluetooth();
+			}
+		}
 	}
 
 	private void updateUi()
@@ -282,6 +336,7 @@ public class SecureBluetoothSenderFragment extends DialogFragment implements Loc
 		filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
 		filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
 		getActivity().registerReceiver(receiver, filter);
+
 	}
 
 	@Override
@@ -289,8 +344,13 @@ public class SecureBluetoothSenderFragment extends DialogFragment implements Loc
 	{
 		if (LOGGING)
 			Log.v(LOGTAG,"onStop");
-		if (sb.btAdapter.isDiscovering()) { sb.btAdapter.cancelDiscovery(); }
-		sb.disconnect();
+		if (sb != null) {
+			if (sb.btAdapter.isDiscovering()) {
+				sb.btAdapter.cancelDiscovery();
+			}
+			sb.disconnect();
+			sb.setSecureBluetoothEventListener(null);
+		}
 		showScanningSpinner(false);
 		getActivity().unregisterReceiver(receiver);
 		super.onStop();
@@ -369,7 +429,6 @@ public class SecureBluetoothSenderFragment extends DialogFragment implements Loc
 					if (LOGGING)
 						Log.v(LOGTAG,"bytes sent now: " + bytesRead + " " + lengthSent + " total: " + lengthTotal);
 				}
-									
 				setStatusText(R.string.bluetooth_send_sent_item);
 				setUiState(UIState.SentOk);
 			}
@@ -408,7 +467,7 @@ public class SecureBluetoothSenderFragment extends DialogFragment implements Loc
 	@Override
 	public void onClick(View clickedView)
 	{
-		if (clickedView == scanButton)
+		if (clickedView == scanButton && sb != null)
 		{
 			mNewDevicesArrayAdapter.clear();
 			showScanningSpinner(true);

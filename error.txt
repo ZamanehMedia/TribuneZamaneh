@@ -1,0 +1,18 @@
+13:43:38.121 [ERROR] [system.err] Note: Some input files use or override a deprecated API.
+13:43:38.121 [ERROR] [system.err] Note: Recompile with -Xlint:deprecation for details.
+13:43:38.121 [ERROR] [system.err] Note: /Users/mvp/Documents/Source/RadioZamaneh/TribuneZamaneh/external/NetCipher/libnetcipher/src/info/guardianproject/netcipher/web/WebkitProxy.java uses unchecked or unsafe operations.
+13:43:38.122 [ERROR] [system.err] Note: Recompile with -Xlint:unchecked for details.
+13:43:39.931 [ERROR] [system.err] Note: Some input files use or override a deprecated API.
+13:43:39.931 [ERROR] [system.err] Note: Recompile with -Xlint:deprecation for details.
+13:43:39.932 [ERROR] [system.err] Note: Some input files use unchecked or unsafe operations.
+13:43:39.932 [ERROR] [system.err] Note: Recompile with -Xlint:unchecked for details.
+13:43:47.186 [ERROR] [org.gradle.api.Project] warning: string 'help_feedback_content' has no default translation.
+warning: string 'help_feedback_title' has no default translation.
+warning: string 'settings_tor_require' has no default translation.
+warning: string 'story_item_swipe_hint_over' has no default translation.
+warning: string 'story_item_swipe_hint_up' has no default translation.
+
+13:43:48.682 [ERROR] [system.err] Note: Some input files use or override a deprecated API.
+13:43:48.683 [ERROR] [system.err] Note: Recompile with -Xlint:deprecation for details.
+13:43:48.683 [ERROR] [system.err] Note: /Users/mvp/Documents/Source/RadioZamaneh/TribuneZamaneh/app/src/main/java/info/guardianproject/securereaderinterface/ThreadedTask.java uses unchecked or unsafe operations.
+13:43:48.683 [ERROR] [system.err] Note: Recompile with -Xlint:unchecked for details.

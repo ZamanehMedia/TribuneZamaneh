@@ -22,7 +22,6 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import info.guardianproject.securereaderinterface.R;
 import com.tinymission.rss.Item;
 
 public class PostListFragment extends Fragment implements PostDraftsListAdapterListener
@@ -173,7 +172,7 @@ public class PostListFragment extends Fragment implements PostDraftsListAdapterL
 					else
 					{
 						((StoryListAdapter) mListPosts.getAdapter())
-								.updateItems(result);
+								.updateItems(result, true);
 					}
 				}
 				else if (mPostListType == PostListType.OUTGOING) {
@@ -189,7 +188,7 @@ public class PostListFragment extends Fragment implements PostDraftsListAdapterL
 					else
 					{
 						((StoryListAdapter) mListPosts.getAdapter())
-								.updateItems(result);
+								.updateItems(result, true);
 					}
 				}
 				else if (mPostListType == PostListType.DRAFTS)
@@ -207,7 +206,7 @@ public class PostListFragment extends Fragment implements PostDraftsListAdapterL
 					else
 					{
 						((StoryListAdapter) mListPosts.getAdapter())
-								.updateItems(result);
+								.updateItems(result, true);
 					}
 				}
 			}

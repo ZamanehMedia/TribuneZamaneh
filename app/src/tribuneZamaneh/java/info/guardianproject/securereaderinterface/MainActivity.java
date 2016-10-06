@@ -525,16 +525,16 @@ public class MainActivity extends ItemExpandActivity
 		}
 	}
 	
-	private void checkShowStoryFullScreen(ArrayList<Item> items)
+	private void checkShowStoryFullScreen()
 	{
-		if (mShowItemId != 0)
+		if (mShowItemId != 0 && mAdapter != null)
 		{
 			if (LOGGING)
 				Log.v(LOGTAG, "Loaded feed and INTENT_EXTRA_SHOW_THIS_ITEM was set to " + mShowItemId + ". Try to show it");
-			
-			for (int itemIndex = 0; itemIndex < items.size(); itemIndex++)
+
+			for (int itemIndex = 0; itemIndex < mAdapter.getItems().size(); itemIndex++)
 			{
-				Item item = items.get(itemIndex);
+				Item item = mAdapter.getItems().get(itemIndex);
 				if (item.getDatabaseId() == mShowItemId)
 				{
 					if (LOGGING) 
@@ -737,7 +737,7 @@ public class MainActivity extends ItemExpandActivity
 
 				ArrayList<Item> items = result.get(0).getItems();
 				updateStoryListItems(mContext, items, 0, mIsUpdate);
-				checkShowStoryFullScreen(items);
+				checkShowStoryFullScreen();
 			}
 				break;
 
@@ -787,7 +787,7 @@ public class MainActivity extends ItemExpandActivity
 				ArrayList<Item> items = flattenFeedArray(result);
 				boolean shouldShowNoSharedHint = (items == null || items.size() == 0);
 				updateStoryListItems(mContext, items, shouldShowNoSharedHint ? R.layout.story_list_hint_no_shared : 0, mIsUpdate);
-				checkShowStoryFullScreen(items);
+				checkShowStoryFullScreen();
 			}
 				break;
 			}
@@ -893,7 +893,7 @@ public class MainActivity extends ItemExpandActivity
 		}
 		this.mStoryListView.setAdapter(mAdapter);
 		mAdapter.setHeaderView(headerView, false);
-		mAdapter.updateItems(sortedItems);
+		mAdapter.updateItems(sortedItems, isUpdate);
 	}
 
 	private ArrayList<Item> sortItemsOnPublicationTime(ArrayList<Item> unsortedItems)

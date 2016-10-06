@@ -21,6 +21,7 @@ import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
@@ -30,10 +31,13 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnShowListener;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,15 +47,19 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.tinymission.rss.Feed;
 import com.tinymission.rss.Item;
 import com.tinymission.rss.MediaContent;
+import com.tinymission.rss.Reader;
 
 public class SecureBluetoothReceiverFragment extends DialogFragment implements LockableFragment, OnClickListener, SecureBluetooth.SecureBluetoothEventListener
 {
-	public static final String LOGTAG = "SecureBluetoothReceiverFragment";
+	public static final String LOGTAG = "SBReceiverFragment";
 	public static final boolean LOGGING = false;
+	public static final int ACCESS_LOCATION_PERMISSION_REQUEST = 0;
+	private boolean mHasRequestedPermission;
 
 	private enum UIState
 	{
@@ -82,8 +90,6 @@ public class SecureBluetoothReceiverFragment extends DialogFragment implements L
 	public SecureBluetoothReceiverFragment()
 	{
 		super();
-		sb = new SecureBluetooth();
-		sb.setSecureBluetoothEventListener(this);
 	}
 	
 	@Override
@@ -94,7 +100,45 @@ public class SecureBluetoothReceiverFragment extends DialogFragment implements L
         int theme = R.style.AppTheme_Dialog;
         setStyle(style, theme);
 	}
-	
+
+	@Override
+	public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+		switch (requestCode) {
+			case ACCESS_LOCATION_PERMISSION_REQUEST: {
+				// If request is cancelled, the result arrays are empty.
+				if (grantResults.length > 0
+						&& grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+					startBluetooth();
+
+				} else {
+
+					Toast.makeText(this.getActivity(), "Sorry, we can not use Bluetooth without location permission", Toast.LENGTH_LONG).show();
+					// permission denied, boo! Disable the
+					// functionality that depends on this permission.
+					if (mDialog != null)
+						mDialog.dismiss();
+				}
+				return;
+			}
+
+		}
+	}
+
+	private void startBluetooth() {
+		sb = new SecureBluetooth(this.getActivity());
+		sb.setSecureBluetoothEventListener(this);
+
+		// Start by trying to receive
+		if (!sb.isEnabled())
+			sb.enableBluetooth(getActivity());
+		else if (mDialog != null)
+			mDialog.show();
+
+		//sb.enableDiscovery(getActivity());
+		receiveButton.performClick();
+	}
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
@@ -126,6 +170,7 @@ public class SecureBluetoothReceiverFragment extends DialogFragment implements L
 			{
 				if (mItemReceived != null)
 				{
+					dismiss();
 					Intent intent = new Intent(v.getContext(), MainActivity.class);
 					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 					intent.putExtra(MainActivity.INTENT_EXTRA_SHOW_THIS_ITEM, mItemReceived.getDatabaseId());
@@ -138,11 +183,6 @@ public class SecureBluetoothReceiverFragment extends DialogFragment implements L
 
 		registerReceiver();
 
-		// Start by trying to receive
-		if (sb.isEnabled())
-			receiveButton.performClick();
-		else
-			sb.enableBluetooth(getActivity());
 		return root;
 	}
 
@@ -158,7 +198,7 @@ public class SecureBluetoothReceiverFragment extends DialogFragment implements L
 				// If BT not enabled, hide us for now. We will prompt the user to enable
 				// BT and handle the result in onUnlockedActivityResult. Based on the
 				// user's choice the dialog will either be dismissed or shown there.
-				if (!sb.isEnabled())
+				if (sb == null || !sb.isEnabled())
 					mDialog.hide();
 			}
 		});
@@ -178,7 +218,10 @@ public class SecureBluetoothReceiverFragment extends DialogFragment implements L
 	{
 		if (LOGGING) 
 		Log.v(LOGTAG,"onStop");
-		sb.disconnect();
+		if (sb != null) {
+			sb.disconnect();
+			sb.setSecureBluetoothEventListener(null);
+		}
 		unregisterReceiver();
 		super.onStop();
 	}
@@ -189,6 +232,19 @@ public class SecureBluetoothReceiverFragment extends DialogFragment implements L
 		registerReceiver();
 		super.onResume();
 		updateUi();
+
+		if (!mHasRequestedPermission) {
+			mHasRequestedPermission = true;
+			int permissionCheck = ContextCompat.checkSelfPermission(this.getActivity(),
+					Manifest.permission.ACCESS_FINE_LOCATION);
+
+			if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+				requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+						ACCESS_LOCATION_PERMISSION_REQUEST);
+			} else {
+				startBluetooth();
+			}
+		}
 	}
 
 	private void updateUi()
@@ -228,14 +284,14 @@ public class SecureBluetoothReceiverFragment extends DialogFragment implements L
 	@Override
 	public void onClick(View clickedView)
 	{
-		if (clickedView == receiveButton)
+		if (clickedView == receiveButton && sb != null)
 		{
 			sb.enableDiscovery(getActivity());
 			sb.listen();
 			this.updateBasedOnScanMode(sb.btAdapter.getScanMode());
 			if (LOGGING)
-			Log.v(LOGTAG, "listen called, ready to receive");
-			receiveButton.setEnabled(false);
+				Log.v(LOGTAG, "listen called, ready to receive");
+			//receiveButton.setEnabled(false);
 		}
 	}
 
@@ -280,100 +336,108 @@ public class SecureBluetoothReceiverFragment extends DialogFragment implements L
 			if (LOGGING)
 			Log.v(LOGTAG, "Got a disconnect, " + bytesReceived + " bytes received");
 
-			try
-			{
-				bos.close();
-				
-				Item receivedItem = null;
-				ArrayList<File> mediaFiles = new ArrayList<File>();
-				
-				// Now unzip it
-				ZipFile zipFile = new ZipFile(receivedContentBundleFile);
-				
-				for(Enumeration<? extends ZipEntry> entries = zipFile.entries(); entries.hasMoreElements();) 
-				{
-					ZipEntry currentEntry = entries.nextElement();
-					if (currentEntry.getName().contains(SocialReader.CONTENT_ITEM_EXTENSION)) 
-					{
-						InputStream inputStream = zipFile.getInputStream(currentEntry);
-						ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+			if (mCurrentState == UIState.Receiving) {
+				try {
+					bos.close();
+					bos = null;
 
-						try
-						{
-							// Deserialize it
-							receivedItem = (Item) objectInputStream.readObject();
-							objectInputStream.close();
-							if (LOGGING)
-								Log.v(LOGTAG, "We have an Item!!!");
-							mItemReceived = receivedItem;
-							receivedItem.setShared(true);
-							receivedItem.setDatabaseId(Item.DEFAULT_DATABASE_ID);
-							receivedItem.setFeedId(Feed.DEFAULT_DATABASE_ID);
-							for (MediaContent mc : receivedItem.getMediaContent()) {
-								mc.setDatabaseId(MediaContent.DEFAULT_DATABASE_ID);
-							}
-							// Add it in..
-							App.getInstance().socialReader.setItemData(receivedItem);							
-						}
-						catch (ClassNotFoundException e)
-						{
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}						
-					} else { // Ignore for now, we'll loop through again in a second 
-						if (LOGGING)
-						Log.v(LOGTAG,"Ignoring media element for now");
-					}
-				}
-				
-				if (receivedItem != null) {
-					int mediaContentCount = 0;
-					for(Enumeration<? extends ZipEntry> entries = zipFile.entries(); entries.hasMoreElements();) 
-					{
+					ArrayList<File> mediaFiles = new ArrayList<File>();
+
+					// Now unzip it
+					ZipFile zipFile = new ZipFile(receivedContentBundleFile);
+
+					Item receivedItem = null;
+
+					for (Enumeration<? extends ZipEntry> entries = zipFile.entries(); entries.hasMoreElements(); ) {
 						ZipEntry currentEntry = entries.nextElement();
-						if (currentEntry.getName().contains(SocialReader.CONTENT_ITEM_EXTENSION)) 
-						{
-							// Ignore it, we should already have it
-							
-						} else {  
-							
-							// It's Media Content
-							// Save the files in the normal place
-							
+
+						if (LOGGING)
+							Log.v(LOGTAG, "Found: " + currentEntry.getName());
+
+						if (currentEntry.getName().contains(SocialReader.CONTENT_ITEM_EXTENSION)) {
+							if (LOGGING)
+								Log.v(LOGTAG, "Parsing " + currentEntry.getName());
+
 							InputStream inputStream = zipFile.getInputStream(currentEntry);
-							BufferedOutputStream bos = null;
-							
-							MediaContent mediaContent = receivedItem.getMediaContent(mediaContentCount);
-							mediaContentCount++;
-							
-							File savedFile = new File(App.getInstance().socialReader.getFileSystemDir(), SocialReader.MEDIA_CONTENT_FILE_PREFIX + mediaContent.getDatabaseId());
-							bos = new BufferedOutputStream(new FileOutputStream(savedFile));
-							
-							byte buffer[] = new byte[1024];
-							int count;
-							while ((count = inputStream.read(buffer)) != -1)
-							{
-								bos.write(buffer, 0, count);
+
+							Feed incomingFeed = new Feed(inputStream);
+							Reader feedReader = new Reader(App.getInstance().socialReader, incomingFeed);
+							incomingFeed = feedReader.fetchFeed();
+
+
+							// Looping through but ...
+							for (int i = 0; i < incomingFeed.getItemCount(); i++) {
+
+								receivedItem = incomingFeed.getItem(i);
+								//objectInputStream.close();
+								if (LOGGING)
+									Log.v(LOGTAG, "We have an Item!!!");
+								mItemReceived = receivedItem;
+								receivedItem.setShared(true);
+								receivedItem.setDatabaseId(Item.DEFAULT_DATABASE_ID);
+								receivedItem.setFeedId(Feed.DEFAULT_DATABASE_ID);
+								for (MediaContent mc : receivedItem.getMediaContent()) {
+									mc.setDatabaseId(MediaContent.DEFAULT_DATABASE_ID);
+								}
+								if (LOGGING) {
+									Log.v(LOGTAG, "getGuid: " + receivedItem.getGuid());
+									Log.v(LOGTAG, "getFeedId: " + receivedItem.getFeedId());
+								}
+								// Add it in..
+								App.getInstance().socialReader.setItemData(receivedItem);
 							}
-							inputStream.close();
-							bos.close();						
+						} else { // Ignore for now, we'll loop through again in a second
+							if (LOGGING)
+								Log.v(LOGTAG, "Ignoring media element for now");
 						}
 					}
-				}
-				else {
-					if (LOGGING)
-					Log.e(LOGTAG,"Didn't get an item");
-				}
-				
 
+					if (receivedItem != null) {
+						int mediaContentCount = 0;
+						for (Enumeration<? extends ZipEntry> entries = zipFile.entries(); entries.hasMoreElements(); ) {
+							ZipEntry currentEntry = entries.nextElement();
+							if (currentEntry.getName().contains(SocialReader.CONTENT_ITEM_EXTENSION)) {
+								// Ignore it, we should already have it
+
+							} else {
+
+								// It's Media Content
+								// Save the files in the normal place
+
+								InputStream inputStream = zipFile.getInputStream(currentEntry);
+								BufferedOutputStream bos = null;
+
+								MediaContent mediaContent = receivedItem.getMediaContent(mediaContentCount);
+								mediaContentCount++;
+
+								File savedFile = new File(App.getInstance().socialReader.getFileSystemDir(), SocialReader.MEDIA_CONTENT_FILE_PREFIX + mediaContent.getDatabaseId());
+								bos = new BufferedOutputStream(new FileOutputStream(savedFile));
+
+								byte buffer[] = new byte[1024];
+								int count;
+								while ((count = inputStream.read(buffer)) != -1) {
+									bos.write(buffer, 0, count);
+								}
+								inputStream.close();
+								bos.close();
+							}
+						}
+					} else {
+						if (LOGGING)
+							Log.e(LOGTAG, "Didn't get an item");
+					}
+
+
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				receivedContentBundleFile = null;
+				readyToReceive = false;
 			}
-			catch (IOException e)
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			if (mItemReceived != null)
+			if (mItemReceived != null) {
 				setUiState(UIState.ReceivedOk);
+			}
 			else
 				setUiState(UIState.Listening);
 		}

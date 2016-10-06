@@ -18,7 +18,7 @@
         <item name="android:background">?attr/colorPrimary</item>
         <item name="android:elevation">4dp</item>
         <item name="theme">@style/ThemeOverlayActionBar</item>
-        <item name="homeAsUpIndicator">@drawable/abc_ic_ab_back_mtrl_am_alpha</item>
+        <item name="homeAsUpIndicator">@drawable/abc_ic_ab_back_material</item>
     </style>
 
     <style name="ThemeOverlayActionBar">
@@ -145,6 +145,10 @@
 
     <style name="LeftSideMenuItemAppearance">
         <item name="font">Lato-Light</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textStyle">normal</item>
     </style>
 
     <style name="LeftSideMenuItemCurrentAppearance">
