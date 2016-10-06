@@ -519,8 +519,6 @@ public class FragmentActivityWithMenu extends LockableActivity implements Drawer
 
     class UpdateLeftSideMenuTask extends ThreadedTask<Void, Void, Void> {
         private ArrayList<Feed> feeds;
-        private int countFavorites;
-        private int countShared;
         private boolean isUsingProxy;
         private boolean isUsingPsiphon;
         private boolean showImages;
@@ -530,12 +528,16 @@ public class FragmentActivityWithMenu extends LockableActivity implements Drawer
         protected Void doInBackground(Void... values) {
             createMenuViewHolder();
             feeds = App.getInstance().socialReader.getSubscribedFeedsList();
-            countFavorites = App.getInstance().socialReader.getAllFavoritesCount();
-            countShared = App.getInstance().socialReader.getAllSharedCount();
             isUsingProxy = App.getInstance().socialReader.useProxy();
             isUsingPsiphon = (App.getSettings().proxyType() == ProxyType.Psiphon);
             isOnline = App.getInstance().socialReader.isProxyOnline();
             showImages = (App.getSettings().syncMode() == SyncMode.LetItFlow);
+
+            // Update adapter
+            RecyclerView.Adapter adapter = mMenuViewHolder.recyclerView.getAdapter();
+            if (adapter instanceof DrawerMenuRecyclerViewAdapter) {
+                ((DrawerMenuRecyclerViewAdapter)adapter).recalculateData();
+            }
             return null;
         }
 
@@ -543,7 +545,7 @@ public class FragmentActivityWithMenu extends LockableActivity implements Drawer
         protected void onPostExecute(Void result) {
             RecyclerView.Adapter adapter = mMenuViewHolder.recyclerView.getAdapter();
             if (adapter instanceof DrawerMenuRecyclerViewAdapter) {
-                ((DrawerMenuRecyclerViewAdapter)adapter).update(feeds, countFavorites, countShared);
+                ((DrawerMenuRecyclerViewAdapter)adapter).update(feeds);
             } else {
                 adapter.notifyDataSetChanged();
             }

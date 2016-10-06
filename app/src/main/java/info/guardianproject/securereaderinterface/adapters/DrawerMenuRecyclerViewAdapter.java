@@ -20,7 +20,9 @@ public class DrawerMenuRecyclerViewAdapter
         void runAfterMenuClose(Runnable runnable);
     }
 
-    private DrawerMenuCallbacks mCallbacks;
+    protected DrawerMenuCallbacks mCallbacks;
+    private int mCountFavorites;
+    private int mCountShared;
 
     public DrawerMenuRecyclerViewAdapter(Context context, DrawerMenuCallbacks callbacks) {
         super(context);
@@ -30,18 +32,24 @@ public class DrawerMenuRecyclerViewAdapter
         setHasStableIds(false);
     }
 
-    public void update(ArrayList<Feed> feeds, int countFavorites, int countShared) {
+    /**
+     *
+     * Called on background thread to do costly operations.
+     */
+    public void recalculateData() {
+        mCountFavorites = App.getInstance().socialReader.getAllFavoritesCount();
+        mCountShared = App.getInstance().socialReader.getAllSharedCount();
+    }
+
+    public void update(ArrayList<Feed> feeds) {
         clear();
         addAllFeedsItem();
-        addFavoritesItem(countFavorites);
-        addNearbyItem(countShared);
+        addFavoritesItem(mCountFavorites);
+        addNearbyItem(mCountShared);
 
         // Feeds
         if (feeds != null && feeds.size() > 0) {
             for (Feed feed : feeds) {
-                addFeedItem(feed);
-                addFeedItem(feed);
-                addFeedItem(feed);
                 addFeedItem(feed);
             }
         }
@@ -62,7 +70,7 @@ public class DrawerMenuRecyclerViewAdapter
                     @Override
                     public void run() {
                         UICallbacks.setFeedFilter(FeedFilterType.ALL_FEEDS, 0, this);
-                        UICallbacks.handleCommand(mContext, R.integer.command_news_list, null);
+                        UICallbacks.handleCommand(getContext(), R.integer.command_news_list, null);
                     }
                 });
             }
@@ -74,7 +82,7 @@ public class DrawerMenuRecyclerViewAdapter
 
             @Override
             public boolean isSelected() {
-                return mContext instanceof MainActivity && App.getInstance().getCurrentFeedFilterType() == FeedFilterType.ALL_FEEDS;
+                return getContext() instanceof MainActivity && App.getInstance().getCurrentFeedFilterType() == FeedFilterType.ALL_FEEDS;
             }
         }));
     }
@@ -87,14 +95,14 @@ public class DrawerMenuRecyclerViewAdapter
                     @Override
                     public void run() {
                         UICallbacks.setFeedFilter(FeedFilterType.FAVORITES, 0, this);
-                        UICallbacks.handleCommand(mContext, R.integer.command_news_list, null);
+                        UICallbacks.handleCommand(getContext(), R.integer.command_news_list, null);
                     }
                 });
             }
 
             @Override
             public boolean isSelected() {
-                return mContext instanceof MainActivity && App.getInstance().getCurrentFeedFilterType() == FeedFilterType.FAVORITES;
+                return getContext() instanceof MainActivity && App.getInstance().getCurrentFeedFilterType() == FeedFilterType.FAVORITES;
             }
         }));
     }
@@ -107,7 +115,7 @@ public class DrawerMenuRecyclerViewAdapter
                     @Override
                     public void run() {
                         UICallbacks.setFeedFilter(FeedFilterType.SHARED, 0, this);
-                        UICallbacks.handleCommand(mContext, R.integer.command_news_list, null);
+                        UICallbacks.handleCommand(getContext(), R.integer.command_news_list, null);
                     }
                 });
             }
@@ -117,14 +125,14 @@ public class DrawerMenuRecyclerViewAdapter
                 mCallbacks.runAfterMenuClose(new Runnable() {
                     @Override
                     public void run() {
-                        UICallbacks.handleCommand(mContext, R.integer.command_receiveshare, null);
+                        UICallbacks.handleCommand(getContext(), R.integer.command_receiveshare, null);
                     }
                 });
             }
 
             @Override
             public boolean isSelected() {
-                return mContext instanceof MainActivity && App.getInstance().getCurrentFeedFilterType() == FeedFilterType.SHARED;
+                return getContext() instanceof MainActivity && App.getInstance().getCurrentFeedFilterType() == FeedFilterType.SHARED;
             }
         }));
     }
@@ -140,7 +148,7 @@ public class DrawerMenuRecyclerViewAdapter
                     @Override
                     public void run() {
                         UICallbacks.setFeedFilter(FeedFilterType.SINGLE_FEED, feed.getDatabaseId(), this);
-                        UICallbacks.handleCommand(mContext, R.integer.command_news_list, null);
+                        UICallbacks.handleCommand(getContext(), R.integer.command_news_list, null);
                     }
                 });
             }
@@ -157,7 +165,7 @@ public class DrawerMenuRecyclerViewAdapter
 
             @Override
             public boolean isSelected() {
-                return mContext instanceof MainActivity && App.getInstance().getCurrentFeedFilterType() == FeedFilterType.SINGLE_FEED &&
+                return getContext() instanceof MainActivity && App.getInstance().getCurrentFeedFilterType() == FeedFilterType.SINGLE_FEED &&
                         App.getInstance().getCurrentFeed() != null && App.getInstance().getCurrentFeed().getDatabaseId() == feed.getDatabaseId();
             }
         }));

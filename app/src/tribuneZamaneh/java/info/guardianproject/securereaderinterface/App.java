@@ -65,6 +65,7 @@ import info.guardianproject.securereaderinterface.R;
 import ch.boye.httpclientandroidlib.util.TextUtils;
 
 import com.tinymission.rss.Feed;
+import com.tribunezamaneh.rss.adapters.DrawerMenuAdapter;
 
 public class App extends MultiDexApplication implements OnSharedPreferenceChangeListener, SocialReaderLockListener
 {
@@ -286,18 +287,6 @@ public class App extends MultiDexApplication implements OnSharedPreferenceChange
 		{
 			return new CustomFontEditText(context, attrs);
 		}
-/*		else if (name.equals("ImageView"))
-		{
-			TypedArray a = context.obtainStyledAttributes(attrs, new int[] { R.attr.doNotMirror });
-			boolean dontMirror = false;
-			if (a != null)
-				dontMirror = a.getBoolean(0, false);
-			a.recycle();
-			if (dontMirror)
-				returnView = new ImageView(context, attrs);
-			else
-				returnView = new MirroringImageView(context, attrs);
-		}*/
 
 		// API 17 still has some trouble with handling RTL layouts automatically.
 		else if (name.equals("FrameLayout") && Build.VERSION.SDK_INT == 17 && getInstance().isRTL()) {
@@ -487,11 +476,15 @@ public class App extends MultiDexApplication implements OnSharedPreferenceChange
 	{
 		mOverrideResources = r;
 	}
-	
+
 	@Override
 	public Resources getResources() {
 		if (mOverrideResources != null)
 			return mOverrideResources;
 		return super.getResources();
+	}
+
+	public Class getDrawerMenuAdapterClass() {
+		return DrawerMenuAdapter.class;
 	}
 }

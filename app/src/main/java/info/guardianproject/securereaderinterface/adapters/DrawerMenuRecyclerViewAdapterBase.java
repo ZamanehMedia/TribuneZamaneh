@@ -23,8 +23,8 @@ import info.guardianproject.securereaderinterface.R;
 
 public class DrawerMenuRecyclerViewAdapterBase extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     protected final Adorner mAdorner;
-    protected Context mContext;
 
+    private Context mContext;
     private final List<Object> mValues;
     private boolean mIsOnline;
 
@@ -33,6 +33,10 @@ public class DrawerMenuRecyclerViewAdapterBase extends RecyclerView.Adapter<Recy
         mContext = context;
         mAdorner = new Adorner();
         mValues = new ArrayList<>();
+    }
+
+    protected Context getContext() {
+        return mContext;
     }
 
     public void clear() {
