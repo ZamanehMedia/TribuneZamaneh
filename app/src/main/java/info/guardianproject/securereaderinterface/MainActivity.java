@@ -114,6 +114,7 @@ public class MainActivity extends ItemExpandActivity
 				if (syncTask.type == SyncService.SyncTask.TYPE_FEED && syncTask.status == SyncService.SyncTask.FINISHED)
 				{
 					refreshListIfCurrent(syncTask.feed);
+					refreshLeftSideMenu();
 				}
 			}
 		});
@@ -468,6 +469,7 @@ public class MainActivity extends ItemExpandActivity
 		if (mStoryListView != null)
 			mStoryListView.setIsLoading(mIsLoading);
 		updateTorView();
+		refreshLeftSideMenu();
 	}
 
 	private void showError(String error)
@@ -605,6 +607,7 @@ public class MainActivity extends ItemExpandActivity
 			if (LOGGING) 
 				Log.v(LOGTAG, "feedFetched Callback");
 			refreshListIfCurrent(_feed);
+			refreshLeftSideMenu();
 		}
 	};
 	private StoryListHintTorView mTorView;

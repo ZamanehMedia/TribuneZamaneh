@@ -62,7 +62,7 @@ public class DrawerMenuRecyclerViewAdapterBase extends RecyclerView.Adapter<Recy
     }
 
     @Override
-    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         Context context = holder.itemView.getContext();
 
         if (mValues.get(position) instanceof MenuEntry) {
@@ -92,6 +92,7 @@ public class DrawerMenuRecyclerViewAdapterBase extends RecyclerView.Adapter<Recy
                     @Override
                     public void onClick(View v) {
                         e.menuItemCallback.onRefresh();
+                        notifyDataSetChanged();
                     }
                 });
                 if (viewHolder.refresh.getVisibility() == View.VISIBLE &&

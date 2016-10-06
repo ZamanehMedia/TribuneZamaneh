@@ -467,6 +467,14 @@ public class FragmentActivityWithMenu extends LockableActivity implements Drawer
         }
     }
 
+    protected void refreshLeftSideMenu() {
+        if (mLeftSideMenu != null && mMenuViewHolder != null) {
+            if (mMenuViewHolder.recyclerView.getAdapter() != null) {
+                mMenuViewHolder.recyclerView.getAdapter().notifyDataSetChanged();
+            }
+        }
+    }
+
     private void createMenuViewHolder() {
         if (mMenuViewHolder == null) {
             mMenuViewHolder = new MenuViewHolder();
