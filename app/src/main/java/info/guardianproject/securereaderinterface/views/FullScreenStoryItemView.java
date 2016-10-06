@@ -1,6 +1,7 @@
 package info.guardianproject.securereaderinterface.views;
 
 import info.guardianproject.securereaderinterface.App;
+import info.guardianproject.securereaderinterface.BuildConfig;
 import info.guardianproject.securereaderinterface.adapters.DownloadsAdapter;
 import info.guardianproject.securereaderinterface.adapters.ShareSpinnerAdapter;
 import info.guardianproject.securereaderinterface.adapters.StoryListAdapter;
@@ -126,7 +127,7 @@ public class FullScreenStoryItemView extends FrameLayout
 		});
 
 		// Disable comments?
-		if (!App.UI_ENABLE_COMMENTS)
+		if (!BuildConfig.UI_ENABLE_COMMENTS)
 		{
 			mBtnComments.setVisibility(View.GONE);
 			// toolbar.findViewById(R.id.separatorComments).setVisibility(View.GONE);

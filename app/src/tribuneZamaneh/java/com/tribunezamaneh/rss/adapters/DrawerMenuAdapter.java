@@ -3,7 +3,7 @@ package com.tribunezamaneh.rss.adapters;
 import android.content.Context;
 
 import info.guardianproject.securereaderinterface.App;
-import info.guardianproject.securereaderinterface.PostActivity;
+import com.tribunezamaneh.rss.PostActivity;
 import info.guardianproject.securereaderinterface.R;
 import info.guardianproject.securereaderinterface.adapters.DrawerMenuRecyclerViewAdapter;
 import info.guardianproject.securereaderinterface.ui.UICallbacks;

@@ -1,7 +1,10 @@
-package info.guardianproject.securereaderinterface;
+package com.tribunezamaneh.rss;
 
 import java.util.ArrayList;
 
+import info.guardianproject.securereaderinterface.App;
+import info.guardianproject.securereaderinterface.ItemExpandActivity;
+import info.guardianproject.securereaderinterface.PostListFragment;
 import info.guardianproject.securereaderinterface.PostListFragment.PostListType;
 import info.guardianproject.securereaderinterface.adapters.StoryListAdapter.OnTagClickedListener;
 import info.guardianproject.securereaderinterface.uiutil.AnimationHelpers;
@@ -15,7 +18,6 @@ import info.guardianproject.securereaderinterface.views.PostSignInView.OnAgreeLi
 import info.guardianproject.securereaderinterface.widgets.CustomFontCheckableButton;
 import info.guardianproject.securereaderinterface.R;
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.drawable.ColorDrawable;
@@ -24,10 +26,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBar.Tab;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;

@@ -46,16 +46,6 @@ public class App extends MultiDexApplication implements OnSharedPreferenceChange
 	public static final String LOGTAG = "App";
 	public static final boolean LOGGING = false;
 	
-	public static final boolean UI_ENABLE_POPULAR_ITEMS = false;
-			
-	public static final boolean UI_ENABLE_COMMENTS = false;
-	public static final boolean UI_ENABLE_PROXY_VIEW = false;
-	public static final boolean UI_ENABLE_TAGS = true;
-	public static final boolean UI_ENABLE_POST_LOGIN = false;
-	public static final boolean UI_ENABLE_REPORTER = false;
-	public static final boolean UI_ENABLE_CHAT = false;
-	public static final boolean UI_ENABLE_LANGUAGE_CHOICE = true;
-	
 	public static final String EXIT_BROADCAST_ACTION = "info.guardianproject.securereaderinterface.exit.action";
 	public static final String SET_UI_LANGUAGE_BROADCAST_ACTION = "info.guardianproject.securereaderinterface.setuilanguage.action";
 	public static final String WIPE_BROADCAST_ACTION = "info.guardianproject.securereaderinterface.wipe.action";
@@ -216,6 +206,7 @@ public class App extends MultiDexApplication implements OnSharedPreferenceChange
 
 		if (wipeMethod == SocialReader.DATA_WIPE)
 		{
+			// TODO - start Launcher intent!
 			Intent intent = new Intent(m_context, LockScreenActivity.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(intent);

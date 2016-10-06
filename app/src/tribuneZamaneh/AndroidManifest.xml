@@ -13,11 +13,12 @@
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
-        android:name="info.guardianproject.securereaderinterface.App"
+        android:name="com.tribunezamaneh.rss.App"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:description="@string/app_description"
         android:theme="@style/AppTheme"
+        tools:replace="name"
         android:supportsRtl="true">
 
 		<!--<activity android:name="net.hockeyapp.android.UpdateActivity" />-->
@@ -147,11 +148,10 @@
             android:theme="@style/AppThemeSearch" >
         </activity>
         <activity
-            android:name="info.guardianproject.securereaderinterface.PostActivity"
+            android:name="com.tribunezamaneh.rss.PostActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_post"
-            android:theme="@style/AppThemeReporter" >
-        </activity>
+            android:theme="@style/AppThemeReporter" />
         <activity
             android:name="info.guardianproject.securereaderinterface.AddPostActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"

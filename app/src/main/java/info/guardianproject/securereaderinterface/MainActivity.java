@@ -344,7 +344,7 @@ public class MainActivity extends ItemExpandActivity
 	@SuppressLint("NewApi")
 	private void setTagItemVisible(boolean bVisible)
 	{
-		mShowTagMenuItem = bVisible && App.UI_ENABLE_TAGS;
+		mShowTagMenuItem = bVisible && BuildConfig.UI_ENABLE_TAGS;
 		if (mMenuItemTag != null)
 		{
 			mMenuItemTag.setVisible(mShowTagMenuItem);
@@ -793,7 +793,7 @@ public class MainActivity extends ItemExpandActivity
 
 				int headerViewId = 0;
 				ArrayList<Item> items = result.get(0).getItems();
-				if (App.UI_ENABLE_PROXY_VIEW) {
+				if (BuildConfig.UI_ENABLE_PROXY_VIEW) {
 					if (items == null || items.size() == 0) {
 						headerViewId = R.layout.story_list_hint_proxy;
 					}

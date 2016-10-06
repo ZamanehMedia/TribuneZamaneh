@@ -283,7 +283,7 @@ android {
                         println ">>>>>>>>> 555555 Path " + filePath
 
                         def fileContents = manifestOutFile.text
-
+                        //println fileContents
                         println "ORIGINAL: " + getMergedFlavor().manifestPlaceholders
 
                         getMergedFlavor().manifestPlaceholders.keySet().each {

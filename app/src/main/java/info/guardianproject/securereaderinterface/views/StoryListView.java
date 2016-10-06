@@ -2,6 +2,7 @@ package info.guardianproject.securereaderinterface.views;
 
 import info.guardianproject.securereader.SocialReader;
 import info.guardianproject.securereaderinterface.App;
+import info.guardianproject.securereaderinterface.BuildConfig;
 import info.guardianproject.securereaderinterface.adapters.StoryListAdapter;
 import info.guardianproject.securereaderinterface.adapters.StoryListAdapter.OnHeaderCreatedListener;
 import info.guardianproject.securereaderinterface.adapters.StoryListAdapter.OnTagClickedListener;
@@ -200,7 +201,7 @@ public class StoryListView extends RelativeLayout implements OnTagClickedListene
 				}
 				else
 				{
-					if (App.UI_ENABLE_TAGS)
+					if (BuildConfig.UI_ENABLE_TAGS)
 						mAdapter.setShowTags(true);
 					mListStories.invalidateViews();
 				}
