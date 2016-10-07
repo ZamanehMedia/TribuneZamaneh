@@ -43,7 +43,7 @@ android {
             buildConfigField "boolean", "UI_ENABLE_LANGUAGE_CHOICE", "true"
             buildConfigField "boolean", "UI_ENABLE_STARTUP_HELP", "false"
             buildConfigField "boolean", "UI_ENABLE_CREATE_PASSPHRASE", "false"
-            manifestPlaceholders = ["launcherActivity" : ".SplashActivity"]
+            manifestPlaceholders = ["launcherActivity" : "info.guardianproject.securereaderinterface.SplashActivity"]
         }
     }
 
