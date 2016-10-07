@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 24
     buildToolsVersion "24.0.3"
-    useLibrary  'org.apache.http.legacy'
+    useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
         applicationId "info.guardianproject.securereaderinterface"
@@ -11,7 +11,12 @@ android {
         targetSdkVersion 24
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
-        manifestPlaceholders = [UIUseSplashScreen: false]
+        buildConfigField "boolean", "UI_ENABLE_COMMENTS", "false"
+        buildConfigField "boolean", "UI_ENABLE_PROXY_VIEW", "false"
+        buildConfigField "boolean", "UI_ENABLE_TAGS", "true"
+        buildConfigField "boolean", "UI_ENABLE_CHAT", "false"
+        buildConfigField "boolean", "UI_ENABLE_LANGUAGE_CHOICE", "true"
+        manifestPlaceholders = ["launcherActivity" : ".MainActivity"]
     }
 
     buildTypes {
@@ -29,7 +34,12 @@ android {
             applicationId = "com.tribunezamaneh.rss"
             versionName = "1.0.0"
             versionCode = 1
-            manifestPlaceholders = [UIUseSplashScreen: true]
+            buildConfigField "boolean", "UI_ENABLE_COMMENTS", "true"
+            buildConfigField "boolean", "UI_ENABLE_PROXY_VIEW", "false"
+            buildConfigField "boolean", "UI_ENABLE_TAGS", "true"
+            buildConfigField "boolean", "UI_ENABLE_CHAT", "true"
+            buildConfigField "boolean", "UI_ENABLE_LANGUAGE_CHOICE", "true"
+            manifestPlaceholders = ["launcherActivity" : ".SplashActivity"]
         }
     }
 
@@ -49,7 +59,7 @@ android {
 }
 
 dependencies {
-    compile (project(':external:securereaderlibrary')) {
+    compile(project(':external:securereaderlibrary')) {
         exclude module: 'support-v4'
     }
     compile fileTree(dir: 'libs', include: ['*.jar'])
