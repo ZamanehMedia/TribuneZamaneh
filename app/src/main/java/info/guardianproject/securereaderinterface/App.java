@@ -206,8 +206,7 @@ public class App extends MultiDexApplication implements OnSharedPreferenceChange
 
 		if (wipeMethod == SocialReader.DATA_WIPE)
 		{
-			// TODO - start Launcher intent!
-			Intent intent = new Intent(m_context, LockScreenActivity.class);
+			Intent intent = new Intent(m_context, BuildConfig.UI_ENABLE_SPLASH_SCREEN ? SplashActivity.class : MainActivity.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(intent);
 		}

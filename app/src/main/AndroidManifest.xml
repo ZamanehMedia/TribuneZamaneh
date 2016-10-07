@@ -23,7 +23,6 @@
         
 		<service android:name="info.guardianproject.cacheword.CacheWordService" 
 		    android:enabled="true" android:exported="false" />
-        <!-- #if UIUseSplashScreen -->
         <activity
             android:name="info.guardianproject.securereaderinterface.SplashActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -36,17 +35,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!-- #endif -->
         <activity
             android:name="info.guardianproject.securereaderinterface.MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_main">
-            <!-- #ifnot UIUseSplashScreen -->
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            <!-- #endif -->
         </activity>
         <activity
             android:name="info.guardianproject.securereaderinterface.HelpActivity"
