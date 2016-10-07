@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -382,13 +383,11 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 	
 	private void showNextOnboardingView()
 	{
-		if (App.getSettings().getOnboardingStage() == 0)
-			setContentView(R.layout.onboarding_welcome_fragment);
-		else if (App.getSettings().getOnboardingStage() == 1)
-			setContentView(R.layout.onboarding_proxy_fragment);
-		else if (App.getSettings().getOnboardingStage() == 2)
-			setContentView(R.layout.onboarding_curate_feeds_fragment);
-		else {
+		TypedArray onbarding_screens = getResources().obtainTypedArray(R.array.onboarding_screems);
+		if (App.getSettings().getOnboardingStage() < onbarding_screens.length()) {
+			int layoutId = onbarding_screens.getResourceId(App.getSettings().getOnboardingStage(), 0);
+			setContentView(layoutId);
+		} else {
 			if (!BuildConfig.UI_ENABLE_CREATE_PASSPHRASE) {
 				App.getSettings().setPassphraseTimeout(0);	//TODO - add a setting for this!
 				try {
