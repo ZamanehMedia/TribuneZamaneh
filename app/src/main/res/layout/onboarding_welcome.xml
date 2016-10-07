@@ -25,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="5dp"
-            android:text="@string/lock_screen_onboarding_1_language"
+            android:text="@string/onboarding_select_language"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <ImageView
@@ -51,7 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right|center_vertical|end"
             android:background="@null"
-            android:text="@string/lock_screen_onboarding_1_next" />
+            android:text="@string/onboarding_next" />
 
     </FrameLayout>
 
@@ -75,7 +75,7 @@
             style="@style/OnboardingTitleTextStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/lock_screen_onboarding_1_title"
+            android:text="@string/onboarding_welcome_title"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
@@ -83,7 +83,7 @@
             style="@style/OnboardingContentTextStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/lock_screen_onboarding_1_info"
+            android:text="@string/onboarding_welcome_text"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
     </LinearLayout>

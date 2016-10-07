@@ -16,6 +16,8 @@ android {
         buildConfigField "boolean", "UI_ENABLE_TAGS", "true"
         buildConfigField "boolean", "UI_ENABLE_CHAT", "false"
         buildConfigField "boolean", "UI_ENABLE_LANGUAGE_CHOICE", "true"
+        buildConfigField "boolean", "UI_ENABLE_STARTUP_HELP", "true"
+        buildConfigField "boolean", "UI_ENABLE_CREATE_PASSPHRASE", "false"
         manifestPlaceholders = ["launcherActivity" : ".MainActivity"]
     }
 
@@ -39,6 +41,8 @@ android {
             buildConfigField "boolean", "UI_ENABLE_TAGS", "true"
             buildConfigField "boolean", "UI_ENABLE_CHAT", "true"
             buildConfigField "boolean", "UI_ENABLE_LANGUAGE_CHOICE", "true"
+            buildConfigField "boolean", "UI_ENABLE_STARTUP_HELP", "false"
+            buildConfigField "boolean", "UI_ENABLE_CREATE_PASSPHRASE", "false"
             manifestPlaceholders = ["launcherActivity" : ".SplashActivity"]
         }
     }

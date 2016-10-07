@@ -325,4 +325,29 @@
 
     <string name="chatroom_name">Not being used</string>
 
+    <string name="onboarding_select_language">Language</string>
+    <string name="onboarding_next">Next</string>
+    <string name="onboarding_welcome_title">Welcome</string>
+    <string name="onboarding_welcome_text">to Courier</string>
+    <string name="onboarding_proxy_title">Privacy matters</string>
+    <string name="onboarding_proxy_psiphon_info">Access everything on the internet with <b>Psiphon</b>.</string>
+    <string name="onboarding_proxy_psiphon_connect">USE PSIPHON</string>
+    <string name="onboarding_proxy_psiphon_connected">Connected to Psiphon!</string>
+    <string name="onboarding_proxy_tor_info">Access everything and conceal your identity with <b>Tor</b>.</string>
+    <string name="onboarding_proxy_tor_connect">USE TOR</string>
+    <string name="onboarding_proxy_tor_connected">Connected to Tor!</string>
+    <string name="onboarding_proxy_skip">Skip</string>
+    <string name="onboarding_proxy_no_net_info">No Connection.</string>
+    <string name="onboarding_proxy_no_net_retry">Retry</string>
+    <string name="onboarding_curate_feeds_title">Curate your daily feed.</string>
+
+    <string name="feed_category_world_news">World News</string>
+    <string name="feed_category_national_news">National News</string>
+    <string name="feed_category_arts_culture">Arts &amp; Culture</string>
+    <string name="feed_category_business">Business</string>
+    <string name="feed_category_sports">Sports</string>
+    <string name="feed_category_technology">Technology</string>
+    <string name="feed_category_security">Security</string>
+    <string name="feed_category_discussion">Discussion</string>
+    <string name="feed_category_uncategorized">Uncategorized</string>
 </resources>

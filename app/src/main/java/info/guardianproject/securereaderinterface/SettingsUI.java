@@ -8,6 +8,7 @@ import android.preference.PreferenceManager;
 public class SettingsUI extends Settings
 {
 	public static final String KEY_ENABLE_SCREENSHOTS = "enable_screenshots";
+	public static final String KEY_ONBOARDING_STAGE = "onboarding_stage";
 
 	public SettingsUI(Context _context)
 	{
@@ -30,6 +31,32 @@ public class SettingsUI extends Settings
 	public void setEnableScreenshots(boolean enable)
 	{
 		mPrefs.edit().putBoolean(KEY_ENABLE_SCREENSHOTS, enable).commit();
+	}
+	
+	/**
+	 * @return The onboarding stage we are on (if any)
+	 * 
+	 */
+	public int getOnboardingStage()
+	{
+		return mPrefs.getInt(KEY_ONBOARDING_STAGE, 0);
+	}
+
+	/**
+	 * @return Sets onboarding stage
+	 * 
+	 */
+	public void setOnboardingStage(int value)
+	{
+		mPrefs.edit().putInt(KEY_ONBOARDING_STAGE, value).commit();
+	}
+
+	@Override
+	public boolean hasShownHelp() {
+		// Override this if we don't want to show the help screen on startup
+		if (!BuildConfig.UI_ENABLE_STARTUP_HELP)
+			return true;
+		return super.hasShownHelp();
 	}
 	
 	@Override

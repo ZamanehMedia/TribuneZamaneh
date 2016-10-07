@@ -1,17 +1,5 @@
 package info.guardianproject.securereaderinterface;
 
-import info.guardianproject.securereader.Settings.UiLanguage;
-import info.guardianproject.securereaderinterface.models.LockScreenCallbacks;
-import info.guardianproject.securereaderinterface.ui.LayoutFactoryWrapper;
-import info.guardianproject.securereaderinterface.uiutil.UIHelpers;
-import info.guardianproject.securereaderinterface.widgets.DropdownSpinner;
-import info.guardianproject.securereader.SocialReader;
-import info.guardianproject.securereaderinterface.R;
-import info.guardianproject.cacheword.CacheWordHandler;
-import info.guardianproject.cacheword.ICacheWordSubscriber;
-
-import java.security.GeneralSecurityException;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -33,21 +21,28 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
-import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
-public class LockScreenActivity extends Activity implements LockScreenCallbacks, OnFocusChangeListener, ICacheWordSubscriber
+import java.security.GeneralSecurityException;
+import java.util.UUID;
+
+import info.guardianproject.cacheword.CacheWordHandler;
+import info.guardianproject.cacheword.ICacheWordSubscriber;
+import info.guardianproject.securereader.Settings.ProxyType;
+import info.guardianproject.securereader.SocialReader;
+import info.guardianproject.securereaderinterface.models.LockScreenCallbacks;
+import info.guardianproject.securereaderinterface.ui.LayoutFactoryWrapper;
+import info.guardianproject.securereaderinterface.uiutil.UIHelpers;
+
+public class LockScreenActivity extends Activity implements LockScreenCallbacks, OnFocusChangeListener, ICacheWordSubscriber, OnboardingFragmentListener
 {
     private static final String LOGTAG = "LockScreenActivity";
 	public static final boolean LOGGING = false;
@@ -60,9 +55,7 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 	
 	private CacheWordHandler mCacheWord;
 	private info.guardianproject.securereaderinterface.LockScreenActivity.SetUiLanguageReceiver mSetUiLanguageReceiver;
-	private DropdownSpinner mDropdownLanguage;
-	private String[] mLanguageNames;
-	private UiLanguage[] mLanguageCodes;
+
 	private View mRootView;
 	private LayoutInflater mInflater;
 
@@ -76,7 +69,7 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
 		mCacheWord = new CacheWordHandler(this);
-		
+
 		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB)
 		{
 			 getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
@@ -136,7 +129,7 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 
 	private Bitmap takeSnapshot(View view)
 	{
-		if (view.getWidth() == 0 || view.getHeight() == 0)
+		if (view == null || view.getWidth() == 0 || view.getHeight() == 0)
 			return null;
 
 		view.setDrawingCacheEnabled(true);
@@ -158,83 +151,6 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 			return true;
 		}
 		return super.onKeyDown(keyCode, event);
-	}
-
-	private void createFirstTimeView()
-	{
-		setContentView(R.layout.activity_lock_screen);
-
-		// Passphrase is not set, so allow the user to create one!
-		//
-		Button btnCreate = (Button) findViewById(R.id.btnStartCreatePassphrase);
-		btnCreate.setOnClickListener(new OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				createCreatePassphraseView();
-			}
-		});
-
-		
-		mDropdownLanguage = (DropdownSpinner) findViewById(R.id.languagePopup);
-		
-		if (App.UI_ENABLE_LANGUAGE_CHOICE)
-		{
-			mLanguageNames = new String[] { 
-					getString(R.string.settings_language_english_nt),
-					getString(R.string.settings_language_tibetan_nt),
-					getString(R.string.settings_language_chinese_nt),
-					getString(R.string.settings_language_ukrainian_nt),
-					getString(R.string.settings_language_russian_nt),
-					getString(R.string.settings_language_japanese_nt),
-					getString(R.string.settings_language_norwegian_nt),
-					getString(R.string.settings_language_spanish_nt),
-					getString(R.string.settings_language_turkish_nt),
-					getString(R.string.settings_language_farsi_nt)
-			};
-			mLanguageCodes = new UiLanguage[] { 
-					UiLanguage.English,
-					UiLanguage.Tibetan,
-					UiLanguage.Chinese,
-					UiLanguage.Ukrainian,
-					UiLanguage.Russian,
-					UiLanguage.Japanese, 
-					UiLanguage.Norwegian, 
-					UiLanguage.Spanish, 
-					UiLanguage.Turkish, 
-					UiLanguage.Farsi					
-			};
-			
-			ListAdapter adapter = new LanguageListAdapter(this, mLanguageNames);
-			mDropdownLanguage.setAdapter(adapter);
-			selectLanguageByUiLanguage(App.getSettings().uiLanguage(), false);
-			mDropdownLanguage.setOnSelectionChangedListener(new DropdownSpinner.OnSelectionChangedListener() {
-			
-				@Override
-				public void onSelectionChanged(int position) {
-					App.getSettings().setUiLanguage(mLanguageCodes[position]);
-				}
-			});
-		}
-		else
-		{
-			// Hide language selection!
-			mDropdownLanguage.setVisibility(View.GONE);
-		}
-	}
-	
-	private boolean selectLanguageByUiLanguage(UiLanguage language, boolean sendNotification)
-	{
-		for (int i = 0; i < mLanguageCodes.length; i++)
-		{
-			if (mLanguageCodes[i].equals(language))
-			{
-				mDropdownLanguage.setCurrentSelection(i, sendNotification);
-				return true;
-			}
-		}		
-		return false;
 	}
 	
 	private void createCreatePassphraseView()
@@ -394,7 +310,7 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 
 	@Override
     public void onCacheWordUninitialized() {
-	    createFirstTimeView();
+	    showNextOnboardingView();
     }
 
     @Override
@@ -429,7 +345,7 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 		}
 		return super.getSystemService(name);
 	}
-	
+
 	private final class SetUiLanguageReceiver extends BroadcastReceiver
 	{
 		@Override
@@ -444,24 +360,6 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 					onUiLanguageChanged();
 				}
 			});
-		}
-	}
-	
-	private class LanguageListAdapter extends ArrayAdapter<String>
-	{
-		public LanguageListAdapter(Context context, String[] languages)
-		{
-			super(context, R.layout.dropdown_language_item, R.id.tvLanguageName, languages);
-		}
-
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent)
-		{
-			// User super class to create the View
-			View v = super.getView(position, convertView, parent);
-			TextView tv = (TextView) v.findViewById(R.id.tvLanguageName);
-			tv.setText(getItem(position));
-			return v;
 		}
 	}
 	
@@ -480,5 +378,42 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
       startActivity(intent);
       finish();
       LockScreenActivity.this.overridePendingTransition(0, 0);
+	}
+	
+	private void showNextOnboardingView()
+	{
+		if (App.getSettings().getOnboardingStage() == 0)
+			setContentView(R.layout.onboarding_welcome_fragment);
+		else if (App.getSettings().getOnboardingStage() == 1)
+			setContentView(R.layout.onboarding_proxy_fragment);
+		else if (App.getSettings().getOnboardingStage() == 2)
+			setContentView(R.layout.onboarding_curate_feeds_fragment);
+		else {
+			if (!BuildConfig.UI_ENABLE_CREATE_PASSPHRASE) {
+				App.getSettings().setPassphraseTimeout(0);	//TODO - add a setting for this!
+				try {
+					mCacheWord.setPassphrase(getCWPassword().toCharArray());
+				} catch (GeneralSecurityException e) {
+					e.printStackTrace();
+				}
+			} else {
+				createCreatePassphraseView();
+			}
+		}
+	}
+
+	@Override
+	public void onNextPressed() {
+		App.getSettings().setOnboardingStage(App.getSettings().getOnboardingStage() + 1);
+		showNextOnboardingView();
+	}
+
+	private String getCWPassword() {
+		String passphrase = App.getSettings().launchPassphrase();
+		if (TextUtils.isEmpty(passphrase)) {
+			passphrase = UUID.randomUUID().toString();
+			App.getSettings().setLaunchPassphrase(passphrase);
+		}
+		return passphrase;
 	}
 }

@@ -5,6 +5,7 @@
         <item name="colorPrimary">@color/claret</item>
         <item name="colorPrimaryDark">#444444</item>
         <item name="colorControlNormal">#ffffff</item>
+        <item name="colorControlActivated">@color/claret</item>
                 
         <item name="actionBarStyle">@style/AppActionBarStyle</item>
         <item name="actionBarTabStyle">@style/AppActionBarTabStyle</item>
@@ -270,6 +271,13 @@
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
+    <style name="AppThemeNoActionBar" parent="AppTheme">
+		<item name="android:windowActionBar">false</item>
+		<item name="android:windowTitleSize">0dp</item>
+		<item name="windowActionBar">false</item>
+		<item name="android:windowBackground">@android:color/white</item>
+	</style>
+	
     <style name="AppTheme.Dialog" parent="AppTheme">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>

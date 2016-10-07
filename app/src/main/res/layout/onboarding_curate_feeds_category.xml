@@ -1,0 +1,24 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl0"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <RelativeLayout
+        android:id="@+id/ivIllustration"
+        style="@style/OnboardingScreen3Style"
+        android:layout_width="match_parent"
+        android:layout_height="70dp" >
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tvName"
+        style="@style/AddFeedFeedNameStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="Expand"
+        android:gravity="left|start"
+        />
+
+</LinearLayout>

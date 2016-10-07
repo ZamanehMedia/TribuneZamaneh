@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right|center_vertical|end"
             android:background="@null"
-            android:text="@string/lock_screen_proxy_skip" />
+            android:text="@string/onboarding_proxy_skip" />
         
     </LinearLayout>
 
@@ -40,7 +40,7 @@
             style="@style/OnboardingProxyTitleTextStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/lock_screen_proxy_title"
+            android:text="@string/onboarding_proxy_title"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <!-- Psiphon -->
@@ -68,7 +68,7 @@
                     style="@style/OnboardingProxyContentTextStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/lock_screen_proxy_psiphon_info"
+                    android:text="@string/onboarding_proxy_psiphon_info"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
                 <Button
@@ -77,7 +77,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:layout_marginTop="15dp"
-                    android:text="@string/lock_screen_proxy_psiphon_connect" />
+                    android:text="@string/onboarding_proxy_psiphon_connect" />
 
             </LinearLayout>
         </LinearLayout>
@@ -107,7 +107,7 @@
                     style="@style/OnboardingProxyContentTextStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/lock_screen_proxy_tor_info"
+                    android:text="@string/onboarding_proxy_tor_info"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
                 <Button
@@ -116,7 +116,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:layout_marginTop="15dp"
-                    android:text="@string/lock_screen_proxy_tor_connect" />
+                    android:text="@string/onboarding_proxy_tor_connect" />
 
             </LinearLayout>
 

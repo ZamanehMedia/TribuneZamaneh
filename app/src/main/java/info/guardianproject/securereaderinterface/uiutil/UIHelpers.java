@@ -37,8 +37,13 @@ import android.text.style.CharacterStyle;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
+
+import com.caverock.androidsvg.SVG;
+import com.caverock.androidsvg.SVGImageView;
+import com.caverock.androidsvg.SVGParseException;
 
 public class UIHelpers
 {
@@ -390,5 +395,21 @@ public class UIHelpers
 		m.update(s.getBytes(), 0, s.length());
 		String hash = new BigInteger(1, m.digest()).toString(16);
 		return hash;
+	}
+
+	public static void populateContainerWithSVG(View rootView, int idSVG, int idContainer) {
+		try {
+			SVG svg = SVG.getFromResource(rootView.getContext(), idSVG);
+
+			SVGImageView svgImageView = new SVGImageView(rootView.getContext());
+			svgImageView.setSVG(svg);
+			svgImageView.setLayoutParams(new ViewGroup.LayoutParams(
+					ViewGroup.LayoutParams.MATCH_PARENT,
+					ViewGroup.LayoutParams.MATCH_PARENT));
+			ViewGroup layout = (ViewGroup) rootView.findViewById(idContainer);
+			layout.addView(svgImageView);
+		} catch (SVGParseException e) {
+			e.printStackTrace();
+		}
 	}
 }
