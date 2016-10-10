@@ -2,7 +2,7 @@ package info.guardianproject.securereaderinterface;
 
 import info.guardianproject.securereader.OPMLParser;
 import info.guardianproject.securereader.OPMLParser.OPMLOutline;
-import info.guardianproject.securereaderinterface.adapters.FeedListSearchAdapter;
+
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 

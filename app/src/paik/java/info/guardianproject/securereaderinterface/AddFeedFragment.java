@@ -1,8 +1,6 @@
 package info.guardianproject.securereaderinterface;
 
 import info.guardianproject.securereader.FeedFetcher.FeedFetchedCallback;
-import info.guardianproject.securereaderinterface.adapters.FeedListAdapter;
-import info.guardianproject.securereaderinterface.adapters.FeedListAdapterExplore;
 import info.guardianproject.securereaderinterface.adapters.FeedListAdapterExplore.FeedListAdapterExploreListener;
 import info.guardianproject.securereaderinterface.uiutil.HttpTextWatcher;
 import info.guardianproject.securereaderinterface.widgets.UrlInputEditText;
