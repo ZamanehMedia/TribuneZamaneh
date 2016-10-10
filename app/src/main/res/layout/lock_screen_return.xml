@@ -30,8 +30,8 @@
                     style="@style/LockScreenEditStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
                     android:layout_marginTop="20dp"
                     android:background="@drawable/edit_text_lock_screen_background_selector"
                     android:ems="10"
@@ -44,8 +44,8 @@
                         style="@style/LockScreenErrorStyle"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="25dp"
-                        android:layout_marginRight="20dp"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginEnd="20dp"
                         android:layout_marginTop="10dp"
                         android:text="@string/lock_screen_wrong_password" />
                     

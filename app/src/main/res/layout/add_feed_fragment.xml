@@ -58,8 +58,8 @@
             android:minLines="1"
             android:maxLines="8"
             android:scrollHorizontally="false"
-            android:layout_gravity="left|top"
-            android:gravity="left|top">
+            android:layout_gravity="start|top"
+            android:gravity="start|top">
 
         </info.guardianproject.securereaderinterface.widgets.UrlInputEditText>
 

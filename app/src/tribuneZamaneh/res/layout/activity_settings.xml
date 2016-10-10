@@ -605,7 +605,7 @@
                 android:id="@+id/chkEnableScreenshots"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_gravity="right|center_vertical"
+                android:layout_gravity="end|center_vertical"
                 android:button="@drawable/abc_btn_check_material"
                 android:buttonTint="@color/checkbox_color_selector"
                 android:padding="5dp"

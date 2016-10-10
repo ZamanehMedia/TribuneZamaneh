@@ -4,8 +4,8 @@
     android:layout_height="match_parent"
     android:background="#ED231F20"
     android:paddingBottom="19dp"
-    android:paddingLeft="26dp"
-    android:paddingRight="26dp"
+    android:paddingStart="26dp"
+    android:paddingEnd="26dp"
     android:paddingTop="19dp"
     android:filterTouchesWhenObscured="true">
 

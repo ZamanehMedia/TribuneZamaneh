@@ -5,8 +5,8 @@
     android:layout_height="wrap_content"
     android:background="@drawable/story_item_tags_background"
     android:fillViewport="true"
-    android:paddingLeft="@dimen/card_left_margin"
-    android:paddingRight="@dimen/card_right_margin"
+    android:paddingStart="@dimen/card_left_margin"
+    android:paddingEnd="@dimen/card_right_margin"
     android:paddingTop="1px"
     android:scrollbars="horizontal" >
 

@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="top|center_horizontal"
             android:background="#a0000000"
-            android:gravity="left"
+            android:gravity="start"
             android:padding="16dp"
             android:text="Loading video"
             android:textAppearance="?android:attr/textAppearanceLarge"

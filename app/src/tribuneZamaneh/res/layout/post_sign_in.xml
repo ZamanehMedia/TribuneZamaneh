@@ -51,7 +51,7 @@
                 android:layout_margin="10dp"
                 android:button="@drawable/abc_btn_check_material"
                 android:buttonTint="@color/checkbox_color_selector"
-                android:paddingLeft="10dp"
+                android:paddingStart="10dp"
                 android:text="@string/post_sign_in_agree"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:theme="@style/SettingsCheckboxStyle" />
@@ -62,8 +62,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginBottom="20dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
                 android:layout_marginTop="20dp"
                 android:text="@string/post_sign_in_done" />
         </LinearLayout>

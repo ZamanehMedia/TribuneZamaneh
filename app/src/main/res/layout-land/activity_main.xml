@@ -15,20 +15,20 @@
         android:id="@+id/storyList"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_toLeftOf="@id/strut" />
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@id/strut" />
 
     <FrameLayout
         android:id="@+id/storyContainer"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_alignParentRight="true"
-        android:layout_toRightOf="@id/strut" />
+        android:layout_alignParentEnd="true"
+        android:layout_toEndOf="@id/strut" />
 
     <FrameLayout
         android:layout_width="4dp"
         android:layout_height="match_parent"
-        android:layout_toRightOf="@id/strut" 
+        android:layout_toEndOf="@id/strut"
         android:background="@drawable/landscape_screen_divider"
         />
     

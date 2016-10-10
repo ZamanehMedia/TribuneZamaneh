@@ -42,8 +42,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/layout_source"
-                android:layout_marginLeft="@dimen/card_left_margin"
-                android:layout_marginRight="@dimen/card_right_margin"
+                android:layout_marginStart="@dimen/card_left_margin"
+                android:layout_marginEnd="@dimen/card_right_margin"
                 android:layout_marginTop="@dimen/title_top_margin"
                 android:text="@string/story_item_short_title" />
 
@@ -63,8 +63,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@id/layout_author"
-                android:layout_marginLeft="@dimen/card_left_margin"
-                android:layout_marginRight="@dimen/card_right_margin"
+                android:layout_marginStart="@dimen/card_left_margin"
+                android:layout_marginEnd="@dimen/card_right_margin"
                 android:layout_marginTop="@dimen/content_top_margin"
                 android:text="TextView" />
 
@@ -76,10 +76,10 @@
                 android:layout_below="@id/tvContent"
                 android:layout_gravity="center_vertical"
                 android:layout_marginBottom="10dp"
-                android:layout_marginLeft="@dimen/card_left_margin"
-                android:layout_marginRight="@dimen/card_right_margin"
+                android:layout_marginStart="@dimen/card_left_margin"
+                android:layout_marginEnd="@dimen/card_right_margin"
                 android:background="#ffffff"
-                android:drawableLeft="@drawable/ic_read_orweb"
+                android:drawableStart="@drawable/ic_read_orweb"
                 android:drawablePadding="10dp"
                 android:gravity="center_vertical"
                 android:paddingTop="10dp"

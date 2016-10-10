@@ -17,8 +17,8 @@
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="15dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
         android:layout_marginTop="30dp"
         android:text="@string/lock_screen_set_passphrase" />
 
@@ -28,8 +28,8 @@
         android:layout_height="wrap_content"
         android:layout_above="@id/btnStartCreatePassphrase"
         android:layout_centerHorizontal="true"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/dropdown_spinner_background"
         android:divider="@drawable/dropdown_spinner_divider"
@@ -39,9 +39,9 @@
             android:id="@+id/imageViewDropdown"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
             android:src="@drawable/ic_launch_dropdown" />
     </info.guardianproject.securereaderinterface.widgets.DropdownSpinner>
 

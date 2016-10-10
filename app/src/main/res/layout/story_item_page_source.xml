@@ -3,7 +3,7 @@
     android:id="@+id/tlSource"
     android:layout_width="match_parent"
     android:layout_height="@dimen/source_height"
-    android:layout_gravity="left|start" >
+    android:layout_gravity="start|start" >
 
         <ImageView
             android:id="@+id/imageView1"
@@ -23,7 +23,7 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_weight="0"
-            android:gravity="right|end|center_vertical"
+            android:gravity="end|end|center_vertical"
             android:paddingLeft="4dp"
             android:paddingStart="4dp"
             android:text="@string/story_item_short_time" />
@@ -34,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_gravity="left|start|center_vertical"
+            android:layout_gravity="start|start|center_vertical"
             android:layout_marginEnd="4dp"
             android:layout_marginLeft="4dp"
             android:layout_marginRight="4dp"
@@ -45,7 +45,7 @@
             android:layout_toEndOf="@+id/imageView1"
             android:layout_weight="1"
             android:ellipsize="end"
-            android:gravity="left|start|center_vertical"
+            android:gravity="start|start|center_vertical"
             android:maxLines="1"
             android:padding="4dp"
             android:text="@string/story_item_short_source"

@@ -91,7 +91,7 @@
                 android:id="@+id/textView1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="left|center_vertical"
+                android:layout_gravity="start|center_vertical"
                 android:layout_weight="1"
                 android:text="@string/story_list_hint_tor_more"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
@@ -100,7 +100,7 @@
                 android:id="@+id/imageView1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right|center_vertical"
+                android:layout_gravity="end|center_vertical"
                 android:src="@drawable/ic_context_open" />
 
         </LinearLayout>
@@ -116,7 +116,7 @@
                 android:id="@+id/TextView01"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="left|center_vertical"
+                android:layout_gravity="start|center_vertical"
                 android:layout_weight="1"
                 android:text="@string/story_list_hint_tor_less"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
@@ -125,7 +125,7 @@
                 android:id="@+id/ImageView01"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right|center_vertical"
+                android:layout_gravity="end|center_vertical"
                 android:src="@drawable/ic_context_close" />
         </LinearLayout>
 

@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="top|start"
     android:background="@color/drawer_menu_background_color"
-    android:paddingRight="1dp" >
+    android:paddingEnd="1dp" >
 
     <info.guardianproject.securereaderinterface.widgets.CustomFontCheckableButton
         android:id="@+id/btnMenuTor"
@@ -22,7 +22,7 @@
         style="@style/LeftMenuLabelStyle"
         android:layout_width="150dp"
         android:layout_height="75dp"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:background="@drawable/button_photos_background_selector"
         android:drawableTop="@drawable/button_photos_icon_selector"
         android:padding="10dp"

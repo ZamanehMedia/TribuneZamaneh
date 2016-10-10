@@ -42,7 +42,7 @@
                     style="@style/HelpTitleStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="left|center_vertical"
+                    android:gravity="start|center_vertical"
                     android:text="@string/help_tor_title" />
 
                 <TextView
@@ -57,7 +57,7 @@
                     style="@style/HelpButtonDiscreteStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableRight="@drawable/ic_menu_tor"
+                    android:drawableEnd="@drawable/ic_menu_tor"
                     android:text="@string/help_tor_button"
                     android:visibility="gone" />
             </LinearLayout>
@@ -93,7 +93,7 @@
                         style="@style/HelpTitleStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="left|center_vertical"
+                        android:gravity="start|center_vertical"
                         android:text="@string/help_wipe_title" />
 
                     <TextView
@@ -133,7 +133,7 @@
                         style="@style/HelpTitleStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="left|center_vertical"
+                        android:gravity="start|center_vertical"
                         android:text="@string/help_share_title" />
 
                     <TextView
@@ -167,7 +167,7 @@
                     style="@style/HelpTitleStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="left|center_vertical"
+                    android:gravity="start|center_vertical"
                     android:text="@string/help_data_title" />
 
                 <TextView
@@ -191,7 +191,7 @@
                     style="@style/HelpTitleStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="left|center_vertical"
+                    android:gravity="start|center_vertical"
                     android:text="@string/about_guardian_title" />
 
                 <TextView
@@ -215,7 +215,7 @@
                     style="@style/HelpTitleStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="left|center_vertical"
+                    android:gravity="start|center_vertical"
                     android:text="@string/help_terms_title" />
 
                 <TextView

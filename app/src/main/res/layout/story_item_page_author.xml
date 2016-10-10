@@ -3,9 +3,9 @@
     android:id="@+id/tlAuthor"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="top|left|start"
+    android:layout_gravity="top|start|start"
     android:background="#e8e9ea"
-    android:gravity="top|left|start"
+    android:gravity="top|start|start"
     android:paddingBottom="2dp" >
 
     <View android:background="@color/button_primary"
@@ -24,7 +24,7 @@
         android:layout_marginTop="5dp"
         android:background="#ffffff"
         android:ellipsize="end"
-        android:gravity="left|start|center_vertical"
+        android:gravity="start|start|center_vertical"
         android:maxLines="1"
         android:padding="4dp"
         android:text="@string/story_item_short_source"
@@ -45,7 +45,7 @@
         android:layout_toRightOf="@id/tvAuthorDate"
         android:layout_toEndOf="@id/tvAuthorDate"
         android:background="#ffffff"
-        android:gravity="right|end|center_vertical"
+        android:gravity="end|end|center_vertical"
         android:padding="4dp"
         android:text="@string/story_item_short_time" />
 
@@ -59,12 +59,12 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_below="@id/tvAuthorDate"
-            android:layout_gravity="left|start|center_vertical"
+            android:layout_gravity="start|start|center_vertical"
             android:layout_marginBottom="2dp"
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="2dp"
             android:background="#ffffff"
-            android:gravity="left|start"
+            android:gravity="start|start"
             android:padding="4dp"
             android:text="@string/story_item_short_source"
             android:textAllCaps="true" />

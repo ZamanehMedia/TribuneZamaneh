@@ -133,7 +133,7 @@
                 android:id="@+id/editTags"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@id/editTitle"
+                android:layout_alignStart="@id/editTitle"
                 android:layout_alignParentBottom="true"
                 android:ems="10"
                 android:hint="@string/add_post_tag_hint"
@@ -145,10 +145,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dip"
                 android:layout_above="@id/editTags"
-                android:layout_alignLeft="@id/editTitle"
+                android:layout_alignStart="@id/editTitle"
                 android:layout_below="@id/editTitle"
                 android:ems="10"
-                android:gravity="top|left"
+                android:gravity="top|start"
                 android:hint="@string/add_post_headline_label"
                 android:minHeight="50dp" />
         </RelativeLayout>

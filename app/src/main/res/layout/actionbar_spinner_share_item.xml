@@ -7,8 +7,8 @@
                 android:layout_marginBottom="2dip"
                 android:layout_marginTop="2dip"
                 android:adjustViewBounds="true"
-                android:paddingLeft="12dp"
-                android:paddingRight="12dp"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
                 android:scaleType="center"
                 android:src="@drawable/ic_action_share" />
 

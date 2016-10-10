@@ -47,8 +47,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android1:layout_marginBottom="5dp"
-                android1:layout_marginLeft="5dp"
-                android1:layout_marginRight="5dp"
+                android1:layout_marginStart="5dp"
+                android1:layout_marginEnd="5dp"
                 android1:layout_marginTop="20dp"
                 android:background="@drawable/search_field_background" >
 
@@ -75,8 +75,8 @@
                 android1:layout_width="match_parent"
                 android1:layout_height="50dp"
                 android1:layout_marginBottom="20dp"
-                android1:layout_marginLeft="5dp"
-                android1:layout_marginRight="5dp"
+                android1:layout_marginStart="5dp"
+                android1:layout_marginEnd="5dp"
                 android1:layout_marginTop="20dp"
                 android1:text="@string/create_account_create" />
         </LinearLayout>

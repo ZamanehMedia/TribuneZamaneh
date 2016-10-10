@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:text="Expand"
-        android:gravity="left|start"
+        android:gravity="start|start"
         />
 
 </LinearLayout>

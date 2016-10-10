@@ -20,7 +20,7 @@
             style="@style/OnboardingBottomBarTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right|center_vertical|end"
+            android:layout_gravity="end|center_vertical|end"
             android:background="@null"
             android:text="@string/onboarding_next" />
 
