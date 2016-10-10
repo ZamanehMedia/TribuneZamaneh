@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<string name="opml_url">https://www.postmodernapps.net/paik/opml.php</string>
+	<bool name="fulltextfeeds">false</bool>
+
+    <string-array name="built_in_feed_names">
+        <item>Applications</item>
+    </string-array>
+    
+	<string-array name="built_in_feed_urls">
+        <item>https://www.postmodernapps.net/paik/swfeed/swfeed.php</item>
+    </string-array>
+    
+	<string-array name="feed_urls_with_comments">
+	    <item>https://www.postmodernapps.net/paik/sr/?feed=rss2</item>
+	</string-array>
+	
+	<integer name="talk_item_remote_id">1</integer>
+	<string name="talk_item_feed_url">https://www.postmodernapps.net/paik/sr/?feed=rss2&amp;p=1</string>
+	<string name="talk_item_xmlrpc_url">https://www.postmodernapps.net/paik/sr/xmlrpc.php</string>
+
+	<!-- FEED_REFRESH_AGE = 300000; // 5 minutes -->
+	<integer name="feed_refresh_age">300000</integer>
+	
+	<!-- OPML_CHECK_FREQUENCY = 43200000; // .5 day -->
+	<integer name="opml_check_frequency">43200000</integer>
+	
+	<!-- EXPIRATION_CHECK_FREQUENCY = 43200000; // .5 days -->
+	<integer name="expiration_check_frequency">43200000</integer>
+	
+	<!--   -->
+	<bool name="repeatedly_load_network_opml">false</bool>	
+	
+	<!-- XMLRPC_ENDPOINT -->
+	<string name="xmlrpc_endpoint">https://www.postmodernapps.net/paik/sr/xmlrpc.php</string>
+	    
+	<!-- Default values that should be referenced in Settings.java -->
+	<bool name="require_tor_default">true</bool>
+
+        <!-- Default values that should be referenced in Settings.java -->
+        <string name="article_expiration_default">OneWeek</string>
+        <string name="sync_mode_default">BitWise</string>       
+        <string name="sync_network_default">WifiAndMobile</string>
+        <string name="sync_frequency_default">InBackground</string>
+        
+        <!-- Limit number of items to keep in database -1 for no limit -->
+        <integer name="item_limit">-1</integer>
+        
+        <!-- Limit amount of media items to keep on disk in megabytes -1 for no limit -->
+        <integer name="media_cache_size">200</integer>
+
+</resources>

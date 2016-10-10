@@ -1,0 +1,20 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Comments activity styles				       -->
+    <!--                                               -->
+    <!--                                               -->
+
+	<style name="CommentsStyle">
+	    <item name="android:background">#ffffff</item>
+	</style>
+
+    <style name="CommentsHeaderStyle">
+        <item name="font">Roboto</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">#000000</item>
+		<item name="android:textAllCaps">false</item>
+	</style>
+    
+</resources>

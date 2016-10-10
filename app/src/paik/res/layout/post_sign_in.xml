@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ff1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey_light_light" >
+
+    <ScrollView
+        android:id="@+id/sv1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_margin="10dp" >
+
+        <LinearLayout
+            android:id="@+id/llRoot"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/white_with_bottom_shadow"
+            android:descendantFocusability="beforeDescendants"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical"
+            android:stretchMode="columnWidth" >
+
+            <ImageView
+                android:id="@+id/imageView1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scaleType="fitCenter"
+                android:src="@drawable/img_reporter" />
+
+            <info.guardianproject.securereaderinterface.widgets.CustomFontTextView
+                android:id="@+id/textView2"
+                style="@style/HelpTitleStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/post_sign_in_title" />
+
+            <TextView
+                android:id="@+id/textView1"
+                style="@style/HelpTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/post_sign_in_info" />
+
+            <CheckBox
+                android:id="@+id/chkAgree"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:button="@drawable/abc_btn_check_material"
+                android:buttonTint="@color/checkbox_color_selector"
+                android:paddingLeft="10dp"
+                android:text="@string/post_sign_in_agree"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:theme="@style/SettingsCheckboxStyle" />
+            
+            <Button
+                android:id="@+id/btnNext"
+                style="@style/PostSignInCreateButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/post_sign_in_done" />
+        </LinearLayout>
+    </ScrollView>
+
+</FrameLayout>

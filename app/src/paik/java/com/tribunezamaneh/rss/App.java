@@ -7,6 +7,7 @@ import android.os.Bundle;
 import com.tribunezamaneh.rss.adapters.DrawerMenuAdapter;
 
 import info.guardianproject.securereaderinterface.BuildConfig;
+import info.guardianproject.securereaderinterface.CommentsActivity;
 import info.guardianproject.securereaderinterface.R;
 import info.guardianproject.securereaderinterface.ui.UICallbackListener;
 import info.guardianproject.securereaderinterface.ui.UICallbacks;
