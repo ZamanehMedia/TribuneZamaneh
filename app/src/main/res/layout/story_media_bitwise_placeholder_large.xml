@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<info.guardianproject.securereaderinterface.views.DownloadView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/FrameLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -22,7 +22,6 @@
 
     <TextView
         android:id="@+id/tvDownload"
-        style="@style/DownloadPlaceholderTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/ivDownloadIcon"
@@ -33,5 +32,5 @@
         android:longClickable="false"
         android:text="@string/download_epub_hint"
         android:textAppearance="?android:attr/textAppearanceMedium" />
-
-</RelativeLayout>
+<!--         style="@style/DownloadPlaceholderTextStyle" -->
+</info.guardianproject.securereaderinterface.views.DownloadView>
