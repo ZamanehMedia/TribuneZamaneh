@@ -96,7 +96,7 @@ public class CommentsActivity extends Activity implements OnClickListener, OnAct
 		mItem = (Item)getIntent().getSerializableExtra("item");
 		if (mItem == null)
 		{
-			// Called without an item, show Paik Talk. We do this by getting special item from the SocialReader.
+			// Called without an item, show Tribune Zamaneh Talk. We do this by getting special item from the SocialReader.
 			//
 			mItem = App.getInstance().socialReader.getTalkItem();
 			((TextView)findViewById(R.id.title)).setText(R.string.menu_chat);

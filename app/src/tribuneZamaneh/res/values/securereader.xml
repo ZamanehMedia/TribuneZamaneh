@@ -1,25 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-	<string name="opml_url">https://www.postmodernapps.net/paik/opml.php</string>
+	<string name="opml_url"></string>
 	<bool name="fulltextfeeds">false</bool>
 
     <string-array name="built_in_feed_names">
-        <item>Applications</item>
     </string-array>
     
 	<string-array name="built_in_feed_urls">
-        <item>https://www.postmodernapps.net/paik/swfeed/swfeed.php</item>
     </string-array>
     
 	<string-array name="feed_urls_with_comments">
-	    <item>https://www.postmodernapps.net/paik/sr/?feed=rss2</item>
 	</string-array>
 	
 	<integer name="talk_item_remote_id">1</integer>
-	<string name="talk_item_feed_url">https://www.postmodernapps.net/paik/sr/?feed=rss2&amp;p=1</string>
-	<string name="talk_item_xmlrpc_url">https://www.postmodernapps.net/paik/sr/xmlrpc.php</string>
-
+<!--
+	<string name="talk_item_feed_url">https://com.tribunezamaneh/?feed=rss2&amp;p=1</string>
+	<string name="talk_item_xmlrpc_url">https://com.tribunezamaneh/xmlrpc.php</string>
+-->
 	<!-- FEED_REFRESH_AGE = 300000; // 5 minutes -->
 	<integer name="feed_refresh_age">300000</integer>
 	
@@ -33,7 +31,7 @@
 	<bool name="repeatedly_load_network_opml">false</bool>	
 	
 	<!-- XMLRPC_ENDPOINT -->
-	<string name="xmlrpc_endpoint">https://www.postmodernapps.net/paik/sr/xmlrpc.php</string>
+	<string name="xmlrpc_endpoint"></string>
 	    
 	<!-- Default values that should be referenced in Settings.java -->
 	<bool name="require_tor_default">true</bool>

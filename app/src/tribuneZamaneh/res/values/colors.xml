@@ -12,8 +12,8 @@
    <color name="accent_dark_medium">#80A4A59B</color>  
    <color name="accent_dark">#40A4A59B</color>  
 
-   <color name="button_primary">#4CAF50</color>
-   <color name="button_primary_selected">#804CAF50</color>
+   <color name="button_primary">#4C50AF</color>
+   <color name="button_primary_selected">#804C50AF</color>
    
    <color name="button_secondary">#CECECC</color>
    <color name="button_secondary_selected">#80CECECC</color>

@@ -305,6 +305,13 @@ public class FragmentActivityWithMenu extends LockableActivity implements Drawer
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
+        if (menu != null && App.getSettings().passphraseTimeout() == 0) {
+            // Remove lock app option
+            MenuItem item = menu.findItem(R.id.menu_lock_app);
+            if (item != null)
+                item.setVisible(false);
+        }
+
         return super.onPrepareOptionsMenu(menu);
     }
 

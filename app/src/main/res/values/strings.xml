@@ -4,17 +4,17 @@
     <string name="app_name">Courier</string>
     <string name="app_description">Courier is a mobile RSS news reader with enhanced security features, offline reading and sharing capability.</string>
 
-    <string name="title_activity_main">Courier</string>
-    <string name="title_activity_help">Courier</string>
-    <string name="title_activity_downloads">Courier</string>
-    <string name="title_activity_add_feed">Courier</string>
+    <string name="title_activity_main">@string/app_name</string>
+    <string name="title_activity_help">@string/app_name</string>
+    <string name="title_activity_downloads">@string/app_name</string>
+    <string name="title_activity_add_feed">@string/app_name</string>
     <string name="title_activity_post">My Posts</string>
-    <string name="title_activity_add_post">Courier</string>
-    <string name="title_activity_panic">Courier</string>
-    <string name="title_activity_view_media">Courier</string>
-    <string name="title_activity_settings">Courier</string>
-    <string name="title_activity_lock_screen">Courier</string>
-    <string name="title_activity_create_account">Courier</string>
+    <string name="title_activity_add_post">@string/app_name</string>
+    <string name="title_activity_panic">@string/app_name</string>
+    <string name="title_activity_view_media">@string/app_name</string>
+    <string name="title_activity_settings">@string/app_name</string>
+    <string name="title_activity_lock_screen">@string/app_name</string>
+    <string name="title_activity_create_account">@string/app_name</string>
     <string name="title_activity_httpd_app_sender">SHARE APP</string>
     <string name="menu_tag">Search by Tag</string>
     <string name="menu_share">Share</string>
