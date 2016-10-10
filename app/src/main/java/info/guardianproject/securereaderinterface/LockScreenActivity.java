@@ -316,7 +316,16 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 
     @Override
     public void onCacheWordLocked() {
-        createLockView();
+		if (App.getSettings().passphraseTimeout() == 0) {
+			// No lock, use our stored PW
+			try {
+				mCacheWord.setPassphrase(getCWPassword().toCharArray());
+			} catch (GeneralSecurityException e) {
+				e.printStackTrace();
+			}
+		} else {
+			createLockView();
+		}
     }
 
     @Override
