@@ -31,7 +31,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:settings_key="@string/settingProxyType"
-                app:settings_value_type="@string/settingsTypeProxyType"
                 >
 
                 <RadioButton
@@ -214,7 +213,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:settings_key="numberOfPasswordAttempts"
-                app:settings_value_type="int"
                 >
 
                 <RadioButton

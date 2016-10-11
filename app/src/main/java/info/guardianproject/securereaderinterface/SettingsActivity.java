@@ -734,13 +734,12 @@ public class SettingsActivity extends FragmentActivityWithMenu implements ICache
 	}
 
 	private String mLastSettingsKey;
-	private String mLastSettingsValueType;
 
-	private boolean isValidType(String valueType) {
+	private boolean isValidType(Class<?> valueType) {
 		if (valueType != null) {
-			if ("int".equalsIgnoreCase(valueType)) {
+			if (int.class == valueType) {
 				return true;
-			} else if ("proxyType".equalsIgnoreCase(valueType)) {
+			} else if (valueType.isEnum() && valueType.getDeclaringClass() == Settings.class) {
 				return true;
 			}
 		}
@@ -749,20 +748,11 @@ public class SettingsActivity extends FragmentActivityWithMenu implements ICache
 		return false;
 	}
 
-	private Object getValue(String value, String valueType) {
-		if ("int".equalsIgnoreCase(valueType)) {
+	private Object getValue(String value, Class<?> valueType) {
+		if (int.class == valueType) {
 			return Integer.valueOf(value);
-		} else if ("proxyType".equalsIgnoreCase(valueType)) {
-			return Settings.ProxyType.valueOf(value);
-		}
-		return null;
-	}
-
-	private Class<?> getValueClass(String valueType) {
-		if ("int".equalsIgnoreCase(valueType)) {
-			return int.class;
-		} else if ("proxyType".equalsIgnoreCase(valueType)) {
-			return Settings.ProxyType.class;
+		} else if (valueType.isEnum()) {
+			return Enum.valueOf((Class<Enum>)valueType, value);
 		}
 		return null;
 	}
@@ -774,11 +764,9 @@ public class SettingsActivity extends FragmentActivityWithMenu implements ICache
 			{
 				TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SettingsControls);
 				mLastSettingsKey = a.getString(R.styleable.SettingsControls_settings_key);
-				mLastSettingsValueType = a.getString(R.styleable.SettingsControls_settings_value_type);
 				a.recycle();
 			} else {
 				mLastSettingsKey = null;
-				mLastSettingsValueType = null;
 			}
 		}
 		else if (name.contains("RadioButton")) {
@@ -789,31 +777,42 @@ public class SettingsActivity extends FragmentActivityWithMenu implements ICache
 				a.recycle();
 
 				if (value != null) {
-					if (!TextUtils.isEmpty(mLastSettingsKey) && !TextUtils.isEmpty(mLastSettingsValueType) && isValidType(mLastSettingsValueType)) {
+					if (!TextUtils.isEmpty(mLastSettingsKey)) {
 
 						RadioButton rb = (RadioButton) view;
 
 						try {
 							String methodNameOfSetter = "set" + String.valueOf(mLastSettingsKey.charAt(0)).toUpperCase() + mLastSettingsKey.substring(1);
 							final Method getter = mSettings.getClass().getMethod(mLastSettingsKey, (Class[]) null);
-							final Method setter = mSettings.getClass().getMethod(methodNameOfSetter, new Class<?>[]{getValueClass(mLastSettingsValueType)});
-							if (getter == null || setter == null) {
+							Class<?> returnType = getter.getReturnType();
+							if (getter == null) {
 								if (LOGGING)
-									Log.w(LOGTAG, "Failed to find propety getter/setter for: " + mLastSettingsKey);
+									Log.w(LOGTAG, "Failed to find propety getter for: " + mLastSettingsKey);
+								return;
+							}
+							if (returnType == null || !isValidType(returnType)) {
+								if (LOGGING)
+									Log.w(LOGTAG, "Invalid type for: " + mLastSettingsKey);
+								return;
+							}
+							final Method setter = mSettings.getClass().getMethod(methodNameOfSetter, new Class<?>[]{returnType});
+							if (setter == null) {
+								if (LOGGING)
+									Log.w(LOGTAG, "Failed to find propety setter for: " + mLastSettingsKey);
 								return;
 							}
 
 							RadioButtonChangeListener listener = new RadioButtonChangeListener(mSettings, getter, setter);
 							Object currentValueInSettings = getter.invoke(mSettings, (Object[]) null);
 
-							Object valueObject = getValue(value, mLastSettingsValueType);
+							Object valueObject = getValue(value, returnType);
 							if (currentValueInSettings.equals(valueObject))
 								rb.setChecked(true);
 							rb.setTag(valueObject);
 							rb.setOnCheckedChangeListener(listener);
 						} catch (Exception e) {
 							if (LOGGING)
-								Log.v(LOGTAG, "Failed to hookup radio button with value " + value + " of type " + mLastSettingsValueType + " for key " + mLastSettingsKey + " :" + e.toString());
+								Log.v(LOGTAG, "Failed to hookup radio button with value " + value + " for key " + mLastSettingsKey + " :" + e.toString());
 						}
 					}
 					else {

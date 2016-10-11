@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="settingsTypeInt">int</string>
-    <string name="settingsTypeProxyType">proxyType</string>
-
     <string name="settingProxyType">proxyType</string>
 </resources>

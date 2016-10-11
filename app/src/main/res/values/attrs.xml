@@ -9,7 +9,6 @@
     <attr name="hide_if_only_one" format="boolean" defaultValue="true" />
     <attr name="height_limit" format="float" default="0"/>
     <attr name="settings_key" format="reference|string" />
-    <attr name="settings_value_type" format="reference|string" />
     <attr name="settings_value" format="reference|string" />
 
     <declare-styleable name="CustomAppTheming">
@@ -84,7 +83,6 @@
 
     <declare-styleable name="SettingsControls">
         <attr name="settings_key" />
-        <attr name="settings_value_type" />
         <attr name="settings_value" />
     </declare-styleable>
 </resources>
