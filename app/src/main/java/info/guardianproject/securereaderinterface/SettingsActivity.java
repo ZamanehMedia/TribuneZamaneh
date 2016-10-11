@@ -1,6 +1,7 @@
 package info.guardianproject.securereaderinterface;
 
 import info.guardianproject.securereader.Settings;
+import info.guardianproject.securereaderinterface.ui.LayoutFactoryWrapper;
 import info.guardianproject.securereaderinterface.uiutil.UIHelpers;
 import info.guardianproject.securereaderinterface.widgets.GroupView;
 import info.guardianproject.securereaderinterface.widgets.InitialScrollScrollView;
@@ -22,6 +23,7 @@ import android.text.TextUtils;
 import android.text.style.CharacterStyle;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,14 +33,14 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 import info.guardianproject.cacheword.CacheWordHandler;
 import info.guardianproject.cacheword.ICacheWordSubscriber;
 import info.guardianproject.cacheword.PassphraseSecrets;
 
-public class SettingsActivity extends FragmentActivityWithMenu implements ICacheWordSubscriber
-{
-	private static final boolean LOGGING = false;
+public class SettingsActivity extends FragmentActivityWithMenu implements ICacheWordSubscriber, LayoutFactoryWrapper.Callback {
+	private static final boolean LOGGING = true;
 	private static final String LOGTAG = "Settings";
 
 	public static final String EXTRA_GO_TO_GROUP = "go_to_group";
@@ -55,12 +57,12 @@ public class SettingsActivity extends FragmentActivityWithMenu implements ICache
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
+		mSettings = App.getSettings();
 		super.onCreate(savedInstanceState);
+		getLayoutFactoryWrapper().setCallback(this);
 		setContentView(R.layout.activity_settings);
 		setMenuIdentifier(R.menu.activity_settings);
 		setDisplayHomeAsUp(true);
-
-		mSettings = App.getSettings();
 
 		rootView = (InitialScrollScrollView) findViewById(R.id.root);
 
@@ -170,7 +172,7 @@ public class SettingsActivity extends FragmentActivityWithMenu implements ICache
 	{
 		View tabView = rootView;
 
-		this.hookupRadioButton(tabView, "proxyType", Settings.ProxyType.class, R.id.rbProxyNone, R.id.rbProxyTor, R.id.rbProxyPsiphon);
+		//this.hookupRadioButton(tabView, "proxyType", Settings.ProxyType.class, R.id.rbProxyNone, R.id.rbProxyTor, R.id.rbProxyPsiphon);
 
 		mRbUseKillPassphraseOn = (RadioButton) tabView.findViewById(R.id.rbKillPassphraseOn);
 		mRbUseKillPassphraseOff = (RadioButton) tabView.findViewById(R.id.rbKillPassphraseOff);
@@ -226,9 +228,9 @@ public class SettingsActivity extends FragmentActivityWithMenu implements ICache
 				new ResourceValueMapping(R.id.rbUiLanguageFarsi, Settings.UiLanguage.Farsi)
 		});
 
-		this.hookupRadioButtonWithArray(tabView, "numberOfPasswordAttempts", int.class, new ResourceValueMapping[] {
-				new ResourceValueMapping(R.id.rbNumberOfPasswordAttempts1, 2), new ResourceValueMapping(R.id.rbNumberOfPasswordAttempts2, 3),
-				new ResourceValueMapping(R.id.rbNumberOfPasswordAttempts3, 0), });
+		//this.hookupRadioButtonWithArray(tabView, "numberOfPasswordAttempts", int.class, new ResourceValueMapping[] {
+		//		new ResourceValueMapping(R.id.rbNumberOfPasswordAttempts1, 2), new ResourceValueMapping(R.id.rbNumberOfPasswordAttempts2, 3),
+		//		new ResourceValueMapping(R.id.rbNumberOfPasswordAttempts3, 0), });
 		// this.hookupBinaryRadioButton(tabView, R.id.rbKillPassphraseOn,
 		// R.id.rbKillPassphraseOff, "useKillPassphrase");
 
@@ -729,5 +731,96 @@ public class SettingsActivity extends FragmentActivityWithMenu implements ICache
 
 	@Override
 	public void onCacheWordUninitialized() {
+	}
+
+	private String mLastSettingsKey;
+	private String mLastSettingsValueType;
+
+	private boolean isValidType(String valueType) {
+		if (valueType != null) {
+			if ("int".equalsIgnoreCase(valueType)) {
+				return true;
+			} else if ("proxyType".equalsIgnoreCase(valueType)) {
+				return true;
+			}
+		}
+		if (LOGGING)
+			Log.e(LOGTAG, "Invalid type found: " + valueType);
+		return false;
+	}
+
+	private Object getValue(String value, String valueType) {
+		if ("int".equalsIgnoreCase(valueType)) {
+			return Integer.valueOf(value);
+		} else if ("proxyType".equalsIgnoreCase(valueType)) {
+			return Settings.ProxyType.valueOf(value);
+		}
+		return null;
+	}
+
+	private Class<?> getValueClass(String valueType) {
+		if ("int".equalsIgnoreCase(valueType)) {
+			return int.class;
+		} else if ("proxyType".equalsIgnoreCase(valueType)) {
+			return Settings.ProxyType.class;
+		}
+		return null;
+	}
+
+	@Override
+	public void onViewCreated(View view, String name, Context context, AttributeSet attrs) {
+		if (name.contains("RadioGroup")) {
+			if (attrs != null)
+			{
+				TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SettingsControls);
+				mLastSettingsKey = a.getString(R.styleable.SettingsControls_settings_key);
+				mLastSettingsValueType = a.getString(R.styleable.SettingsControls_settings_value_type);
+				a.recycle();
+			} else {
+				mLastSettingsKey = null;
+				mLastSettingsValueType = null;
+			}
+		}
+		else if (name.contains("RadioButton")) {
+			if (attrs != null)
+			{
+				TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SettingsControls);
+				String value = a.getString(R.styleable.SettingsControls_settings_value);
+				a.recycle();
+
+				if (value != null) {
+					if (!TextUtils.isEmpty(mLastSettingsKey) && !TextUtils.isEmpty(mLastSettingsValueType) && isValidType(mLastSettingsValueType)) {
+
+						RadioButton rb = (RadioButton) view;
+
+						try {
+							String methodNameOfSetter = "set" + String.valueOf(mLastSettingsKey.charAt(0)).toUpperCase() + mLastSettingsKey.substring(1);
+							final Method getter = mSettings.getClass().getMethod(mLastSettingsKey, (Class[]) null);
+							final Method setter = mSettings.getClass().getMethod(methodNameOfSetter, new Class<?>[]{getValueClass(mLastSettingsValueType)});
+							if (getter == null || setter == null) {
+								if (LOGGING)
+									Log.w(LOGTAG, "Failed to find propety getter/setter for: " + mLastSettingsKey);
+								return;
+							}
+
+							RadioButtonChangeListener listener = new RadioButtonChangeListener(mSettings, getter, setter);
+							Object currentValueInSettings = getter.invoke(mSettings, (Object[]) null);
+
+							Object valueObject = getValue(value, mLastSettingsValueType);
+							if (currentValueInSettings.equals(valueObject))
+								rb.setChecked(true);
+							rb.setTag(valueObject);
+							rb.setOnCheckedChangeListener(listener);
+						} catch (Exception e) {
+							if (LOGGING)
+								Log.v(LOGTAG, "Failed to hookup radio button with value " + value + " of type " + mLastSettingsValueType + " for key " + mLastSettingsKey + " :" + e.toString());
+						}
+					}
+					else {
+						Log.e(LOGTAG, "RadioButton with value " + value + " lacks type or settings key!");
+					}
+				}
+			}
+		}
 	}
 }

@@ -31,4 +31,8 @@
   <string name="cacheword_notification_cached">Tribune Zamaneh passcode stored in memory</string>
   <string name="cacheword_notification_cached_message">Tribune Zamaneh passcode stored in memory</string>
   <string name="feed_filter_all_feeds">News feed</string>
+
+  <string name="settings_proxy_none">No proxy</string>
+  <string name="settings_security_password_attempts_1">3</string>
+  <string name="settings_security_password_attempts_2">5</string>
 </resources>

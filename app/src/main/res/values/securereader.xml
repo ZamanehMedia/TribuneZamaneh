@@ -25,7 +25,8 @@
 	<string name="xmlrpc_endpoint"></string>
 
 	<!-- Default values that should be referenced in Settings.java -->
-	<bool name="require_tor_default">true</bool>
+    <bool name="require_proxy_default">true</bool>
+    <string name="default_proxy_type">Tor</string>
 
         <!-- Default values that should be referenced in Settings.java -->
         <string name="article_expiration_default">OneMonth</string>

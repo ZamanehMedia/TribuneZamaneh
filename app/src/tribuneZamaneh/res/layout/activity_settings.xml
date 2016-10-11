@@ -1,9 +1,11 @@
 <info.guardianproject.securereaderinterface.widgets.InitialScrollScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true" >
+    android:fillViewport="true"
+    tools:ignore="MissingPrefix">
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -27,28 +29,28 @@
             <RadioGroup
                 android:id="@+id/radioGroupProxy"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                app:settings_key="@string/settingProxyType"
+                app:settings_value_type="@string/settingsTypeProxyType"
+                >
 
                 <RadioButton
                     android:id="@+id/rbProxyTor"
                     style="@style/SettingsRadioButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/settings_proxy_tor" />
-
-                <RadioButton
-                    android:id="@+id/rbProxyPsiphon"
-                    style="@style/SettingsRadioButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/settings_proxy_psiphon" />
+                    android:text="@string/settings_proxy_tor"
+                    app:settings_value="Tor"
+                    />
 
                 <RadioButton
                     android:id="@+id/rbProxyNone"
                     style="@style/SettingsRadioButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/settings_proxy_none" />
+                    android:text="@string/settings_proxy_none"
+                    app:settings_value="None"
+                    />
 
             </RadioGroup>
         </info.guardianproject.securereaderinterface.widgets.GroupView>
@@ -210,28 +212,37 @@
             <RadioGroup
                 android:id="@+id/rgNumberOfPasswordAttempts"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                app:settings_key="numberOfPasswordAttempts"
+                app:settings_value_type="int"
+                >
 
                 <RadioButton
                     android:id="@+id/rbNumberOfPasswordAttempts1"
                     style="@style/SettingsRadioButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/settings_security_password_attempts_1" />
+                    android:text="@string/settings_security_password_attempts_1"
+                    app:settings_value="3"
+                    />
 
                 <RadioButton
                     android:id="@+id/rbNumberOfPasswordAttempts2"
                     style="@style/SettingsRadioButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/settings_security_password_attempts_2" />
+                    android:text="@string/settings_security_password_attempts_2"
+                    app:settings_value="5"
+                    />
 
                 <RadioButton
                     android:id="@+id/rbNumberOfPasswordAttempts3"
                     style="@style/SettingsRadioButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/settings_security_password_attempts_3" />
+                    android:text="@string/settings_security_password_attempts_3"
+                    app:settings_value="0"
+                    />
             </RadioGroup>
 
             <TextView

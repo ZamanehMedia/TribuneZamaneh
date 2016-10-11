@@ -89,6 +89,7 @@ public class FragmentActivityWithMenu extends LockableActivity implements Drawer
     protected Toolbar mToolbar;
     protected View mToolbarShadow;
     private LayoutInflater mInflater;
+    private LayoutFactoryWrapper mLayoutFactoryWrapper;
 
 
     protected void setMenuIdentifier(int idMenu) {
@@ -123,7 +124,8 @@ public class FragmentActivityWithMenu extends LockableActivity implements Drawer
         super.onCreate(savedInstanceState);
         LayoutInflater inflater = LayoutInflater.from(this);
         mInflater = inflater.cloneInContext(this);
-        LayoutInflaterCompat.setFactory(mInflater, new LayoutFactoryWrapper(inflater.getFactory()));
+        mLayoutFactoryWrapper = new LayoutFactoryWrapper(inflater.getFactory());
+        LayoutInflaterCompat.setFactory(mInflater, mLayoutFactoryWrapper);
 
         UICallbacks.getInstance().addListener(this);
 
@@ -133,6 +135,10 @@ public class FragmentActivityWithMenu extends LockableActivity implements Drawer
         LocalBroadcastManager.getInstance(this).registerReceiver(mSetUiLanguageReceiver, new IntentFilter(App.SET_UI_LANGUAGE_BROADCAST_ACTION));
         mWipeReceiver = new WipeReceiver();
         LocalBroadcastManager.getInstance(this).registerReceiver(mWipeReceiver, new IntentFilter(App.WIPE_BROADCAST_ACTION));
+    }
+
+    protected LayoutFactoryWrapper getLayoutFactoryWrapper() {
+        return mLayoutFactoryWrapper;
     }
 
     @Override
