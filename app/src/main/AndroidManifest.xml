@@ -162,6 +162,13 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="info.guardianproject.securereaderinterface.AddFeedSearchActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_activity_add_feed"
+            android:windowSoftInputMode="stateVisible"
+            android:theme="@style/AppThemeSearch" >
+        </activity>
+        <activity
             android:name="info.guardianproject.securereaderinterface.PanicActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_panic"

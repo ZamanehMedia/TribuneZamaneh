@@ -101,6 +101,11 @@
     <string name="add_feed_collapse">Close</string>
     <string name="add_feed_not_loaded">Feed data not loaded</string>
     <string name="add_feed_error_loading">We were unable to load this feed. Be sure that the RSS feed URL is correct.</string>
+    <string name="menu_search">Search</string>
+    <string name="add_feed_tab_following">Following</string>
+    <string name="add_feed_tab_explore">Explore</string>
+    <string name="add_feed_search_hint">Search</string>
+    <string name="add_feed_search_no_results">No feeds found</string>
     <string name="settings_heading_proxy">Proxy</string>
     <string name="settings_proxy_tor">Tor</string>
     <string name="settings_proxy_psiphon">Psiphon</string>

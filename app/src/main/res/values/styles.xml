@@ -12,6 +12,7 @@
         <item name="actionBarTextStyle">@style/AppActionBarTitleStyle</item>
         <item name="android:alertDialogStyle">@style/ModalDialogStyleOld</item>
         <item name="android:alertDialogTheme">@style/ModalDialogTheme</item>
+        <item name="android:searchViewStyle">@style/AppSearchViewStyle</item>
         <item name="android:windowBackground">@drawable/background_news</item>
     </style>
     
@@ -22,16 +23,24 @@
         <item name="homeAsUpIndicator">@drawable/abc_ic_ab_back_material</item>
     </style>
 
+    <style name="AppSearchViewStyle" parent="Widget.AppCompat.Light.SearchView">
+        <item name="queryBackground">@null</item>
+        <item name="searchIcon">@null</item>
+    </style>
+
     <style name="ThemeOverlayActionBar">
         <item name="actionOverflowButtonStyle">@style/AppActionBarOverflowButtonStyle</item>
         <item name="actionButtonStyle">@style/AppActionButtonStyle</item>
     </style>
 
-    <style name="AppThemeReporter" parent="AppTheme">
-        <item name="colorPrimary">#848879</item>
-        <item name="colorPrimaryDark">#BAE24B</item>
+    <style name="AppThemeSearch" parent="AppTheme">
+        <item name="colorPrimary">#ffffff</item>
+        <item name="colorPrimaryDark">#aaaaaa</item>
+        <item name="colorControlNormal">#000000</item>
+        <item name="colorControlActivated">#000000</item>
+        <item name="searchViewStyle">@style/AppSearchViewStyle</item>
     </style>
-    
+
     <style name="AppActionButtonStyle" parent="Widget.AppCompat.ActionButton">
         <item name="android:minWidth">56dip</item>
         <item name="android:minHeight">?attr/actionBarSize</item>

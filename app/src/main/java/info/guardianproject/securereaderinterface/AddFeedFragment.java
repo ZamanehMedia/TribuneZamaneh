@@ -2,7 +2,8 @@ package info.guardianproject.securereaderinterface;
 
 import info.guardianproject.securereader.FeedFetcher.FeedFetchedCallback;
 import info.guardianproject.securereaderinterface.adapters.FeedListAdapter;
-import info.guardianproject.securereaderinterface.adapters.FeedListAdapter.FeedListAdapterListener;
+import info.guardianproject.securereaderinterface.adapters.FeedListAdapterExplore;
+import info.guardianproject.securereaderinterface.adapters.FeedListAdapterExplore.FeedListAdapterExploreListener;
 import info.guardianproject.securereaderinterface.uiutil.HttpTextWatcher;
 import info.guardianproject.securereaderinterface.widgets.UrlInputEditText;
 
@@ -23,9 +24,10 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ListView;
 
+import info.guardianproject.securereaderinterface.R;
 import com.tinymission.rss.Feed;
 
-public class AddFeedFragment extends Fragment implements FeedListAdapterListener, FeedFetchedCallback
+public class AddFeedFragment extends Fragment implements FeedFetchedCallback, info.guardianproject.securereaderinterface.adapters.FeedListAdapter.FeedListAdapterListener, FeedListAdapterExploreListener
 {
 	public static final String LOGTAG = "AddFeedFragment";
 	public static final boolean LOGGING = false;
@@ -91,31 +93,14 @@ public class AddFeedFragment extends Fragment implements FeedListAdapterListener
 		updateList();
 	}
 
-	private void updateList()
+	public void updateList()
 	{
 		ArrayList<Feed> feeds = App.getInstance().socialReader.getFeedsList();
-		mListFeeds.setAdapter(new FeedListAdapter(mListFeeds.getContext(), this, feeds));
-	}
-
-	@Override
-	public void addFeed(Feed feed)
-	{
-		App.getInstance().socialReader.subscribeFeed(feed);
-		((FeedListAdapter) mListFeeds.getAdapter()).notifyDataSetChanged();
-	}
-
-	@Override
-	public void removeFeed(Feed feed)
-	{
-		App.getInstance().socialReader.unsubscribeFeed(feed);
-		((FeedListAdapter) mListFeeds.getAdapter()).notifyDataSetChanged();
-	}
-
-	@Override
-	public void deleteFeed(Feed feed)
-	{
-		App.getInstance().socialReader.removeFeed(feed);
-		updateList();
+		boolean following = getArguments().getBoolean("following");
+		if (following)
+			mListFeeds.setAdapter(new FeedListAdapter(mListFeeds.getContext(), this, feeds));
+		else
+			mListFeeds.setAdapter(new FeedListAdapterExplore(mListFeeds.getContext(), this, feeds));
 	}
 
 	@Override
@@ -127,5 +112,21 @@ public class AddFeedFragment extends Fragment implements FeedListAdapterListener
 			Log.v(LOGTAG, "Feed " + _feed.getFeedURL() + " loaded, update list");
 		App.getInstance().socialReader.subscribeFeed(_feed);
 		updateList();
+	}
+
+	@Override
+	public void onFeedUnfollow(Feed feed) {
+		App.getInstance().socialReader.unsubscribeFeed(feed);
+	}
+
+	@Override
+	public void onFeedDelete(Feed feed) {
+		App.getInstance().socialReader.removeFeed(feed);
+		updateList();
+	}
+
+	@Override
+	public void onFeedFollow(Feed feed) {
+		App.getInstance().socialReader.subscribeFeed(feed);
 	}
 }

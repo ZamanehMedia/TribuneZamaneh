@@ -122,6 +122,11 @@ BBG will make every effort to review and post comments within 48 hours, although
   <string name="add_feed_collapse">بستن</string>
   <string name="add_feed_not_loaded">اطلاعات خوراک، دریافت نشد</string>
   <string name="add_feed_error_loading">نتوانستیم این خوراک را بگیریم. بررسی کنید که آدرس خوراک RSS صحیح است.‏</string>
+  <string name="menu_search">جست و جو</string>
+  <string name="add_feed_tab_following">دنبال کردن</string>
+  <string name="add_feed_tab_explore">گشت و گذار</string>
+  <string name="add_feed_search_hint">جست و جو </string>
+  <string name="add_feed_search_no_results">فیدی پیدا نشد</string>
   <string name="settings_heading_proxy">پروکسی</string>
   <string name="settings_proxy_tor">تور</string>
   <string name="settings_proxy_psiphon">سایفون</string>
