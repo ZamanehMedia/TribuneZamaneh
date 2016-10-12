@@ -90,15 +90,8 @@
   <string name="panic_hint_wipe_content">向下滑动删除个人资料</string>
   <string name="panic_test_successful">干得好！在真实场景中，您已经成功完成擦除。</string>
   <string name="add_feed_add">添加</string>
-  <string name="add_feed_operation_remove">删除</string>
-  <string name="add_feed_operation_copy_url">复制URL</string>
-  <string name="add_feed_operation_copy_url_clipboard_label">摘要URL</string>
-  <string name="add_feed_operation_cancel">取消</string>
   <string name="add_feed_manual_label">输入RSS摘要URL：</string>
   <string name="add_feed_manual_hint">figandquince.com/feed/</string>
-  <string name="add_feed_processing">正在处理</string>
-  <string name="add_feed_default_topic">您的摘要</string>
-  <string name="add_feed_expand">显示全部</string>
   <string name="add_feed_collapse">关闭</string>
   <string name="add_feed_not_loaded">摘要数据未加载</string>
   <string name="add_feed_error_loading">我们无法加载此摘要。请确认RSS摘要URL正确。</string>

@@ -84,15 +84,8 @@
   <string name="panic_hint_wipe_content">下にスワイプすると個人データを削除します</string>
   <string name="panic_test_successful">グッジョブ! 実際のシナリオでは、ワイプは完了していたでしょう。</string>
   <string name="add_feed_add">追加</string>
-  <string name="add_feed_operation_remove">削除</string>
-  <string name="add_feed_operation_copy_url">コピーURL</string>
-  <string name="add_feed_operation_copy_url_clipboard_label">フィードURL</string>
-  <string name="add_feed_operation_cancel">キャンセル</string>
   <string name="add_feed_manual_label">RSS フィード URL を入力してください:</string>
   <string name="add_feed_manual_hint">figandquince.com/feed/</string>
-  <string name="add_feed_processing">処理中</string>
-  <string name="add_feed_default_topic">あなたのフィード</string>
-  <string name="add_feed_expand">すべて表示</string>
   <string name="add_feed_collapse">閉じる</string>
   <string name="add_feed_not_loaded">フィードデータはロードされていません</string>
   <string name="add_feed_error_loading">このフィードを読み込みできませんでした。 RSSフィードのURLが正しいことを確認してください。</string>

@@ -83,15 +83,8 @@
   <string name="panic_hint_wipe_content">Проведіть пальцем вниз, щоб видалити ваші персональні дані</string>
   <string name="panic_test_successful">Молодець! У реальній ситуації, ви б успішно це стерли.</string>
   <string name="add_feed_add">Додати</string>
-  <string name="add_feed_operation_remove">ВИДАЛИТИ</string>
-  <string name="add_feed_operation_copy_url">СКОПІЮВАТИ URL адресу</string>
-  <string name="add_feed_operation_copy_url_clipboard_label">Подати URL адресу</string>
-  <string name="add_feed_operation_cancel">СКАСУВАТИ</string>
   <string name="add_feed_manual_label">Введіть адресу URL RSS каналу:</string>
   <string name="add_feed_manual_hint">figandquince.com/feed/</string>
-  <string name="add_feed_processing">Обробляється</string>
-  <string name="add_feed_default_topic">Ваші стрічки новин</string>
-  <string name="add_feed_expand">Показати Всі</string>
   <string name="add_feed_collapse">Закрити</string>
   <string name="add_feed_not_loaded">Дані стрічки новин не завантажено</string>
   <string name="add_feed_error_loading">Ми не змогли завантажити цю стрічку новин. Переконайтеся, що адреса URL RSS каналу вірна.</string>

@@ -84,15 +84,8 @@
   <string name="panic_hint_wipe_content">Проведите пальцем вниз для удаления персональных данных</string>
   <string name="panic_test_successful">Отлично! В реальной ситуации, удаление прошло бы успешно.</string>
   <string name="add_feed_add">Добавить</string>
-  <string name="add_feed_operation_remove">УДАЛИТЬ</string>
-  <string name="add_feed_operation_copy_url">СКОПИРОВАТЬ URL адрес</string>
-  <string name="add_feed_operation_copy_url_clipboard_label">URL-адрес ленты новостей</string>
-  <string name="add_feed_operation_cancel">ОТМЕНИТЬ</string>
   <string name="add_feed_manual_label">Введите URL-адрес RSS-ленты:</string>
   <string name="add_feed_manual_hint">figandquince.com/feed/</string>
-  <string name="add_feed_processing">Обработка</string>
-  <string name="add_feed_default_topic">Ваши ленты новостей</string>
-  <string name="add_feed_expand">Показать все</string>
   <string name="add_feed_collapse">Закрыть</string>
   <string name="add_feed_not_loaded">Данные ленты новостей не загружены</string>
   <string name="add_feed_error_loading">Мы не смогли загрузить эту ленту новостей. Убедитесь, что URL-адрес RSS-ленты верен.</string>

@@ -84,15 +84,8 @@
   <string name="panic_hint_wipe_content">Kişisel verileri silmek için aşağı kaydırın</string>
   <string name="panic_test_successful">İyi iş çıkardın! Gerçer bir senaryo olsaydı başarılı bir şekilde silme işlemi yapacaktınız.</string>
   <string name="add_feed_add">Ekle</string>
-  <string name="add_feed_operation_remove">KALDIR</string>
-  <string name="add_feed_operation_copy_url">BAĞLANTIYI KOPYALA</string>
-  <string name="add_feed_operation_copy_url_clipboard_label">Besleme Bağlantısı</string>
-  <string name="add_feed_operation_cancel">İPTAL</string>
   <string name="add_feed_manual_label">RSS Besleme Bağlantısını Girin:</string>
   <string name="add_feed_manual_hint">figandquince.com/feed/</string>
-  <string name="add_feed_processing">İşleniyor</string>
-  <string name="add_feed_default_topic">Beslemeleriniz</string>
-  <string name="add_feed_expand">Tümünü Göster</string>
   <string name="add_feed_collapse">Kapat</string>
   <string name="add_feed_not_loaded">Besleme verisi yüklenmedi</string>
   <string name="add_feed_error_loading">Bu besleme okunamıyor. RSS besleme bağlantısının doğru olduğundan emin olun.</string>

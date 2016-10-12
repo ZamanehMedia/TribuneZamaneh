@@ -85,15 +85,8 @@ I innstillings-panelet kan du velge at denne funksjonen isteden også sletter he
   <string name="panic_hint_wipe_content">Nedoversveip for å slette personlig data</string>
   <string name="panic_test_successful">Vel utført! Du er nå en kapabel sveiper, klar for den virkelige verden.</string>
   <string name="add_feed_add">Legg til</string>
-  <string name="add_feed_operation_remove">FJERN</string>
-  <string name="add_feed_operation_copy_url">KOPIER NETTADRESSE</string>
-  <string name="add_feed_operation_copy_url_clipboard_label">Nettadresse for nyhetsstrøm</string>
-  <string name="add_feed_operation_cancel">AVBRYT</string>
   <string name="add_feed_manual_label">Legg inn nettadresse for nyhetsstrøm:</string>
   <string name="add_feed_manual_hint">figandquince.com/feed/</string>
-  <string name="add_feed_processing">Behandler</string>
-  <string name="add_feed_default_topic">Dine nyhetsstrømmer</string>
-  <string name="add_feed_expand">Vis alle</string>
   <string name="add_feed_collapse">Lukk</string>
   <string name="add_feed_not_loaded">Data for nyhetsstrøm ikke innlastet</string>
   <string name="add_feed_error_loading">Kunne ikke laste nyhetsstrøm. Sjekk at nettadressen til nyhetsstrømen er rett.</string>

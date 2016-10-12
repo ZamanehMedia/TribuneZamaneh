@@ -84,15 +84,8 @@
   <string name="panic_hint_wipe_content">འོག་ལ་རྡེག་ནས་སྒེར་གྱི་གནས་ཚུལ་ཁག་གསུབ། </string>
   <string name="panic_test_successful">ལས་ཀ་ཡག་པོ་བྱུང་འདུག དོན་དངོས་སུ། ཁྱེད་ཀྱིས་གསུབ་་པ་དེ་ལེགས་འགྲུབ་བྱུང་འདུག </string>
   <string name="add_feed_add">ཁ་སྣོན་་བྱོས།</string>
-  <string name="add_feed_operation_remove">རྩ་མེད་བཟོས།</string>
-  <string name="add_feed_operation_copy_url"> དྲ་རྒྱའི་ཁ་བྱང་བཤུས། </string>
-  <string name="add_feed_operation_copy_url_clipboard_label">གསར་བྱུང་གི་དྲ་རྒྱའི་ཁ་བྱང་།</string>
-  <string name="add_feed_operation_cancel">ཕྱིར་འཐེན་བྱོས།</string>
   <string name="add_feed_manual_label">RSS ཡི་དྲ་རྒྱའི་ཁ་བྱང་་ནང་འཇུག་བྱོས། </string>
   <string name="add_feed_manual_hint">figandquince.com/feed/</string>
-  <string name="add_feed_processing">ལས་བཞིན་པ། </string>
-  <string name="add_feed_default_topic">ཁྱོད་ཀྱི་གསར་འགྱུར་ཁག </string>
-  <string name="add_feed_expand">ཆ་ཚང་སྟོན།</string>
   <string name="add_feed_collapse">ཁ་རྒྱོབས། </string>
   <string name="add_feed_not_loaded">གནས་ཚུལ་གྱི་རེའུ་མིག་སྣོན་འཇུག་བྱས་མི་འདུག </string>
   <string name="add_feed_error_loading">ང་ཚོས་གནས་ཚུལ་འདི་སྣོན་འཇུག་བྱེད་ཐུབ་ཀྱི་མི་འདུག་པས་ RSS གསར་བྱུང་གི་དྲ་རྒྱའི་ཁ་བྱང་དེ་ངེས་པར་དུ་མ་ནོར་བ་བྱོས། </string>

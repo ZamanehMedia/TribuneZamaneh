@@ -84,15 +84,8 @@
   <string name="panic_hint_wipe_content">Deslizar hacia abajo para borrar los datos personales</string>
   <string name="panic_test_successful">¡Buen trabajo! En un escenario real, habría completado un barrido con éxito.</string>
   <string name="add_feed_add">Añadir</string>
-  <string name="add_feed_operation_remove">ELIMINAR</string>
-  <string name="add_feed_operation_copy_url">COPIAR URL</string>
-  <string name="add_feed_operation_copy_url_clipboard_label">URL de la suscripción (feed)</string>
-  <string name="add_feed_operation_cancel">CANCELAR</string>
   <string name="add_feed_manual_label">Introducir URL de la suscripción (feed RSS):</string>
   <string name="add_feed_manual_hint">figandquince.com/feed/</string>
-  <string name="add_feed_processing">Procesando</string>
-  <string name="add_feed_default_topic">Sus suscripciones (feeds)</string>
-  <string name="add_feed_expand">Mostrar todos</string>
   <string name="add_feed_collapse">Cerrar</string>
   <string name="add_feed_not_loaded">Los datos de la suscripción (feed) no están cargados</string>
   <string name="add_feed_error_loading">No se pudo cargar esta suscripción. Asegúrese de que la URL de la suscripción (feed RSS) es correcta.</string>

@@ -4,15 +4,6 @@
     <!--                                               -->
     <!--                                               -->
 
-    <style name="AddFeedTopicStyle">
-        <item name="android:padding">5dp</item>
-        <item name="android:textSize">15sp</item>
-        <item name="android:textStyle">normal</item>
-        <item name="android:textColor">#ffffff</item>
-		<item name="android:textAllCaps">false</item>
-		<item name="android:background">@color/grey_light_medium</item>
-	</style>
-
     <style name="AddFeedFeedNameStyle">
         <item name="android:textSize">13sp</item>
         <item name="android:textStyle">normal</item>
