@@ -30,7 +30,7 @@
                 android:id="@+id/radioGroupProxy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:settings_key="@string/settingProxyType"
+                app:settings_key="@string/settingsBindingProxyType"
                 >
 
                 <RadioButton
@@ -39,7 +39,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/settings_proxy_tor"
-                    app:settings_value="Tor"
+                    app:settings_value="@string/settingsBindingProxyTypeValueTor"
                     />
 
                 <RadioButton
@@ -48,7 +48,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/settings_proxy_none"
-                    app:settings_value="None"
+                    app:settings_value="@string/settingsBindingProxyTypeValueNone"
                     />
 
             </RadioGroup>
@@ -92,21 +92,26 @@
             <RadioGroup
                 android:id="@+id/radioGroupPanic"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                app:settings_key="@string/settingsBindingWipeApp"
+                >
 
                 <RadioButton
                     android:id="@+id/rbWipeApp"
                     style="@style/SettingsRadioButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/settings_panic_wipe_app" />
+                    android:text="@string/settings_panic_wipe_app"
+                    app:settings_value="true"
+                    />
 
                 <RadioButton
                     android:id="@+id/rbWipeContent"
                     style="@style/SettingsRadioButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/settings_panic_wipe_content" />
+                    android:text="@string/settings_panic_wipe_content"
+                    app:settings_value="false"/>
             </RadioGroup>
 
         </info.guardianproject.securereaderinterface.widgets.GroupView>
@@ -145,22 +150,36 @@
                     android:id="@+id/radioGroupLaunch"
                     android:layout_width="0dip"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1" >
+                    android:layout_weight="1"
+                    app:settings_key="@string/settingsBindingPassphraseTimeout">
 
+                    <RadioButton
+                        android:id="@+id/rbPassphraseTimeout0"
+                        style="@style/SettingsRadioButtonStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/settings_security_passphrase_timeout0"
+                        app:settings_value="0"
+                        />
                     <RadioButton
                         android:id="@+id/rbPassphraseTimeout1"
                         style="@style/SettingsRadioButtonStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/settings_security_passphrase_timeout1" />
+                        android:text="@string/settings_security_passphrase_timeout1"
+                        app:settings_value="1"
+                        />
 
                     <RadioButton
                         android:id="@+id/rbPassphraseTimeout2"
                         style="@style/SettingsRadioButtonStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/settings_security_passphrase_timeout2" />
+                        android:text="@string/settings_security_passphrase_timeout2"
+                        app:settings_value="60"
+                        />
 
                     <RadioButton
                         android:id="@+id/rbPassphraseTimeout3"
@@ -168,21 +187,26 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/settings_security_passphrase_timeout3" />
+                        android:text="@string/settings_security_passphrase_timeout3"
+                        app:settings_value="3600"
+                        />
 
                     <RadioButton
                         android:id="@+id/rbPassphraseTimeout4"
                         style="@style/SettingsRadioButtonStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/settings_security_passphrase_timeout4" />
+                        android:text="@string/settings_security_passphrase_timeout4"
+                        app:settings_value="86400"
+                        />
 
                     <RadioButton
                         android:id="@+id/rbPassphraseTimeout5"
                         style="@style/SettingsRadioButtonStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/settings_security_passphrase_timeout5" />
+                        android:text="@string/settings_security_passphrase_timeout5"
+                        app:settings_value="604800"/>
 
                 </RadioGroup>
 
@@ -192,7 +216,8 @@
                     android:layout_height="wrap_content"
                     android:padding="10dp"
                     android:src="@drawable/ic_context_password"
-                    android:visibility="visible" />
+                    android:visibility="visible"
+                    android:onClick="setPassphraseClicked"/>
 
             </LinearLayout>
 
@@ -212,7 +237,7 @@
                 android:id="@+id/rgNumberOfPasswordAttempts"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:settings_key="numberOfPasswordAttempts"
+                app:settings_key="@string/settingsBindingNumberOfPasswordAttempts"
                 >
 
                 <RadioButton
@@ -263,22 +288,25 @@
                     android:id="@+id/radioGroupKillPassword"
                     android:layout_width="0dip"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1" >
-
+                    android:layout_weight="1"
+                    app:settings_key="@string/settingsBindingUseKillPassphrase"
+                    >
                     <RadioButton
                         android:id="@+id/rbKillPassphraseOn"
                         style="@style/SettingsRadioButtonStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/settings_security_kill_passphrase_on" />
+                        android:text="@string/settings_security_kill_passphrase_on"
+                        app:settings_value="true"/>
 
                     <RadioButton
                         android:id="@+id/rbKillPassphraseOff"
                         style="@style/SettingsRadioButtonStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/settings_security_kill_passphrase_off" />
+                        android:text="@string/settings_security_kill_passphrase_off"
+                        app:settings_value="false"/>
                 </RadioGroup>
 
                 <ImageView
@@ -286,7 +314,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="10dp"
-                    android:src="@drawable/ic_context_password" />
+                    android:src="@drawable/ic_context_password"
+                    android:onClick="setKillPassphraseClicked"/>
 
             </LinearLayout>
 
@@ -315,7 +344,9 @@
             <RadioGroup
                 android:id="@+id/rgExpiration"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                app:settings_key="@string/settingsBindingArticleExpiration"
+                >
 
                 <RadioButton
                     android:id="@+id/rbExpiration1Day"
@@ -324,7 +355,9 @@
                     android:layout_height="wrap_content"
                     android:button="@drawable/radiobutton_settings_selector"
                     android:enabled="true"
-                    android:text="@string/settings_data_article_expiration_1_day" />
+                    android:text="@string/settings_data_article_expiration_1_day"
+                    app:settings_value="@string/settingsBindingArticleExpirationValueOneDay"
+                    />
 
                 <RadioButton
                     android:id="@+id/rbExpiration1Week"
@@ -333,7 +366,9 @@
                     android:layout_height="wrap_content"
                     android:button="@drawable/radiobutton_settings_selector"
                     android:enabled="true"
-                    android:text="@string/settings_data_article_expiration_1_week" />
+                    android:text="@string/settings_data_article_expiration_1_week"
+                    app:settings_value="@string/settingsBindingArticleExpirationValueOneWeek"
+                    />
 
                 <RadioButton
                     android:id="@+id/rbExpiration1Month"
@@ -342,7 +377,9 @@
                     android:layout_height="wrap_content"
                     android:button="@drawable/radiobutton_settings_selector"
                     android:enabled="true"
-                    android:text="@string/settings_data_article_expiration_1_month" />
+                    android:text="@string/settings_data_article_expiration_1_month"
+                    app:settings_value="@string/settingsBindingArticleExpirationValueOneMonth"
+                    />
             </RadioGroup>
 
             <TextView
@@ -354,7 +391,9 @@
             <RadioGroup
                 android:id="@+id/rgSyncing"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                app:settings_key="@string/settingsBindingSyncFrequency"
+                >
 
                 <RadioButton
                     android:id="@+id/rbSyncManual"
@@ -362,7 +401,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="true"
-                    android:text="@string/settings_data_syncing_manual_only" />
+                    android:text="@string/settings_data_syncing_manual_only"
+                    app:settings_value="@string/settingsBindingSyncFrequencyValueManual"
+                    />
 
                 <RadioButton
                     android:id="@+id/rbSyncWhenRunning"
@@ -370,7 +411,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:enabled="true"
-                    android:text="@string/settings_data_syncing_automatic_running" />
+                    android:text="@string/settings_data_syncing_automatic_running"
+                    app:settings_value="@string/settingsBindingSyncFrequencyValueWhenRunning"
+                    />
 
                 <RadioButton
                     android:id="@+id/rbSyncInBackground"
@@ -378,7 +421,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:enabled="true"
-                    android:text="@string/settings_data_syncing_automatic_background" />
+                    android:text="@string/settings_data_syncing_automatic_background"
+                    app:settings_value="@string/settingsBindingSyncFrequencyValueInBackground"
+                    />
             </RadioGroup>
 
             <TextView
@@ -390,7 +435,9 @@
             <RadioGroup
                 android:id="@+id/rgSyncMode"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                app:settings_key="@string/settingsBindingSyncMode"
+                >
 
                 <RadioButton
                     android:id="@+id/rbSyncModeBitwise"
@@ -398,7 +445,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:enabled="true"
-                    android:text="@string/settings_data_sync_mode_bitwise" />
+                    android:text="@string/settings_data_sync_mode_bitwise"
+                    app:settings_value="@string/settingsBindingSyncModeValueBitWise"
+                    />
 
                 <RadioButton
                     android:id="@+id/rbSyncModeFlow"
@@ -407,7 +456,9 @@
                     android:layout_height="wrap_content"
                     android:checked="true"
                     android:enabled="true"
-                    android:text="@string/settings_data_sync_mode_flow" />
+                    android:text="@string/settings_data_sync_mode_flow"
+                    app:settings_value="@string/settingsBindingSyncModeValueLetItFlow"
+                    />
             </RadioGroup>
 
             <TextView
@@ -419,7 +470,9 @@
             <RadioGroup
                 android:id="@+id/rgSyncNetwork"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                app:settings_key="@string/settingsBindingSyncNetwork"
+                >
 
                 <RadioButton
                     android:id="@+id/rbSyncNetworkWifiOnly"
@@ -427,7 +480,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:enabled="true"
-                    android:text="@string/settings_data_sync_network_wifi" />
+                    android:text="@string/settings_data_sync_network_wifi"
+                    app:settings_value="@string/settingsBindingSyncNetworkValueWifiOnly"
+                    />
 
                 <RadioButton
                     android:id="@+id/rbSyncNetworkWifiAndMobile"
@@ -436,7 +491,9 @@
                     android:layout_height="wrap_content"
                     android:checked="true"
                     android:enabled="true"
-                    android:text="@string/settings_data_sync_network_all" />
+                    android:text="@string/settings_data_sync_network_all"
+                    app:settings_value="@string/settingsBindingSyncNetworkValueWifiAndMobile"
+                    />
             </RadioGroup>
 
         </info.guardianproject.securereaderinterface.widgets.GroupView>
@@ -461,7 +518,9 @@
             <RadioGroup
                 android:id="@+id/rgUiLanguage"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                app:settings_key="@string/settingsBindingUiLanguage"
+                >
 
                 <RadioButton
                     android:id="@+id/rbUiLanguageEnglish"
@@ -469,86 +528,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="true"
-                    android:text="@string/settings_language_english_nt" />
-
-                <RadioButton
-                    android:id="@+id/rbUiLanguageChinese"
-                    style="@style/SettingsRadioButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/settings_language_chinese_nt"
-                    android:visibility="gone"
+                    android:text="@string/settings_language_english_nt"
+                    app:settings_value="@string/settingsBindingUiLanguageValueEnglish"
                     />
-
-                <RadioButton
-                    android:id="@+id/rbUiLanguageTibetan"
-                    style="@style/SettingsRadioButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/settings_language_tibetan_nt"
-                    android:visibility="gone"
-                    />
-
-                <RadioButton
-                    android:id="@+id/rbUiLanguageUkrainian"
-                    style="@style/SettingsRadioButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/settings_language_ukrainian_nt"
-                    android:visibility="gone"
-                    />
-
-                <RadioButton
-                    android:id="@+id/rbUiLanguageRussian"
-                    style="@style/SettingsRadioButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/settings_language_russian_nt"
-                    android:visibility="gone"
-                    />
-
-                <RadioButton
-                    android:id="@+id/rbUiLanguageJapanese"
-                    style="@style/SettingsRadioButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/settings_language_japanese_nt"
-                    android:visibility="gone"
-                    />
-
-                <RadioButton
-                    android:id="@+id/rbUiLanguageNorwegian"
-                    style="@style/SettingsRadioButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/settings_language_norwegian_nt"
-                    android:visibility="gone"
-                    />
-
-                <RadioButton
-                    android:id="@+id/rbUiLanguageSpanish"
-                    style="@style/SettingsRadioButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/settings_language_spanish_nt"
-                    android:visibility="gone"
-                    />
-
-                <RadioButton
-                    android:id="@+id/rbUiLanguageTurkish"
-                    style="@style/SettingsRadioButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/settings_language_turkish_nt"
-                    android:visibility="gone"
-                    />
-
                 <RadioButton
                     android:id="@+id/rbUiLanguageFarsi"
                     style="@style/SettingsRadioButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/settings_language_farsi_nt" />
+                    android:text="@string/settings_language_farsi_nt"
+                    app:settings_value="@string/settingsBindingUiLanguageValueFarsi"
+                    />
 
             </RadioGroup>
 
@@ -563,6 +553,7 @@
                 android:id="@+id/rgReaderSwipeDirection"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                app:settings_key="@string/settingsBindingReaderSwipeDirection"
                 >
 
                 <RadioButton
@@ -571,7 +562,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:enabled="true"
-                    android:text="@string/settings_reader_swipe_direction_rtl" />
+                    android:text="@string/settings_reader_swipe_direction_rtl"
+                    app:settings_value="@string/settingsBindingReaderSwipeDirectionValueRtl"
+                    />
 
                 <RadioButton
                     android:id="@+id/rbSwipeDirectionLtr"
@@ -579,7 +572,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:enabled="true"
-                    android:text="@string/settings_reader_swipe_direction_ltr" />
+                    android:text="@string/settings_reader_swipe_direction_ltr"
+                    app:settings_value="@string/settingsBindingReaderSwipeDirectionValueLtr"
+                    />
 
                 <RadioButton
                     android:id="@+id/rbSwipeDirectionAutomatic"
@@ -587,7 +582,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="true"
-                    android:text="@string/settings_reader_swipe_direction_automatic" />
+                    android:text="@string/settings_reader_swipe_direction_automatic"
+                    app:settings_value="@string/settingsBindingReaderSwipeDirectionValueAutomatic"
+                    />
 
             </RadioGroup>
 
@@ -619,6 +616,7 @@
                 android:buttonTint="@color/checkbox_color_selector"
                 android:padding="5dp"
                 android:theme="@style/SettingsCheckboxStyle"
+                app:settings_key="@string/settingsBindingEnableScreenshots"
                 />
 
         </LinearLayout>

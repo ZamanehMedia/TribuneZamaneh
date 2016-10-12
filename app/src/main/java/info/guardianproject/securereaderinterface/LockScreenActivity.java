@@ -416,7 +416,7 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 		showNextOnboardingView();
 	}
 
-	private String getCWPassword() {
+	static String getCWPassword() {
 		String passphrase = App.getSettings().launchPassphrase();
 		if (TextUtils.isEmpty(passphrase)) {
 			passphrase = UUID.randomUUID().toString();
