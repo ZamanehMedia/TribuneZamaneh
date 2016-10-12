@@ -70,4 +70,16 @@ public class App extends info.guardianproject.securereaderinterface.App
 	public Class getDrawerMenuAdapterClass() {
 		return DrawerMenuAdapter.class;
 	}
+
+	@Override
+	public boolean onOptionsItemSelected(Activity activity, int itemId) {
+		if (itemId == R.id.menu_add_post) {
+			Intent intent = new Intent(this, AddPostActivity.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+			activity.startActivity(intent);
+			activity.overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left);
+			return true;
+		}
+		return super.onOptionsItemSelected(activity, itemId);
+	}
 }

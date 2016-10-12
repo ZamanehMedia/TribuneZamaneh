@@ -1,6 +1,5 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/ff0"
     android:layout_width="match_parent"
     android:layout_height="match_parent" 
     android:background="@color/grey_light_light"
@@ -9,7 +8,6 @@
     android:focusableInTouchMode="true"
     >
     <ScrollView
-        android:id="@+id/sv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
@@ -27,7 +25,6 @@
             android:stretchMode="columnWidth" >
 
             <TextView
-                android:id="@+id/TextView01"
                 style="@style/HelpTitleStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -41,7 +38,6 @@
                 android:background="@color/claret" />
 
             <TextView
-                android:id="@+id/textView1"
                 style="@style/HelpTextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -52,7 +48,7 @@
 
             <Button
                 android:id="@+id/btnGetFromPlay"
-                style="@style/PostSignInCreateButtonStyle"
+                style="@style/HelpButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginStart="15dp"
@@ -64,7 +60,7 @@
 
             <Button
                 android:id="@+id/btnGetFromWeb"
-                style="@style/PostSignInCreateButtonStyle"
+                style="@style/HelpButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginBottom="20dp"
@@ -82,7 +78,7 @@
 
             <Button
                 android:id="@+id/btnClose"
-                style="@style/PostSignInCreateButtonStyle"
+                style="@style/HelpButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="#ffffff"

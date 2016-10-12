@@ -5,10 +5,8 @@
     <string name="settingsBindingProxyTypeValueTor">Tor</string>
     <string name="settingsBindingProxyTypeValuePsiphon">Psiphon</string>
     <string name="settingsBindingPassphraseTimeout">passphraseTimeout</string>
-    <string name="settingsBindingContentFontSizeAdjustment">getContentFontSizeAdjustment</string>
     <string name="settingsBindingWipeApp">wipeApp</string>
     <string name="settingsBindingArticleExpiration">articleExpiration</string>
-    <string name="settingsBindingArticleExpirationValueNever">Never</string>
     <string name="settingsBindingArticleExpirationValueOneDay">OneDay</string>
     <string name="settingsBindingArticleExpirationValueOneWeek">OneWeek</string>
     <string name="settingsBindingArticleExpirationValueOneMonth">OneMonth</string>
@@ -37,7 +35,6 @@
     <string name="settingsBindingUiLanguageValueRussian">Russian</string>
     <string name="settingsBindingUiLanguageValueUkrainian">Ukrainian</string>
     <string name="settingsBindingUiLanguageValueFarsi">Farsi</string>
-    <string name="settingsBindingUiLanguageValueArabic">Arabic</string>
     <string name="settingsBindingNumberOfPasswordAttempts">numberOfPasswordAttempts</string>
     <string name="settingsBindingUseKillPassphrase">useKillPassphrase</string>
     <string name="settingsBindingEnableScreenshots">enableScreenshots</string>

@@ -19,7 +19,6 @@
             android:background="@drawable/rounded_panel_background" >
 
             <LinearLayout
-                android:id="@+id/llEnterPassphrase"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"

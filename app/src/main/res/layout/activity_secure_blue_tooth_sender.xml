@@ -1,6 +1,5 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/flRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:filterTouchesWhenObscured="true">
@@ -17,13 +16,11 @@
         tools:context=".SecureBluetoothSenderFragment" >
 
         <ImageView
-            android:id="@+id/ImageView01"
             style="@style/ModalImageStyle"
             android:scaleType="fitCenter"
             android:src="@drawable/img_share_instructions" />
 
         <TextView
-            android:id="@+id/textView2"
             style="@style/ModalCaptionStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -31,7 +28,6 @@
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <TextView
-            android:id="@+id/textView1"
             style="@style/ModalHeaderStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -53,9 +49,7 @@
             android:listSelector="@drawable/light_or_transparent_selector" >
         </ListView>
 
-        <FrameLayout
-            android:id="@+id/buttonContainer2"
-            style="@style/ModalButtonContainerStyle" >
+        <FrameLayout style="@style/ModalButtonContainerStyle" >
 
             <LinearLayout
                 android:id="@+id/btScanButton"
@@ -103,7 +97,6 @@
             android:text="TextView" />
 
         <FrameLayout
-            android:id="@+id/fl1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp" >
@@ -117,7 +110,6 @@
                 android:progressDrawable="@drawable/progress_drawable" />
 
             <TextView
-                android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -140,7 +132,6 @@
         tools:context=".SecureBluetoothSenderFragment" >
 
         <TextView
-            android:id="@+id/textView4"
             style="@style/ModalHeaderStyle"
             android:layout_width="fill_parent"
             android:gravity="center"
@@ -148,7 +139,6 @@
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <ScrollView
-            android:id="@+id/svSharedItem"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="20dp"
@@ -168,9 +158,7 @@
             </info.guardianproject.securereaderinterface.views.StoryItemPageView>
         </ScrollView>
 
-        <FrameLayout
-            android:id="@+id/buttonContainer1"
-            style="@style/ModalButtonContainerStyle" >
+        <FrameLayout style="@style/ModalButtonContainerStyle" >
 
             <LinearLayout
                 android:id="@+id/btnClose"

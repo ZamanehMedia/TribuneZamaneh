@@ -2,5 +2,4 @@
 <resources>
     <integer name="command_posts_list">0</integer>
     <integer name="command_post_add">0</integer>
-    <integer name="command_comment">102</integer>
 </resources>

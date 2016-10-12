@@ -13,5 +13,6 @@
     <!-- these have parameters -->
     <integer name="command_view_media">0</integer>
     <integer name="command_add_feed_manual">0</integer>
+    <integer name="command_comment">102</integer>
 
 </resources>

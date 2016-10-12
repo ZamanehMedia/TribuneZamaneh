@@ -14,7 +14,6 @@
             android:src="@drawable/img_stories_received" />
 
         <info.guardianproject.securereaderinterface.widgets.CustomFontTextView
-            android:id="@+id/tvText1"
             style="@style/HelpTitleStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -22,7 +21,6 @@
             android:text="@string/story_list_hint_no_shared_text1" />
 
         <TextView
-            android:id="@+id/tvText2"
             style="@style/HelpTextStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

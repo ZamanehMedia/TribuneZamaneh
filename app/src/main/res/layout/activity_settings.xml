@@ -16,7 +16,6 @@
         <!-- Proxy section -->
 
         <info.guardianproject.securereaderinterface.widgets.GroupView
-            android:id="@+id/groupProxy"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
@@ -27,14 +26,12 @@
             app:header_text="@string/settings_heading_proxy" >
 
             <RadioGroup
-                android:id="@+id/radioGroupProxy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:settings_key="@string/settingsBindingProxyType"
                 >
 
                 <RadioButton
-                    android:id="@+id/rbProxyTor"
                     style="@style/SettingsRadioButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -42,7 +39,6 @@
 		    app:settings_value="@string/settingsBindingProxyTypeValueTor" />
 
                 <RadioButton
-                    android:id="@+id/rbProxyPsiphon"
                     style="@style/SettingsRadioButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -50,7 +46,6 @@
 app:settings_value="@string/settingsBindingProxyTypeValuePsiphon" />
 
                 <RadioButton
-                    android:id="@+id/rbProxyNone"
                     style="@style/SettingsRadioButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -65,7 +60,6 @@ app:settings_value="@string/settingsBindingProxyTypeValuePsiphon" />
         <!-- Chat section -->
 
         <info.guardianproject.securereaderinterface.widgets.GroupView
-            android:id="@+id/groupChat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
@@ -97,14 +91,12 @@ app:settings_value="@string/settingsBindingProxyTypeValuePsiphon" />
                 android:text="@string/settings_panic_action_info" />
 
             <RadioGroup
-                android:id="@+id/radioGroupPanic"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:settings_key="@string/settingsBindingWipeApp"
                 >
 
                 <RadioButton
-                    android:id="@+id/rbWipeApp"
                     style="@style/SettingsRadioButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -113,7 +105,6 @@ app:settings_value="@string/settingsBindingProxyTypeValuePsiphon" />
                     />
 
                 <RadioButton
-                    android:id="@+id/rbWipeContent"
                     style="@style/SettingsRadioButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -126,7 +117,6 @@ app:settings_value="@string/settingsBindingProxyTypeValuePsiphon" />
         <!-- Login section -->
 
         <info.guardianproject.securereaderinterface.widgets.GroupView
-            android:id="@+id/groupLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
@@ -149,19 +139,16 @@ app:settings_value="@string/settingsBindingProxyTypeValuePsiphon" />
                 android:text="@string/settings_security_passphrase_timeout_info" />
 
             <LinearLayout
-                android:id="@+id/llPassphrase2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
 
                 <RadioGroup
-                    android:id="@+id/radioGroupLaunch"
                     android:layout_width="0dip"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     app:settings_key="@string/settingsBindingPassphraseTimeout">
 
                     <RadioButton
-                        android:id="@+id/rbPassphraseTimeout0"
                         style="@style/SettingsRadioButtonStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -170,7 +157,6 @@ app:settings_value="@string/settingsBindingProxyTypeValuePsiphon" />
                         app:settings_value="0"
                         />
                     <RadioButton
-                        android:id="@+id/rbPassphraseTimeout1"
                         style="@style/SettingsRadioButtonStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -180,7 +166,6 @@ app:settings_value="@string/settingsBindingProxyTypeValuePsiphon" />
                         />
 
                     <RadioButton
-                        android:id="@+id/rbPassphraseTimeout2"
                         style="@style/SettingsRadioButtonStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -189,7 +174,6 @@ app:settings_value="@string/settingsBindingProxyTypeValuePsiphon" />
                         />
 
                     <RadioButton
-                        android:id="@+id/rbPassphraseTimeout3"
                         style="@style/SettingsRadioButtonStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -199,7 +183,6 @@ app:settings_value="@string/settingsBindingProxyTypeValuePsiphon" />
                         />
 
                     <RadioButton
-                        android:id="@+id/rbPassphraseTimeout4"
                         style="@style/SettingsRadioButtonStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -208,7 +191,6 @@ app:settings_value="@string/settingsBindingProxyTypeValuePsiphon" />
                         />
 
                     <RadioButton
-                        android:id="@+id/rbPassphraseTimeout5"
                         style="@style/SettingsRadioButtonStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -218,7 +200,6 @@ app:settings_value="@string/settingsBindingProxyTypeValuePsiphon" />
                 </RadioGroup>
 
                 <ImageView
-                    android:id="@+id/btnSetLaunchPassphrase"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="10dp"
@@ -241,14 +222,12 @@ app:settings_value="@string/settingsBindingProxyTypeValuePsiphon" />
                 android:text="@string/settings_security_password_attempts_label" />
 
             <RadioGroup
-                android:id="@+id/rgNumberOfPasswordAttempts"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:settings_key="@string/settingsBindingNumberOfPasswordAttempts"
                 >
 
                 <RadioButton
-                    android:id="@+id/rbNumberOfPasswordAttempts1"
                     style="@style/SettingsRadioButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -257,7 +236,6 @@ app:settings_value="@string/settingsBindingProxyTypeValuePsiphon" />
                     />
 
                 <RadioButton
-                    android:id="@+id/rbNumberOfPasswordAttempts2"
                     style="@style/SettingsRadioButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -266,7 +244,6 @@ app:settings_value="@string/settingsBindingProxyTypeValuePsiphon" />
                     />
 
                 <RadioButton
-                    android:id="@+id/rbNumberOfPasswordAttempts3"
                     style="@style/SettingsRadioButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -292,14 +269,12 @@ app:settings_value="@string/settingsBindingProxyTypeValuePsiphon" />
                 android:layout_height="wrap_content" >
 
                 <RadioGroup
-                    android:id="@+id/radioGroupKillPassword"
                     android:layout_width="0dip"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     app:settings_key="@string/settingsBindingUseKillPassphrase"
                     >
                     <RadioButton
-                        android:id="@+id/rbKillPassphraseOn"
                         style="@style/SettingsRadioButtonStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -308,7 +283,6 @@ app:settings_value="@string/settingsBindingProxyTypeValuePsiphon" />
                         app:settings_value="true"/>
 
                     <RadioButton
-                        android:id="@+id/rbKillPassphraseOff"
                         style="@style/SettingsRadioButtonStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -317,7 +291,6 @@ app:settings_value="@string/settingsBindingProxyTypeValuePsiphon" />
                 </RadioGroup>
 
                 <ImageView
-                    android:id="@+id/btnSetKillPassphrase"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="10dp"
@@ -332,7 +305,6 @@ app:settings_value="@string/settingsBindingProxyTypeValuePsiphon" />
         <!-- Data & Syncing section -->
 
         <info.guardianproject.securereaderinterface.widgets.GroupView
-            android:id="@+id/groupDataUse"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
@@ -349,14 +321,12 @@ app:settings_value="@string/settingsBindingProxyTypeValuePsiphon" />
                 android:text="@string/settings_data_article_expiration" />
 
             <RadioGroup
-                android:id="@+id/rgExpiration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:settings_key="@string/settingsBindingArticleExpiration"
                 >
 
                 <RadioButton
-                    android:id="@+id/rbExpiration1Day"
                     style="@style/SettingsRadioButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -367,7 +337,6 @@ app:settings_value="@string/settingsBindingProxyTypeValuePsiphon" />
                     />
 
                 <RadioButton
-                    android:id="@+id/rbExpiration1Week"
                     style="@style/SettingsRadioButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -378,7 +347,6 @@ app:settings_value="@string/settingsBindingProxyTypeValuePsiphon" />
                     />
 
                 <RadioButton
-                    android:id="@+id/rbExpiration1Month"
                     style="@style/SettingsRadioButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -396,14 +364,12 @@ app:settings_value="@string/settingsBindingProxyTypeValuePsiphon" />
                 android:text="@string/settings_data_syncing" />
 
             <RadioGroup
-                android:id="@+id/rgSyncing"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:settings_key="@string/settingsBindingSyncFrequency"
                 >
 
                 <RadioButton
-                    android:id="@+id/rbSyncManual"
                     style="@style/SettingsRadioButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -413,7 +379,6 @@ app:settings_value="@string/settingsBindingProxyTypeValuePsiphon" />
                     />
 
                 <RadioButton
-                    android:id="@+id/rbSyncWhenRunning"
                     style="@style/SettingsRadioButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -423,7 +388,6 @@ app:settings_value="@string/settingsBindingProxyTypeValuePsiphon" />
                     />
 
                 <RadioButton
-                    android:id="@+id/rbSyncInBackground"
                     style="@style/SettingsRadioButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -440,14 +404,12 @@ app:settings_value="@string/settingsBindingProxyTypeValuePsiphon" />
                 android:text="@string/settings_data_sync_mode" />
 
             <RadioGroup
-                android:id="@+id/rgSyncMode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:settings_key="@string/settingsBindingSyncMode"
                 >
 
                 <RadioButton
-                    android:id="@+id/rbSyncModeBitwise"
                     style="@style/SettingsRadioButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -457,7 +419,6 @@ app:settings_value="@string/settingsBindingProxyTypeValuePsiphon" />
                     />
 
                 <RadioButton
-                    android:id="@+id/rbSyncModeFlow"
                     style="@style/SettingsRadioButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -475,14 +436,12 @@ app:settings_value="@string/settingsBindingProxyTypeValuePsiphon" />
                 android:text="@string/settings_data_sync_network" />
 
             <RadioGroup
-                android:id="@+id/rgSyncNetwork"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:settings_key="@string/settingsBindingSyncNetwork"
                 >
 
                 <RadioButton
-                    android:id="@+id/rbSyncNetworkWifiOnly"
                     style="@style/SettingsRadioButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -492,7 +451,6 @@ app:settings_value="@string/settingsBindingProxyTypeValuePsiphon" />
                     />
 
                 <RadioButton
-                    android:id="@+id/rbSyncNetworkWifiAndMobile"
                     style="@style/SettingsRadioButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -523,14 +481,12 @@ app:settings_value="@string/settingsBindingProxyTypeValuePsiphon" />
                 android:text="@string/settings_language_option_group_default" />
 
             <RadioGroup
-                android:id="@+id/rgUiLanguage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:settings_key="@string/settingsBindingUiLanguage"
                 >
 
                 <RadioButton
-                    android:id="@+id/rbUiLanguageEnglish"
                     style="@style/SettingsRadioButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -539,7 +495,6 @@ app:settings_value="@string/settingsBindingProxyTypeValuePsiphon" />
                     app:settings_value="@string/settingsBindingUiLanguageValueEnglish"/>
 
                 <RadioButton
-                    android:id="@+id/rbUiLanguageChinese"
                     style="@style/SettingsRadioButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -547,7 +502,6 @@ app:settings_value="@string/settingsBindingProxyTypeValuePsiphon" />
                     app:settings_value="@string/settingsBindingUiLanguageValueChinese"/>
 
                 <RadioButton
-                    android:id="@+id/rbUiLanguageTibetan"
                     style="@style/SettingsRadioButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -555,7 +509,6 @@ app:settings_value="@string/settingsBindingProxyTypeValuePsiphon" />
                     app:settings_value="@string/settingsBindingUiLanguageValueTibetan"/>
 
                 <RadioButton
-                    android:id="@+id/rbUiLanguageUkrainian"
                     style="@style/SettingsRadioButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -563,7 +516,6 @@ app:settings_value="@string/settingsBindingProxyTypeValuePsiphon" />
                     app:settings_value="@string/settingsBindingUiLanguageValueUkrainian"/>
 
                 <RadioButton
-                    android:id="@+id/rbUiLanguageRussian"
                     style="@style/SettingsRadioButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -571,7 +523,6 @@ app:settings_value="@string/settingsBindingProxyTypeValuePsiphon" />
                     app:settings_value="@string/settingsBindingUiLanguageValueRussian"/>
 
                 <RadioButton
-                    android:id="@+id/rbUiLanguageJapanese"
                     style="@style/SettingsRadioButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -579,7 +530,6 @@ app:settings_value="@string/settingsBindingProxyTypeValuePsiphon" />
                     app:settings_value="@string/settingsBindingUiLanguageValueJapanese"/>
 
                 <RadioButton
-                    android:id="@+id/rbUiLanguageNorwegian"
                     style="@style/SettingsRadioButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -587,7 +537,6 @@ app:settings_value="@string/settingsBindingProxyTypeValuePsiphon" />
                     app:settings_value="@string/settingsBindingUiLanguageValueNorwegian"/>
 
                 <RadioButton
-                    android:id="@+id/rbUiLanguageSpanish"
                     style="@style/SettingsRadioButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -595,7 +544,6 @@ app:settings_value="@string/settingsBindingProxyTypeValuePsiphon" />
                     app:settings_value="@string/settingsBindingUiLanguageValueSpanish"/>
 
                 <RadioButton
-                    android:id="@+id/rbUiLanguageTurkish"
                     style="@style/SettingsRadioButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -603,7 +551,6 @@ app:settings_value="@string/settingsBindingProxyTypeValuePsiphon" />
                     app:settings_value="@string/settingsBindingUiLanguageValueTurkish"/>
 
                 <RadioButton
-                    android:id="@+id/rbUiLanguageFarsi"
                     style="@style/SettingsRadioButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -621,13 +568,11 @@ app:settings_value="@string/settingsBindingProxyTypeValuePsiphon" />
                 android:visibility="gone" />
 
             <RadioGroup
-                android:id="@+id/rgReaderSwipeDirection"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="gone" >
 
                 <RadioButton
-                    android:id="@+id/rbSwipeDirectionRtl"
                     style="@style/SettingsRadioButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -635,7 +580,6 @@ app:settings_value="@string/settingsBindingProxyTypeValuePsiphon" />
                     android:text="@string/settings_reader_swipe_direction_rtl" />
 
                 <RadioButton
-                    android:id="@+id/rbSwipeDirectionLtr"
                     style="@style/SettingsRadioButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -643,7 +587,6 @@ app:settings_value="@string/settingsBindingProxyTypeValuePsiphon" />
                     android:text="@string/settings_reader_swipe_direction_ltr" />
 
                 <RadioButton
-                    android:id="@+id/rbSwipeDirectionAutomatic"
                     style="@style/SettingsRadioButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -655,7 +598,6 @@ app:settings_value="@string/settingsBindingProxyTypeValuePsiphon" />
         </info.guardianproject.securereaderinterface.widgets.GroupView>
 
         <LinearLayout
-            android:id="@+id/groupScreenshots"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_margin="5dp"

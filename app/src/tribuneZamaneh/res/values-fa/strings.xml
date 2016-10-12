@@ -12,7 +12,6 @@
   <string name="help_chat_title">درباره اخبار حرف بزنید.</string>
   <string name="help_chat_content">با بقیه اعضای Tribune Zamaneh از طریق Tribune Zamaneh تاک حرف بزنید</string>
   <string name="help_data_content">توصیه‌هایی برای کاهش مصرف دیتا: ۱- تنها فیدهایی را که برایستان مهم هستند دربافت کنید. ۲- در بخش تنظیمات خود، گزینه همگام سازی - سینک- هوشمند را انتخاب کنید. این گزینه تنها متن‌ها را سینک می‌کند و امکان لود کردن عکس‌های گزارش را هم به شما می‌دهد. ۳- مقاله‌ها را پس از مدتی حدف کنید. می‌توانید زمانبندی حدف مطالب قدیمی را در بخش تنظیمات فعال کنید.  </string>
-  <string name="help_terms_group_title">شرایط و گواهی‌نامه نرم‌افزار</string>
   <string name="help_terms_title">شرایط و گواهی‌نامه نرم‌افزار </string>
   <string name="help_terms_content">محتوای ثبت شده از سوی کاربران
 
@@ -41,10 +40,7 @@
   <string name="menu_chat">Tribune Zamaneh تاک</string>
   <string name="menu_help">درباره</string>
   <string name="menu_search">جست و جو</string>
-  <string name="lock_screen_title1">به Tribune Zamaneh خوش آمدید</string>
   <string name="lock_screen_passphrases_not_matching">کلمه عبور غلط است، دوباره وارد کنید</string>
-  <string name="lock_screen_onboarding_1_title">فیدهای مورد علاقه شما همه در یک محل</string>
-  <string name="lock_screen_onboarding_1_info">گزارش‌های مهم و سرگرم کننده را از منابع مختلف پیدا کنید. با امنیت بخوانید و از امکان مطالعه آفلاین لذت ببرید. برنامه را به خودتان اختصاص بدهید!</string>
   <string name="change_passphrase_not_matching">کلمه عبور غلط است، دوباره وارد کنید </string>
   <string name="post_sign_in_title">اخبار دور و برتان را به اشتراک بگذارید.</string>
   <string name="post_sign_in_info">Tribune Zamaneh، فیدهای اخبار مهم و قابل توجه جامعه را فراهم می‌کند. هر پستی که به وسیله Tribune Zamaneh تولید شده باشد، قبل از اینکه در نیورفید رسمی Tribune Zamaneh منتشر شود، روند گزینش را طی می‌کند. لطفا بخش شرایط و اصول کاری Tribune Zamaneh را ببینید(درباره Tribune Zamaneh و شرایط و ضوابط کار) تا از حقوق خود در انتشار اطلاعات در Tribune Zamaneh آگاه شوید.</string>
@@ -52,9 +48,6 @@
   <string name="bluetooth_send_info">دوستتان باید برنامه Tribune Zamaneh خود را باز کند تا بتواند از منوی کناری، صفحه دریافت یک خبر به اشتراک گذاشته را ببیند.</string>
   <string name="bluetooth_receive_title">از طریق Tribune Zamaneh دور و بر، یک گزارش که از دوستتان رسیده دریافت کنید</string>
   <string name="create_account_title">برای خودتان اسم کاربری بسازید</string>
-  <string name="cacheword_notification_cached_title">قفل Tribune Zamaneh باز شده است</string>
-  <string name="cacheword_notification_cached"> کلمه عبور Tribune Zamaneh در حافظه ذخیره شده است</string>
-  <string name="cacheword_notification_cached_message">کلمه عبور Tribune Zamaneh در حافظه ذخیره شده است</string>
   <string name="feed_category_world_news">خبرهای خارجی</string>
   <string name="feed_category_national_news">خبرهای داخلی</string>
   <string name="feed_category_arts_culture">هنر و ادبیات</string>

@@ -454,4 +454,8 @@ public class App extends MultiDexApplication implements OnSharedPreferenceChange
 	public Class getDrawerMenuAdapterClass() {
 		return DrawerMenuRecyclerViewAdapter.class;
 	}
+
+	public boolean onOptionsItemSelected(Activity activity, int itemId) {
+		return false;
+	}
 }

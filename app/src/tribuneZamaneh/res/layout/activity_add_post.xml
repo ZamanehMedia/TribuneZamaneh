@@ -1,6 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/ff2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
@@ -31,13 +30,11 @@
         android:fillViewport="true" >
 
         <LinearLayout
-            android:id="@+id/llControls"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
             <FrameLayout
-                android:id="@+id/ff3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
 
@@ -114,7 +111,6 @@
                 </LinearLayout>
 
                 <FrameLayout
-                    android:id="@+id/flProgressIcon"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center" >

@@ -4,11 +4,8 @@
     <dimen name="title_top_margin">10dp</dimen>
     <dimen name="card_left_margin">16dp</dimen>
     <dimen name="card_right_margin">16dp</dimen>
-    <dimen name="card_center_margin">10dp</dimen>
     <dimen name="source_top_margin">25dp</dimen>
     <dimen name="card_bottom_margin">30dp</dimen>
-    <dimen name="full_top_margin">40dp</dimen>
-    <dimen name="full_bottom_margin">72dp</dimen>
     <dimen name="source_height">30dp</dimen>
     <dimen name="author_top_margin">5dp</dimen>
     

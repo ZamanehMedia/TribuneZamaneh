@@ -1,0 +1,6 @@
+<resources>
+
+    <!-- Layout alias -->
+    <item name="post_item_draft_portrait_photo" type="layout">@layout/post_item_draft_landscape_photo</item>
+    
+</resources>

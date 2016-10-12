@@ -24,7 +24,7 @@ public class DownloadEpubReaderActivity extends FragmentActivityWithMenu impleme
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_download_epub_reader);
-		setMenuIdentifier(R.menu.activity_create_account);
+		setMenuIdentifier(R.menu.activity_general);
 
 		// Display home as up
 		setDisplayHomeAsUp(true);

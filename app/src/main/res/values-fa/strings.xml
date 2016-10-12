@@ -7,12 +7,10 @@
   <string name="title_activity_downloads">قاصد</string>
   <string name="title_activity_add_feed">پیک</string>
   <string name="title_activity_post">نوشته‌های من</string>
-  <string name="title_activity_add_post">پیک</string>
   <string name="title_activity_panic">قاصد</string>
   <string name="title_activity_view_media">قاصد</string>
   <string name="title_activity_settings">قاصد</string>
   <string name="title_activity_lock_screen">قاصد</string>
-  <string name="title_activity_create_account">قاصد</string>
   <string name="title_activity_httpd_app_sender">اشتراک‌گذاری برنامه</string>
   <string name="menu_tag">جست‌وجو از روی برچسب</string>
   <string name="menu_share">به‌اشتراک‌گذاری</string>
@@ -27,8 +25,6 @@
   <string name="feed_share_popup_title">به‌اشتراک‌گذاری خوراک از طریق </string>
   <string name="story_list_hint_add_favorite_text1">با کلیک‌کردن روی «مورد علاقه»، فهرستی از گزارش‌هایی که دوست دارید درست کنید.</string>
   <string name="story_list_hint_add_favorite_text2">دوستان‌تان از این گزارش‌ها خوششان آمده که شاید برای شما هم جالب باشد:</string>
-  <string name="story_list_hint_no_popular_text1">وقتی روی گزارش‌ها نظر بنویسید، آنها را پرخواننده می‌کنید!‏</string>
-  <string name="story_list_hint_no_popular_text2">این گزارش‌ها، تیتر مفصلی دارند. شاید جا داشته باشد درباره آنها حرف بزنید:‏</string>
   <string name="story_list_hint_no_shared_text1">این فهرستی است از گزارش‌هایی که به شیوه به‌اشتراک‌گذاری امن «قاصد» با شما به اشتراک گذاشته شده‌اند:</string>
   <string name="story_list_hint_no_shared_text2">برای این که چیزی از دوستانتان دریافت کنید، به منوی کناری بروید و روی «دریافت» کلیک کنید.</string>
   <string name="help_title">درباره قاصد</string>
@@ -50,7 +46,6 @@
 ۳. طوری تنظیم کنید که مطالب قدیمی به شکل دوره‌ای، باطل شوند. دوره زمانی آن را در تنظیمات خود انتخاب کنید.</string>
   <string name="about_guardian_title"> درباره پروژه نگهبان</string>
   <string name="about_guardian_content">پروژه نگهبان برای افرادی که در پی حفاظت از ارتباطات و اطلاعات ذخیره‌شده خود در مقابل نفوذ و شنود هستند، برنامه‌های خوش‌دست، نرم‌افزارهای متن‌باز، تنظیمات سیستم‌های عامل، و دستگاه‌های همراه سفارشی درست می‌کند. به وبسایت ما سر بزنید: https://guardianproject.info</string>
-  <string name="help_terms_group_title">گواهی شرایط و نرم‌افزار</string>
   <string name="help_terms_title">گواهی شرایط و نرم‌افزار</string>
   <string name="help_terms_content">TODO: User-Submitted Materials
 
@@ -71,8 +66,6 @@ BBG will make every effort to review and post comments within 48 hours, although
 - No advertising, promotional materials, \"junk mail,\" \"spam,\" \"chain letters,\" \"pyramid schemes,\" or any other form of solicitation
 - Simple text only, no html or other code.</string>
   <string name="help_show_news">متوجه شدم. حالا خبرها را برایم بیاور! </string>
-  <string name="help_feedback_title">اشتراک باز خورد</string>
-  <string name="help_feedback_content">ما در حال بهبود کار هستیم. به ما بگویید که قاصد چطور کار می‌کند: https://okthanks.typeform.com/to/tXYKpF</string>
   <string name="downloads_title">دانلود تصاویر</string>
   <string name="downloads_complete">انجام شد</string>
   <string name="downloads_in_progress">در جریان است</string>
@@ -90,10 +83,8 @@ BBG will make every effort to review and post comments within 48 hours, although
   <string name="last_synced_minutes">%1$d دقیقه پیش به‌روزرسانی‌شده</string>
   <string name="last_synced_hours">%1$d ساعت پیش به‌روزرسانی‌شده</string>
   <string name="last_synced_days">%1$d روز پیش به‌روزرسانی‌شده</string>
-  <string name="menu_news">اخبار</string>
   <string name="menu_post">نوشته‌های من</string>
   <string name="menu_post_new">نوشته جدید</string>
-  <string name="menu_downloads">دانلودها</string>
   <string name="menu_chat">گپ</string>
   <string name="menu_help">درباره قاصد</string>
   <string name="menu_share_app">به‌اشتراک‌گذاشتن برنامه</string>
@@ -102,10 +93,6 @@ BBG will make every effort to review and post comments within 48 hours, although
   <string name="menu_tor_not_connected">به تور متصل نیست</string>
   <string name="menu_psiphon_connected">به سایفون وصل شده</string>
   <string name="menu_psiphon_not_connected">به سایفون وصل نشده</string>
-  <string name="menu_num_feeds">%1$d خوراک</string>
-  <string name="menu_num_stories">%1$d نوشته</string>
-  <string name="menu_num_chats">%1$d گپ</string>
-  <string name="menu_num_downloads">%1$d مورد</string>
   <string name="menu_preferences">تنظیمات</string>
   <string name="menu_lock_app">اپ را قفل کن</string>
   <string name="story_item_short_author">از %1s</string>
@@ -120,14 +107,11 @@ BBG will make every effort to review and post comments within 48 hours, although
   <string name="story_item_short_tag_results">نمایش یافته‌ها برای  ##%1s##</string>
   <string name="story_item_share_popup_title">به‌اشتراک‌گذاری گزارش از طریق</string>
   <string name="story_item_search_by_tag_hint">جست‌وجو بر اساس #برچسب</string>
-  <string name="story_item_swipe_hint_up">بفرستید بالا تا بسته شود</string>
-  <string name="story_item_swipe_hint_over">بکشید تا بخوانید</string>
   <string name="story_item_read_with_orweb">با اوروب، آنلاین بخوانید</string>
   <string name="error_feed_404">خوراک پیدا نشد</string>
   <string name="error_feed_bad_url">آدرس خوراک، درست نیست. لطفا به «مدیریت خوراک‌ها» بروید تا آن را اصلاح یا حذف کنید.‏</string>
   <string name="error_feed_unknown">خطا در به‌روزرسانی خوراک؛ لطفا دوباره امتحان کنید</string>
   <string name="panic_settings">تنظیمات هراس</string>
-  <string name="panic_cancel">انصراف</string>
   <string name="panic_hint">پایین بکشید تا کل برنامه حذف شود</string>
   <string name="panic_hint_wipe_content">پایین بکشید تا اطلاعات شخصی پاک شود</string>
   <string name="panic_test_successful">آفرین! در حالت واقعی، با موفقیت پاک‌سازی کرده بودید.‏</string>
@@ -145,7 +129,6 @@ BBG will make every effort to review and post comments within 48 hours, although
   <string name="add_feed_not_loaded">اطلاعات خوراک، دریافت نشد</string>
   <string name="add_feed_error_loading">نتوانستیم این خوراک را بگیریم. بررسی کنید که آدرس خوراک RSS صحیح است.‏</string>
   <string name="settings_heading_proxy">پروکسی</string>
-  <string name="settings_tor_require">نیاز به تور</string>
   <string name="settings_proxy_tor">تور</string>
   <string name="settings_proxy_psiphon">سایفون</string>
   <string name="settings_proxy_none">بدون پروکسی</string>
@@ -164,20 +147,6 @@ BBG will make every effort to review and post comments within 48 hours, although
   <string name="settings_security_passphrase_timeout4">1 روز</string>
   <string name="settings_security_passphrase_timeout5">1 هفته</string>
   <string name="settings_enable_screenshots">فعال کردن تصاویر گرفتن</string>
-  <string name="generic_second">ثانیه</string>
-  <string name="generic_seconds">ثانیه</string>
-  <string name="generic_minute">دقیقه</string>
-  <string name="generic_minutes">دقیقه</string>
-  <string name="generic_hour">ساعت</string>
-  <string name="generic_hours">ساعت</string>
-  <string name="generic_day">روز</string>
-  <string name="generic_days">روز</string>
-  <string name="generic_week">هفته</string>
-  <string name="generic_weeks">هفته</string>
-  <string name="generic_month">ماه</string>
-  <string name="generic_months">ماه</string>
-  <string name="generic_year">سال</string>
-  <string name="generic_years">سال</string>
   <string name="settings_security_password_attempts">خطا در عبارت رمز</string>
   <string name="settings_security_password_attempts_label">انتخاب کنید که بعد از پند بار خطا در عبارت رمز، اطلاعات شخصی‌تان از روی برنامه پاک شود.‏</string>
   <string name="settings_security_password_attempts_1">دو</string>
@@ -197,7 +166,6 @@ BBG will make every effort to review and post comments within 48 hours, although
   <string name="settings_data_article_expiration_1_day">یک روز</string>
   <string name="settings_data_article_expiration_1_week">یک هفته</string>
   <string name="settings_data_article_expiration_1_month">یک ماه</string>
-  <string name="settings_data_article_expiration_never">هیچ‌وقت</string>
   <string name="settings_data_syncing">ترتیب به‌روزرسانی</string>
   <string name="settings_data_syncing_manual_only">دستی</string>
   <string name="settings_data_syncing_automatic_running">وقتی برنامه در حال اجراست، اتوماتیک را تنظیم کنید و وقتی برنامه باز است سینک کنید. </string>
@@ -214,17 +182,6 @@ BBG will make every effort to review and post comments within 48 hours, although
   <string name="settings_reader_swipe_direction_ltr">فارسی با حرکت از چپ به راست به صفحه بعد می‌رود</string>
   <string name="settings_heading_language">زبان</string>
   <string name="settings_language_option_group_default">زبان پیش‌فرض</string>
-  <string name="settings_language_english">انگلیسی</string>
-  <string name="settings_language_arabic">عربی</string>
-  <string name="settings_language_farsi">فارسی</string>
-  <string name="settings_language_tibetan">تبتی</string>
-  <string name="settings_language_chinese">چینی</string>
-  <string name="settings_language_ukrainian">اوکراینی</string>
-  <string name="settings_language_russian">روسی</string>
-  <string name="lock_screen_title1">به پیک خوش آمدید</string>
-  <string name="lock_screen_title2">آزادانه بخوانید، بنویسید و حرف بزنید.‏</string>
-  <string name="lock_screen_choose_language">زبانی را انتخاب کنید</string>
-  <string name="lock_screen_set_passphrase">تنظیم عبارت رمز</string>
   <string name="lock_screen_open">باز کردن</string>
   <string name="lock_screen_create_passphrase">بازکردن برنامه</string>
   <string name="lock_screen_create_passphrase_label">یک عبارت رمز درست کنید تا از اطلاعات خود حفاظت کنید:‏</string>
@@ -235,10 +192,6 @@ BBG will make every effort to review and post comments within 48 hours, although
   <string name="change_passphrase_incorrect">عبارت عبور اشتباه</string>
   <string name="change_passphrase_not_matching">عبارت رمز مطابقت ندارد، لطفا دوباره امتحان کنید</string>
   <string name="change_passphrase_changed">کلمه عبور تغییر داده شد</string>
-  <string name="lock_screen_language_farsi">فارسی</string>
-  <string name="lock_screen_language_english">انگلیسی</string>
-  <string name="lock_screen_language_tibetan">تبتی</string>
-  <string name="lock_screen_language_chinese">چینی</string>
   <string name="lock_screen_wrong_password">اوخ! دوباره امتحان کنید.‏</string>
   <string name="post_item_no_title">بدون عنوان</string>
   <string name="add_post_menu_post">نوشته جدید</string>
@@ -284,7 +237,6 @@ BBG will make every effort to review and post comments within 48 hours, although
   <string name="httpd_app_sender_receiver_part2">اگر از هات‌اسپات استفاده نمی‌کنید، پس به همان شبکه وای‌فای وصل شوید که دوستتان به آن وصل شده و تلاش می‌کند برنامه را برای شما بفرستد.‏</string>
   <string name="httpd_app_sender_receiver_part3">۳. یک مرورگر را برای این آدرس باز کن:‏</string>
   <string name="httpd_app_sender_receiver_part4">وقتی صفحه وب باز شد، روی برنامه‌هایی که میل دارید نصب کنید، کلیک کنید.‏</string>
-  <string name="title_activity_secure_blue_tooth_sender">به‌اشتراک‌گذاری امن</string>
   <string name="share_via_secure_bluetooth">به‌اشتراک‌گذاری امن</string>
   <string name="share_via_secure_chat">ChatSecure</string>
   <string name="title_activity_secure_blue_tooth_receiver">دریافت</string>
@@ -322,22 +274,10 @@ BBG will make every effort to review and post comments within 48 hours, although
   <string name="story_list_hint_tor_connected_title">موفق شدید به تور وصل شوید!‏</string>
   <string name="story_list_hint_tor_connected_info">پایین بکشید تا خبرها به‌روزرسانی شود.</string>
   <string name="story_list_error_title">اوخ! خوراک‌های شما به‌روز نمی‌شوند.</string>
-  <string name="install_chat_secure_title">نصب ChatSecure</string>
-  <string name="install_chat_secure_prompt">برای پیوستن به بحث‌ها، به ChatSecure نیاز دارید. آیا می‌خواهید که حالا آن را دانلود کنید؟</string>
-  <string name="install_chat_secure_prompt_upgrade">برای پیوستن به بحث‌ها، به نسخه جدیدتری از ChatSecure نیاز دارید. آیا می‌خواهید که حالا آن را دانلود کنید؟</string>
-  <string name="install_chat_secure_toast">برای پیوستن به بحث‌ها، به نصب‌کردن ChatSecure نیاز دارید. آیا می‌خواهید که حالا آن را دانلود کنید؟</string>
-  <string name="install_orweb_title">با اوروب بخوانید</string>
-  <string name="install_orweb_prompt">اوروب یک مرورگر اینترنتی است که برای حفظ حریم خصوصی طراحی شده است. وقتی از آن همراه با اوربوت استفاده کنید، جلوی نظارت شبکه‌ای را می‌گیرد، کوکی‌ها را مسدود می‌کند، سابقه جست‌وجوی اینترنتی به صورت محلی را ذخیره نمی‌کند، و فلش را هم از کار می‌‎اندازد تا شما در امنیت بمانید. آیا می‌خواهید که حالا اوروب را دانلود کنید؟</string>
-  <string name="apps_feed_name">برنامه‌ها</string>
-  <string name="epubs_feed_name">Tibet Archive</string>
-  <string name="cacheword_notification_cached_title">Courier Unlocked</string>
-  <string name="cacheword_notification_cached">Courier passcode stored in memory</string>
-  <string name="cacheword_notification_cached_message">Courier passcode stored in memory</string>
   <string name="download_epub_hint">Download ePub</string>
   <string name="download_epub_reader_title">Download ePub Reader</string>
   <string name="download_epub_reader_info">شما به یک ePub برای دیدن گزارش نیاز دارید، ما FBReader را پیشنهاد می‌کنیم که می‌توانید آن را اینجا دریافت کنید: </string>
   <string name="download_epub_reader_play">Google Play</string>
   <string name="download_epub_reader_web">FBReader Website</string>
   <string name="download_epub_reader_close">Close</string>
-  <string name="chatroom_name">Not being used</string>
 </resources>

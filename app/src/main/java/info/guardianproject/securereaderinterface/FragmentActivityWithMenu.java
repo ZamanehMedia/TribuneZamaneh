@@ -37,7 +37,6 @@ import android.widget.TextView;
 
 import com.tinymission.rss.Feed;
 import com.tinymission.rss.Item;
-import com.tribunezamaneh.rss.AddPostActivity;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Constructor;
@@ -356,19 +355,16 @@ public class FragmentActivityWithMenu extends LockableActivity implements Drawer
         if (mDrawerToggle != null && mDrawerToggle.onOptionsItemSelected(item))
             return true;
 
+        // Allow app to respond
+        if (App.getInstance().onOptionsItemSelected(this, item.getItemId())) {
+            return true;
+        }
+
         switch (item.getItemId()) {
             case R.id.menu_panic: {
                 Intent intent = new Intent(this, PanicActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
-                return true;
-            }
-
-            case R.id.menu_add_post: {
-                Intent intent = new Intent(this, AddPostActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(intent);
-                overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left);
                 return true;
             }
 

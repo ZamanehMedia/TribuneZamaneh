@@ -1,6 +1,5 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/flRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff" >
@@ -27,7 +26,6 @@
             android:src="@drawable/img_local_share" />
 
         <FrameLayout
-            android:id="@+id/fl1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
 
@@ -40,7 +38,6 @@
                 android:progressDrawable="@drawable/progress_drawable" />
 
             <TextView
-                android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -63,7 +60,6 @@
         tools:context=".SecureBluetoothSenderFragment" >
 
         <TextView
-            android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -81,7 +77,6 @@
             />
 
         <LinearLayout
-            android:id="@+id/rlButtons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
 

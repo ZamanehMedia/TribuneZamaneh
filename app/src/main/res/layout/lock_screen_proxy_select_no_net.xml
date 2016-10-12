@@ -9,7 +9,6 @@
     android:padding="32dp" >
 
     <LinearLayout
-        android:id="@+id/llNoConnection"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_gravity="bottom"
@@ -21,7 +20,6 @@
          >
 
         <TextView
-            android:id="@+id/textView3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

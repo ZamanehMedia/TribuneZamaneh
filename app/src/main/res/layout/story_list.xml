@@ -131,7 +131,6 @@
             android:textSize="11sp" />
 
         <View
-            android:id="@+id/shadowView"
             android:layout_width="match_parent"
             android:layout_height="5dp"
             android:layout_below="@id/tvError"

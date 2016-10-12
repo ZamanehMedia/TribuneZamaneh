@@ -1,6 +1,5 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/frame1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:descendantFocusability="beforeDescendants"
@@ -9,13 +8,11 @@
     >
 
     <LinearLayout
-        android:id="@+id/ll0"
         android:baselineAligned="false"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
         <RelativeLayout
-            android:id="@+id/framePhoto"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.5" >
@@ -93,8 +90,7 @@
                 </LinearLayout>
 
             <FrameLayout
-                    android:id="@+id/flProgressIcon"
-                    android:layout_width="match_parent"
+                android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center" >
 
@@ -113,7 +109,6 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/ff2"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.5" >
