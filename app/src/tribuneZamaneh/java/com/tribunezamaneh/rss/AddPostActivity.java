@@ -1,19 +1,19 @@
-package info.guardianproject.securereaderinterface;
+package com.tribunezamaneh.rss;
 
 import info.guardianproject.securereader.SocialReader;
 import info.guardianproject.securereader.XMLRPCPublisher;
 import info.guardianproject.securereader.XMLRPCPublisher.XMLRPCPublisherCallback;
+import info.guardianproject.securereaderinterface.*;
 import info.guardianproject.securereaderinterface.ui.MediaViewCollection;
 import info.guardianproject.securereaderinterface.ui.UICallbacks;
 import info.guardianproject.securereaderinterface.uiutil.AnimationHelpers;
 import info.guardianproject.securereaderinterface.uiutil.AnimationHelpers.FadeInFadeOutListener;
 import info.guardianproject.securereaderinterface.uiutil.UIHelpers;
-import info.guardianproject.securereaderinterface.views.CreateAccountView;
-import info.guardianproject.securereaderinterface.views.PostSignInView;
+import com.tribunezamaneh.rss.views.CreateAccountView;
+import com.tribunezamaneh.rss.views.PostSignInView;
 import info.guardianproject.securereaderinterface.views.StoryMediaContentView;
-import info.guardianproject.securereaderinterface.views.CreateAccountView.OnActionListener;
-import info.guardianproject.securereaderinterface.views.PostSignInView.OnAgreeListener;
-import info.guardianproject.securereaderinterface.R;
+import com.tribunezamaneh.rss.views.CreateAccountView.OnActionListener;
+import com.tribunezamaneh.rss.views.PostSignInView.OnAgreeListener;
 import info.guardianproject.iocipher.File;
 
 import java.io.IOException;
@@ -163,7 +163,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnActio
 		{
 			long storyId = getIntent().getLongExtra("story", 0);
 
-			for (Item story : App.getInstance().socialReporter.getDrafts())
+			for (Item story : info.guardianproject.securereaderinterface.App.getInstance().socialReporter.getDrafts())
 			{
 				if (story.getDatabaseId() == storyId)
 				{
@@ -327,7 +327,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnActio
 
 	private java.io.File getAlbumDir()
 	{
-		return new java.io.File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), App.getInstance().getString(R.string.app_name));
+		return new java.io.File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), info.guardianproject.securereaderinterface.App.getInstance().getString(R.string.app_name));
 	}
 
 	private void createImageFile(boolean isVideo) throws IOException
@@ -514,7 +514,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnActio
 								}
 
 							};
-							App.getInstance().socialReporter.publish(mStory, publisherCallback);
+							info.guardianproject.securereaderinterface.App.getInstance().socialReporter.publish(mStory, publisherCallback);
 						}
 					});
 					return view;
@@ -546,7 +546,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnActio
 					public void onClick(DialogInterface dialog, int which)
 					{
 						dialog.dismiss();
-						App.getInstance().socialReporter.deleteDraft(mStory);
+						info.guardianproject.securereaderinterface.App.getInstance().socialReporter.deleteDraft(mStory);
 						quitBackToList(-1); // wherever we were
 											// before
 					}
@@ -704,7 +704,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnActio
 		mBtnMediaAdd.setVisibility(View.GONE);
 		mIsAddingMedia = true;
 	
-		ThreadedTask<Void, Void, Void> addMediaTask = new ThreadedTask<Void, Void, Void>() 
+		ThreadedTask<Void, Void, Void> addMediaTask = new ThreadedTask<Void, Void, Void>()
 		{	
 			private InputStream mediaItemStream;
 			private java.io.File mediaItemFile;
@@ -727,7 +727,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnActio
 				{
 					// Now we can copy the file
 					File outputFile;
-					outputFile = new File(App.getInstance().socialReader.getFileSystemDir(), SocialReader.MEDIA_CONTENT_FILE_PREFIX + mediaContent.getDatabaseId());
+					outputFile = new File(info.guardianproject.securereaderinterface.App.getInstance().socialReader.getFileSystemDir(), SocialReader.MEDIA_CONTENT_FILE_PREFIX + mediaContent.getDatabaseId());
 					
 					if (LOGGING)
 						Log.v(LOGTAG, "Local App Storage File: " + outputFile);
@@ -804,7 +804,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnActio
 			if (!forceCreate && TextUtils.isEmpty(mEditTitle.getText()) && TextUtils.isEmpty(mEditContent.getText()) && TextUtils.isEmpty(mEditTags.getText()))
 				return false;
 
-			mStory = App.getInstance().socialReporter.createDraft(mEditTitle.getText().toString(), mEditContent.getText().toString(), getTagsFromInput(), null);
+			mStory = info.guardianproject.securereaderinterface.App.getInstance().socialReporter.createDraft(mEditTitle.getText().toString(), mEditContent.getText().toString(), getTagsFromInput(), null);
 			getIntent().putExtra("story", mStory.getDatabaseId());
 		}
 		else
@@ -816,7 +816,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnActio
 			if (tags != null && tags.size() > 0)
 				mStory.getTags().addAll(tags);
 		}
-		App.getInstance().socialReporter.saveDraft(mStory);
+		info.guardianproject.securereaderinterface.App.getInstance().socialReporter.saveDraft(mStory);
 
 		if (LOGGING)
 			Log.v(LOGTAG, "SaveDraft: Story Database Id: " + mStory.getDatabaseId());
@@ -1117,7 +1117,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnActio
 
 	private void showHideCreateAccount(boolean animate)
 	{
-		if (App.getSettings().acceptedPostPermission())
+		if (info.guardianproject.securereaderinterface.App.getSettings().acceptedPostPermission())
 		{
 			mViewCreateAccount.setVisibility(View.GONE);
 			if (animate)
@@ -1125,7 +1125,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnActio
 			else
 				mViewSignIn.setVisibility(View.GONE);
 		}
-		else if (App.getInstance().socialReporter.getAuthorName() != null)
+		else if (info.guardianproject.securereaderinterface.App.getInstance().socialReporter.getAuthorName() != null)
 		{
 			if (animate)
 			{
@@ -1147,14 +1147,14 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnActio
 	@Override
 	public void onCreateIdentity(String authorName)
 	{
-		App.getInstance().socialReporter.createAuthorName(authorName);
+		info.guardianproject.securereaderinterface.App.getInstance().socialReporter.createAuthorName(authorName);
 		showHideCreateAccount(true);
 	}
 
 	@Override
 	public void onAgreed()
 	{
-		App.getSettings().setAcceptedPostPermission(true);
+		info.guardianproject.securereaderinterface.App.getSettings().setAcceptedPostPermission(true);
 		showHideCreateAccount(true);
 	}
 

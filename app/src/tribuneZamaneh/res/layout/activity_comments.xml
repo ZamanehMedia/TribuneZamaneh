@@ -68,7 +68,7 @@
 
     </ListView>
 
-    <info.guardianproject.securereaderinterface.views.CreateAccountView
+    <com.tribunezamaneh.rss.views.CreateAccountView
         android:id="@+id/createAccount"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -76,6 +76,6 @@
         android:layout_alignParentBottom="true"
         android:layout_below="@id/titleBar"
         android:visibility="gone" >
-    </info.guardianproject.securereaderinterface.views.CreateAccountView>
+    </com.tribunezamaneh.rss.views.CreateAccountView>
     
 </RelativeLayout>

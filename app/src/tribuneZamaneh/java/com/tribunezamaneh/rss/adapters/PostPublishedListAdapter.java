@@ -1,9 +1,11 @@
-package info.guardianproject.securereaderinterface.adapters;
+package com.tribunezamaneh.rss.adapters;
 
 import java.util.ArrayList;
 
 import android.content.Context;
 import com.tinymission.rss.Item;
+
+import info.guardianproject.securereaderinterface.adapters.StoryListAdapter;
 
 public class PostPublishedListAdapter extends StoryListAdapter
 {

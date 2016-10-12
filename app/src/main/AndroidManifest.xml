@@ -193,20 +193,10 @@
             android:label="@string/title_activity_lock_screen" >
         </activity>
         <activity
-            android:name="info.guardianproject.securereaderinterface.KillActivity"
-            android:excludeFromRecents="true"
-            android:noHistory="true" >
-        </activity>
-        <activity
             android:name="info.guardianproject.securereaderinterface.installer.HTTPDAppSender"    
             android:configChanges="keyboardHidden|orientation|screenSize" >
         </activity>
         <activity
-            android:name="info.guardianproject.securereaderinterface.CreateAccountActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:label="@string/title_activity_create_account">
-        </activity>
-        <activity 
             android:name="info.guardianproject.securereaderinterface.DownloadEpubReaderActivity"
             android:configChanges="keyboardHidden|orientation|screenSize">            
         </activity>

@@ -1,37 +1,6 @@
 package info.guardianproject.securereaderinterface.ui;
 
-import info.guardianproject.securereaderinterface.MainActivity;
-import info.guardianproject.securereaderinterface.R;
-import info.guardianproject.securereader.SocialReader;
-import info.guardianproject.securereaderinterface.AddFeedActivity;
-import info.guardianproject.securereaderinterface.AddPostActivity;
-import info.guardianproject.securereaderinterface.App;
-import info.guardianproject.securereaderinterface.CreateAccountActivity;
-import info.guardianproject.securereaderinterface.DownloadEpubReaderActivity;
-import info.guardianproject.securereaderinterface.DownloadsActivity;
-import info.guardianproject.securereaderinterface.HelpActivity;
-import info.guardianproject.securereaderinterface.PostActivity;
-import info.guardianproject.securereaderinterface.SettingsActivity;
-import info.guardianproject.securereaderinterface.ViewMediaActivity;
-import info.guardianproject.securereaderinterface.installer.HTTPDAppSender;
-import info.guardianproject.securereaderinterface.installer.SecureBluetooth;
-import info.guardianproject.securereaderinterface.installer.SecureBluetoothReceiverFragment;
-import info.guardianproject.securereaderinterface.models.FeedFilterType;
-import info.guardianproject.securereaderinterface.widgets.compat.Toast;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -44,6 +13,32 @@ import android.util.Log;
 import com.tinymission.rss.Feed;
 import com.tinymission.rss.Item;
 import com.tinymission.rss.MediaContent;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
+
+import info.guardianproject.securereader.SocialReader;
+import info.guardianproject.securereaderinterface.AddFeedActivity;
+import info.guardianproject.securereaderinterface.App;
+import info.guardianproject.securereaderinterface.DownloadEpubReaderActivity;
+import info.guardianproject.securereaderinterface.DownloadsActivity;
+import info.guardianproject.securereaderinterface.HelpActivity;
+import info.guardianproject.securereaderinterface.MainActivity;
+import info.guardianproject.securereaderinterface.R;
+import info.guardianproject.securereaderinterface.SettingsActivity;
+import info.guardianproject.securereaderinterface.ViewMediaActivity;
+import info.guardianproject.securereaderinterface.installer.HTTPDAppSender;
+import info.guardianproject.securereaderinterface.installer.SecureBluetooth;
+import info.guardianproject.securereaderinterface.installer.SecureBluetoothReceiverFragment;
+import info.guardianproject.securereaderinterface.models.FeedFilterType;
 
 public class UICallbacks
 {
@@ -223,27 +218,6 @@ public class UICallbacks
 			break;
 		}
 
-		case R.integer.command_posts_list:
-		{
-			Intent intent = new Intent(context, PostActivity.class);
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-			if (commandParameters != null && commandParameters.containsKey("go_to_tab"))
-			{
-				intent.putExtra("go_to_tab", commandParameters.getInt("go_to_tab", -1));
-			}
-			context.startActivity(intent);
-			break;
-		}
-
-		case R.integer.command_post_add:
-		{
-			Intent intent = new Intent(context, AddPostActivity.class);
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-			context.startActivity(intent);
-			((Activity) context).overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left);
-			break;
-		}
-
 		case R.integer.command_feed_add:
 		{
 			Intent intent = new Intent(context, AddFeedActivity.class);
@@ -368,87 +342,6 @@ public class UICallbacks
 			{
 				if (LOGGING)
 					Log.e(LOGTAG, "Invalid parameters to command command_view_media.");
-			}
-			break;
-		}
-
-		case R.integer.command_chat:
-		{
-			// If we don't have an account yet, we need to create that!
-			if (!PackageHelper.isChatSecureInstalled(context))
-			{
-				int numShown = App.getSettings().chatSecureDialogShown();
-				if (numShown < 2)
-				{
-					AlertDialog dialog = PackageHelper.showDownloadDialog(context, R.string.install_chat_secure_title, R.string.install_chat_secure_prompt,
-							android.R.string.ok, android.R.string.cancel, PackageHelper.URI_CHATSECURE_PLAY);
-					App.getSettings().setChatSecureDialogShown(numShown + 1);
-				}
-				else
-				{
-					// Stop prompting, just show a toast with info
-					Toast.makeText(context, R.string.install_chat_secure_toast, Toast.LENGTH_SHORT).show();
-				}
-			}
-			else if (App.getInstance().socialReporter.getAuthorName() == null)
-			{
-				Intent intent = new Intent(context, CreateAccountActivity.class);
-				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-				context.startActivity(intent);
-				((Activity) context).overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left);
-			}
-			else
-			{
-				/*
-				if (!App.getSettings().chatUsernamePasswordSet() 
-						&& App.getInstance().socialReader.ssettings.getChatSecureUsername() != null
-						&& App.getInstance().socialReader.ssettings.getChatSecurePassword() != null) {
-				*/
-					/*
-					ima://foo:pass@bar.com/
-					action = android.intent.action.INSERT 
-					 */
-					/*
-					Intent usernamePasswordIntent = new Intent(Intent.ACTION_INSERT, 
-							Uri.parse("ima://"+App.getInstance().socialReader.ssettings.getXMLRPCUsername()+":"
-									+App.getInstance().socialReader.ssettings.getXMLRPCPassword()+"@dukgo.com/"));
-					*/
-					//context.startActivity(usernamePasswordIntent);
-					//((FragmentActivityWithMenu) context).startActivityForResultAsInternal(usernamePasswordIntent, RequestCode.CREATE_CHAT_ACCOUNT.Value);
-					// How to tell if it worked?
-					//((Activity)context).startActivityForResult(usernamePasswordIntent,REGISTER_CHAT_USERNAME_PASSWORD);
-					// if it is OK then App.getSettings().setChatUsernamePasswordSet();
-				/*
-				}  else if (App.getInstance().socialReader.ssettings.getChatSecurePassword() == null ||
-						App.getInstance().socialReader.ssettings.getChatSecureUsername() == null) {
-				*/
-					// Register Social Reporter username/password
-				/*} else {*/
-				
-					if (LOGGING)
-						Log.v(LOGTAG, "Start the chat application now!");
-					
-					String roomName = context.getString(R.string.chatroom_name);
-					
-					if (commandParameters != null && commandParameters.containsKey("room_name"))
-						roomName = commandParameters.getString("room_name");
-					if (roomName == null)
-						roomName = "";
-					Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("immu://" + App.getInstance().socialReporter.getAuthorName()
-							+ "@conference.dukgo.com/" + roomName));
-					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-					if (!PackageHelper.canIntentBeHandled(context, intent))
-					{
-						// Old version of ChatSecure that don't support intent API.
-						// Need to upgrade!
-						AlertDialog dialog = PackageHelper.showDownloadDialog(context, R.string.install_chat_secure_title,
-								R.string.install_chat_secure_prompt_upgrade, android.R.string.ok, android.R.string.cancel, PackageHelper.URI_CHATSECURE_PLAY);
-					}
-					else
-					{
-							context.startActivity(intent);
-					}
-				/*}*/
 			}
 			break;
 		}

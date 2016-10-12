@@ -1,4 +1,4 @@
-package info.guardianproject.securereaderinterface.adapters;
+package com.tribunezamaneh.rss.adapters;
 
 import java.util.ArrayList;
 

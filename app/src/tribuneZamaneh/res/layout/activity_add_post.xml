@@ -155,19 +155,19 @@
         </LinearLayout>
     </ScrollView>
 
-    <info.guardianproject.securereaderinterface.views.PostSignInView
+    <com.tribunezamaneh.rss.views.PostSignInView
         android:id="@+id/signIn"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:visibility="gone" >
 
-    </info.guardianproject.securereaderinterface.views.PostSignInView>
-    <info.guardianproject.securereaderinterface.views.CreateAccountView
+    </com.tribunezamaneh.rss.views.PostSignInView>
+    <com.tribunezamaneh.rss.views.CreateAccountView
         android:id="@+id/createAccount"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:visibility="gone" >
-    </info.guardianproject.securereaderinterface.views.CreateAccountView>
+    </com.tribunezamaneh.rss.views.CreateAccountView>
 </RelativeLayout>

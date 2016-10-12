@@ -1,5 +1,5 @@
 
-package info.guardianproject.securereaderinterface.views;
+package com.tribunezamaneh.rss.views;
 
 import android.content.Context;
 import android.util.AttributeSet;

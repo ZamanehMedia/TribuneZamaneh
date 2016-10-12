@@ -4,17 +4,17 @@ import java.util.ArrayList;
 
 import info.guardianproject.securereaderinterface.App;
 import info.guardianproject.securereaderinterface.ItemExpandActivity;
-import info.guardianproject.securereaderinterface.PostListFragment;
-import info.guardianproject.securereaderinterface.PostListFragment.PostListType;
+
+import com.tribunezamaneh.rss.PostListFragment.PostListType;
 import info.guardianproject.securereaderinterface.adapters.StoryListAdapter.OnTagClickedListener;
 import info.guardianproject.securereaderinterface.uiutil.AnimationHelpers;
 import info.guardianproject.securereaderinterface.uiutil.UIHelpers;
 import info.guardianproject.securereaderinterface.uiutil.AnimationHelpers.FadeInFadeOutListener;
-import info.guardianproject.securereaderinterface.views.CreateAccountView;
+import com.tribunezamaneh.rss.views.CreateAccountView;
 import info.guardianproject.securereaderinterface.views.FullScreenStoryItemView;
-import info.guardianproject.securereaderinterface.views.PostSignInView;
-import info.guardianproject.securereaderinterface.views.CreateAccountView.OnActionListener;
-import info.guardianproject.securereaderinterface.views.PostSignInView.OnAgreeListener;
+import com.tribunezamaneh.rss.views.PostSignInView;
+import com.tribunezamaneh.rss.views.CreateAccountView.OnActionListener;
+import com.tribunezamaneh.rss.views.PostSignInView.OnAgreeListener;
 import info.guardianproject.securereaderinterface.widgets.CustomFontCheckableButton;
 import info.guardianproject.securereaderinterface.R;
 import android.annotation.SuppressLint;

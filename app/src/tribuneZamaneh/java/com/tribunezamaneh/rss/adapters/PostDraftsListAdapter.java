@@ -1,11 +1,11 @@
-package info.guardianproject.securereaderinterface.adapters;
+package com.tribunezamaneh.rss.adapters;
 
 import java.util.ArrayList;
 
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
-import info.guardianproject.securereaderinterface.views.StoryItemDraftPageView;
+import com.tribunezamaneh.rss.views.StoryItemDraftPageView;
 import info.guardianproject.securereaderinterface.R;
 import com.tinymission.rss.Item;
 

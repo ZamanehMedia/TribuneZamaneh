@@ -1,5 +1,6 @@
 package com.tribunezamaneh.rss;
 		
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,15 +27,14 @@ public class App extends info.guardianproject.securereaderinterface.App
 			public boolean onCommand(Context context, int command, Bundle commandParameters) {
 
 				switch (command) {
-					case R.integer.command_chat:
+
+					case R.integer.command_post_add:
 					{
-						if (BuildConfig.UI_ENABLE_CHAT)
-						{
-							Intent intent = new Intent(getContext(), CommentsActivity.class);
-							intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-							context.startActivity(intent);
-						}
-						return true;
+						Intent intent = new Intent(context, AddPostActivity.class);
+						intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+						context.startActivity(intent);
+						((Activity) context).overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left);
+						break;
 					}
 
 					case R.integer.command_comment:

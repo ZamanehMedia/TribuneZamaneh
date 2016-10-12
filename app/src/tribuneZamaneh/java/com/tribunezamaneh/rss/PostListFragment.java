@@ -1,13 +1,14 @@
-package info.guardianproject.securereaderinterface;
+package com.tribunezamaneh.rss;
 
 import java.util.ArrayList;
 
 import info.guardianproject.securereader.SocialReporter;
-import info.guardianproject.securereaderinterface.adapters.PostDraftsListAdapter;
-import info.guardianproject.securereaderinterface.adapters.PostOutgoingListAdapter;
-import info.guardianproject.securereaderinterface.adapters.PostPublishedListAdapter;
+import info.guardianproject.securereaderinterface.*;
+import com.tribunezamaneh.rss.adapters.PostDraftsListAdapter;
+import com.tribunezamaneh.rss.adapters.PostOutgoingListAdapter;
+import com.tribunezamaneh.rss.adapters.PostPublishedListAdapter;
 import info.guardianproject.securereaderinterface.adapters.StoryListAdapter;
-import info.guardianproject.securereaderinterface.adapters.PostDraftsListAdapter.PostDraftsListAdapterListener;
+import com.tribunezamaneh.rss.adapters.PostDraftsListAdapter.PostDraftsListAdapterListener;
 import info.guardianproject.securereaderinterface.adapters.StoryListAdapter.OnTagClickedListener;
 import info.guardianproject.securereaderinterface.uiutil.UIHelpers;
 import info.guardianproject.securereaderinterface.views.StoryListView.StoryListListener;
@@ -54,7 +55,7 @@ public class PostListFragment extends Fragment implements PostDraftsListAdapterL
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
-		socialReporter = ((App) getActivity().getApplicationContext()).socialReporter;
+		socialReporter = ((info.guardianproject.securereaderinterface.App) getActivity().getApplicationContext()).socialReporter;
 
 		mPostListType = PostListType.valueOf((String) getArguments().get(ARG_POST_LIST_TYPE));
 
@@ -228,7 +229,7 @@ public class PostListFragment extends Fragment implements PostDraftsListAdapterL
 	@Override
 	public void onDeleteDraft(Item item)
 	{
-		App.getInstance().socialReporter.deleteDraft(item);
+		info.guardianproject.securereaderinterface.App.getInstance().socialReporter.deleteDraft(item);
 		updateListAdapter();
 	}
 }

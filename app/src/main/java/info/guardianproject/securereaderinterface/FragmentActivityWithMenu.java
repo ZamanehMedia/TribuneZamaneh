@@ -37,6 +37,7 @@ import android.widget.TextView;
 
 import com.tinymission.rss.Feed;
 import com.tinymission.rss.Item;
+import com.tribunezamaneh.rss.AddPostActivity;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Constructor;
