@@ -239,13 +239,6 @@
         <item name="android:background">@drawable/button_secondary_background_selector</item>
     </style>
 
-    <style name="DialogTabItemStyle">
-        <item name="android:textSize">15sp</item>
-        <item name="android:textStyle">normal</item>
-        <item name="android:textColor">@color/button_primary</item>
-        <item name="android:textAllCaps">true</item>
-    </style>
-
     <style name="Theme.Transparent" parent="android:Theme">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>

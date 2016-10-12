@@ -19,5 +19,6 @@
         <item name="android:textColor">#848879</item>
 		<item name="android:textAllCaps">true</item>
     </style>
-    
+
+
 </resources>
