@@ -1,7 +1,7 @@
-package info.guardianproject.securereaderinterface.adapters;
+package com.tribunezamaneh.rss.adapters;
 
 import info.guardianproject.securereaderinterface.R;
-import info.guardianproject.securereaderinterface.views.StoryItemCommentView;
+import com.tribunezamaneh.rss.views.StoryItemCommentView;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import com.tinymission.rss.Comment;
-import com.tinymission.rss.Item;
 
 public class StoryItemCommentsAdapter extends BaseAdapter
 {

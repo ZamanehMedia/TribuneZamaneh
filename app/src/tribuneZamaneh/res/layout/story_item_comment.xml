@@ -1,4 +1,4 @@
-<info.guardianproject.securereaderinterface.views.StoryItemCommentView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.tribunezamaneh.rss.views.StoryItemCommentView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/animatedRoot"
     android:layout_width="match_parent"
@@ -46,4 +46,4 @@
             android:padding="4dp"
             android:text="TextView" />
 
-    </info.guardianproject.securereaderinterface.views.StoryItemCommentView>
+    </com.tribunezamaneh.rss.views.StoryItemCommentView>

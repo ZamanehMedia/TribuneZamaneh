@@ -9,7 +9,7 @@ import com.tinymission.rss.Item;
 import info.guardianproject.securereaderinterface.R;
 import info.guardianproject.securereader.XMLRPCCommentPublisher;
 import info.guardianproject.securereader.XMLRPCCommentPublisher.XMLRPCCommentPublisherCallback;
-import info.guardianproject.securereaderinterface.adapters.StoryItemCommentsAdapter;
+import com.tribunezamaneh.rss.adapters.StoryItemCommentsAdapter;
 import info.guardianproject.securereaderinterface.ui.LayoutFactoryWrapper;
 import info.guardianproject.securereaderinterface.uiutil.AnimationHelpers;
 import info.guardianproject.securereaderinterface.uiutil.AnimationHelpers.FadeInFadeOutListener;
