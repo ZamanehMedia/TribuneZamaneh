@@ -69,6 +69,7 @@ public class HTTPDAppSender extends FragmentActivityWithMenu
 		IMAGE_MAP = new HashMap<String, Integer>();
 		IMAGE_MAP.put("background_debut_light.png", R.drawable.background_debut_light);
 		IMAGE_MAP.put("ic_action_logo.png", R.drawable.ic_action_logo);
+		IMAGE_MAP.put("ic_share_promo.png", R.drawable.ic_share_promo);
 	}
 
 	private static final int PORT = 8080;
