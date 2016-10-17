@@ -25,6 +25,11 @@ public class OnboardingProxyFragment extends Fragment {
     private Settings.ProxyType mWaitingForProxyConnection;
 
     public OnboardingProxyFragment() {
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         mWaitingForProxyConnection = Settings.ProxyType.None;
     }
 

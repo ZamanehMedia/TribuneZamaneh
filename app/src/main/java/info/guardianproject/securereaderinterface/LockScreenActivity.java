@@ -58,6 +58,7 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 	private info.guardianproject.securereaderinterface.LockScreenActivity.SetUiLanguageReceiver mSetUiLanguageReceiver;
 
 	private View mRootView;
+	private int mRootViewId;
 	private LayoutInflater mInflater;
 
 	@Override
@@ -124,8 +125,11 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 	@Override
 	public void setContentView(int layoutResID) 
 	{
-		mRootView = LayoutInflater.from(this).inflate(layoutResID, null);
-		super.setContentView(mRootView);
+		if (layoutResID != mRootViewId) {
+			mRootViewId = layoutResID;
+			mRootView = LayoutInflater.from(this).inflate(layoutResID, null);
+			super.setContentView(mRootView);
+		}
 	}
 
 	private Bitmap takeSnapshot(View view)
