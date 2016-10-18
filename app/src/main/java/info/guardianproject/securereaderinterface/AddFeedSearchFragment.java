@@ -29,7 +29,7 @@ public class AddFeedSearchFragment extends Fragment implements Filterable
 {
 	public static final String LOGTAG = "AddFeedSearchResultsFragment";
 	public static final boolean LOGGING = false;
-	public static final String SEARCH_URL = "https://urlgoeshere/find.php?lang=%1$s@&term=%2$s@&desc=1";
+	public static final String SEARCH_URL = "https://postmodernapps.net/paik/find.php?lang=%1$s@&term=%2$s@&desc=1";
 
 	private View mRootView;
 	private ListView mListFeeds;

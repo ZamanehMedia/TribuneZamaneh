@@ -664,7 +664,6 @@ public class FragmentActivityWithMenu extends LockableActivity implements Drawer
                     mPullDownTouchSlop = ViewConfigurationCompat
                             .getScaledPagingTouchSlop(configuration);
                 }
-                calcRects(ev.getY(), mPullDownTouchSlop);
                 mPullDownStartY = ev.getY();
                 mPullDownStartToolbarOffset = mToolbarHideOffset;
             } else if (ev.getAction() == MotionEvent.ACTION_CANCEL
@@ -682,76 +681,16 @@ public class FragmentActivityWithMenu extends LockableActivity implements Drawer
                         showActionBar();
                 }
             } else if (ev.getAction() == MotionEvent.ACTION_MOVE) {
-                if (mPullDownSlopRect != null && mPullDownSlopRect.contains(10, ev.getY())) {
-                    // Just ignore
-                    ev.offsetLocation(0, mPullDownStartY - ev.getY());
-                } else {
-                    // If we have overcome the touch slop while starting the scroll, remember
-                    // this, because we have to offset ALL coming move events with this
-                    // value.
-                    if (mPullDownSlopRect != null) {
-                        this.mPullDownScrollAdjustment = (ev.getY() < mPullDownStartY) ? mPullDownTouchSlop
-                                : -mPullDownTouchSlop;
-                        mPullDownSlopRect = null;
-                    }
-                    ev.offsetLocation(0, mPullDownScrollAdjustment);
-
-                    if (mPullDownCloseRect != null && mPullDownCloseRect.contains(10, ev.getY())) {
-                        int newTop = (int) (this.getMaxHideOffset() - (ev
-                                .getY() - mPullDownCloseRect.top));
-                        setToolbarHideOffset(Math.max(0,
-                                Math.min(newTop, getMaxHideOffset())));
-
-                        ev.offsetLocation(0, mToolbarHideOffset
-                                - mPullDownStartToolbarOffset);
-                    } else if (mPullDownOpenRect != null
-                            && mPullDownOpenRect.contains(10, ev.getY())) {
-                        int newTop = (int) (mPullDownOpenRect.bottom - ev.getY());
-                        setToolbarHideOffset(Math.max(0,
-                                Math.min(newTop, getMaxHideOffset())));
-
-                        ev.offsetLocation(0, mToolbarHideOffset
-                                - mPullDownStartToolbarOffset);
-                    } else {
-                        if (mPullDownCloseRect != null && ev.getY() < mPullDownCloseRect.top) {
-                            // Max hidden
-                            setToolbarHideOffset(getMaxHideOffset());
-                        } else if (mPullDownOpenRect != null
-                                && ev.getY() > mPullDownOpenRect.bottom) {
-                            // Max shown
-                            setToolbarHideOffset(0);
-                        }
-                        calcRects(ev.getY(), 0);
-                        ev.offsetLocation(0, mToolbarHideOffset
-                                - mPullDownStartToolbarOffset);
-                    }
-                }
+                float deltaY = mPullDownStartY - ev.getY();
+                float newOffset = mToolbarHideOffset + deltaY;
+                newOffset = Math.max(0, Math.min(newOffset, getMaxHideOffset()));
+                setToolbarHideOffset((int)newOffset);
+                //float toolbarDelta = mPullDownStartToolbarOffset - newOffset;
+                //ev.offsetLocation(0, toolbarDelta);
             }
         }
         return super.dispatchTouchEvent(ev);
     }
-
-    private void calcRects(float y, int slopSize) {
-        int deltaUp = getMaxHideOffset() - mToolbarHideOffset;
-        int deltaDown = mToolbarHideOffset;
-        if (deltaUp > 0 && deltaDown > 0) {
-            mPullDownSlopRect = new RectF(0, y - slopSize, 10000, y + slopSize);
-            mPullDownCloseRect = new RectF(0, mPullDownSlopRect.top - deltaUp, 10000, mPullDownSlopRect.top);
-            mPullDownOpenRect = new RectF(0, mPullDownSlopRect.bottom, 10000, mPullDownSlopRect.bottom + deltaDown);
-        } else if (deltaUp > 0) {
-            mPullDownSlopRect = new RectF(0, y - slopSize, 10000, y);
-            mPullDownCloseRect = new RectF(0, mPullDownSlopRect.top - deltaUp, 10000, mPullDownSlopRect.top);
-            mPullDownOpenRect = null;
-        } else if (deltaDown > 0) {
-            mPullDownSlopRect = new RectF(0, y, 10000, y + slopSize);
-            mPullDownCloseRect = null;
-            mPullDownOpenRect = new RectF(0, mPullDownSlopRect.bottom, 10000, mPullDownSlopRect.bottom + deltaDown);
-        }
-        // Reset rect if no size
-        if (slopSize == 0)
-            mPullDownSlopRect = null;
-    }
-
 
     public boolean getUsePullDownActionBar() {
         return this.mUsePullDownActionBar;

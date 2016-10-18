@@ -49,7 +49,7 @@ public class FullScreenStoryItemView extends FrameLayout
 	private View mBtnTextSize;
 	private CheckableImageView mBtnFavorite;
 	private ShareSpinnerAdapter mShareAdapter;
-	private NestedViewPager mContentPager;
+	private ViewPager mContentPager;
 	private ContentPagerAdapter mContentPagerAdapter;
 	private View mPanelTextSize;
 	private SeekBar mSeekBarTextSize;
@@ -108,7 +108,7 @@ public class FullScreenStoryItemView extends FrameLayout
 
 	private void initialize()
 	{
-		mContentPager = (NestedViewPager) findViewById(R.id.horizontalPagerContent);
+		mContentPager = (ViewPager) findViewById(R.id.horizontalPagerContent);
 		mContentPagerAdapter = new ContentPagerAdapter();
 		mContentPager.setAdapter(mContentPagerAdapter);
 		
