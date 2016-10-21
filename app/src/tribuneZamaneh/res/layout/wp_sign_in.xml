@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey_light_light"
+    android:descendantFocusability="beforeDescendants"
+    android:focusable="true"
+    android:focusableInTouchMode="true" >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_margin="10dp" >
+
+        <LinearLayout
+            android:id="@+id/llRoot"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/white_with_bottom_shadow"
+            android:descendantFocusability="beforeDescendants"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical"
+            android:stretchMode="columnWidth"
+            android:padding="10dp" >
+
+            <info.guardianproject.securereaderinterface.widgets.CustomFontTextView
+                style="@style/HelpTitleStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/create_account_title" />
+
+            <TextView
+                style="@style/HelpTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/create_account_info" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/search_field_background" >
+
+                <EditText
+                    android:id="@+id/editUsername"
+                    style="@style/SearchFieldStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/edit_text_disabled"
+                    android:ems="10"
+                    android:hint="@string/create_account_hint"
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
+                    android:textAppearance="?android:attr/textAppearanceSmall" >
+                    <requestFocus />
+                </EditText>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/search_field_background" >
+
+                <EditText
+                    android:id="@+id/editPassword"
+                    style="@style/SearchFieldStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/edit_text_disabled"
+                    android:ems="10"
+                    android:hint="@string/create_account_hint"
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
+                    android:textAppearance="?android:attr/textAppearanceSmall" >
+                    <requestFocus />
+                </EditText>
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnLogin"
+                style="@style/PostSignInCreateButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginTop="20dp"
+                android:text="Log in" />
+        </LinearLayout>
+    </ScrollView>
+
+</FrameLayout>

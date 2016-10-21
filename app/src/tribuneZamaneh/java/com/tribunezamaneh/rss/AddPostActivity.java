@@ -72,6 +72,7 @@ import android.widget.Toast;
 
 import com.tinymission.rss.Item;
 import com.tinymission.rss.MediaContent;
+import com.tribunezamaneh.rss.views.WPSignInView;
 
 public class AddPostActivity extends FragmentActivityWithMenu implements OnActionListener, OnFocusChangeListener, OnAgreeListener,
 		FadeInFadeOutListener
@@ -103,6 +104,8 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnActio
 	private AlertDialog mMediaChooserDialog;
 
 	private Intent mStartedIntent;
+	private boolean mSignedIn;
+	private MenuItem mMenuPost;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -460,10 +463,10 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnActio
 	{
 		boolean ret = super.onCreateOptionsMenu(menu);
 
-		MenuItem menuPost = menu.findItem(R.id.menu_post);
-		if (menuPost != null)
+		mMenuPost = menu.findItem(R.id.menu_post);
+		if (mMenuPost != null)
 		{
-			MenuItemCompat.setActionProvider(menuPost, new ActionProvider(this)
+			MenuItemCompat.setActionProvider(mMenuPost, new ActionProvider(this)
 			{
 				@Override
 				public View onCreateActionView()
@@ -1117,6 +1120,23 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnActio
 
 	private void showHideCreateAccount(boolean animate)
 	{
+		if (!mSignedIn) {
+			if (mMenuPost != null)
+				mMenuPost.setVisible(false);
+			final WPSignInView signIn = new WPSignInView(this);
+			signIn.setListener(new WPSignInView.OnLoginListener() {
+				@Override
+				public void onLoggedIn() {
+					((ViewGroup)signIn.getParent()).removeView(signIn);
+					mSignedIn = true;
+					if (mMenuPost != null)
+						mMenuPost.setVisible(true);
+					showHideCreateAccount(true);
+				}
+			});
+			((ViewGroup)findViewById(R.id.add_post_root)).addView(signIn, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+		}
+/*
 		if (info.guardianproject.securereaderinterface.App.getSettings().acceptedPostPermission())
 		{
 			mViewCreateAccount.setVisibility(View.GONE);
@@ -1142,6 +1162,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnActio
 		{
 			mViewCreateAccount.setVisibility(View.VISIBLE);
 		}
+*/
 	}
 
 	@Override
