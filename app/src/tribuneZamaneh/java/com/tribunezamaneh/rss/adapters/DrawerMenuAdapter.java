@@ -35,7 +35,7 @@ public class DrawerMenuAdapter extends DrawerMenuRecyclerViewAdapter{
     }
 
     protected void addPostsItem(int count) {
-/*        add(new MenuEntry(R.drawable.ic_menu_stories, R.string.menu_post, R.string.menu_post_new, false, count, new SimpleMenuItemCallback() {
+        add(new MenuEntry(R.drawable.ic_menu_stories, R.string.menu_post, R.string.menu_post_new, false, count, new SimpleMenuItemCallback() {
             @Override
             public void onClicked() {
                 mCallbacks.runAfterMenuClose(new Runnable() {
@@ -60,6 +60,6 @@ public class DrawerMenuAdapter extends DrawerMenuRecyclerViewAdapter{
             public boolean isSelected() {
                 return getContext() instanceof PostActivity;
             }
-        }));*/
+        }));
     }
 }

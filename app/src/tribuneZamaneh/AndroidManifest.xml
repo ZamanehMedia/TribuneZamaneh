@@ -26,6 +26,11 @@
             android:label="@string/title_activity_post"
             android:theme="@style/AppThemeReporter" />
         <activity
+            android:name="com.tribunezamaneh.rss.AddPostActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_activity_post"
+            android:theme="@style/AppThemeReporter" />
+        <activity
             android:name="com.tribunezamaneh.rss.CommentsActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_comments" >

@@ -208,6 +208,7 @@ public class PostActivity extends ItemExpandActivity implements OnActionListener
 				mFragmentPublished.setArguments(args);
 				return mFragmentPublished;
 			}
+/*
 			else if (i == 1)
 			{
 				if (mFragmentOutgoing == null)
@@ -222,7 +223,8 @@ public class PostActivity extends ItemExpandActivity implements OnActionListener
 				}
 				return mFragmentOutgoing;
 			}
-			else if (i == 2)
+*/
+			else if (i == 1)
 			{
 				if (mFragmentDrafts == null)
 				{
@@ -242,7 +244,7 @@ public class PostActivity extends ItemExpandActivity implements OnActionListener
 		@Override
 		public int getCount()
 		{
-			return 3;
+			return 2;
 		}
 
 		@Override
@@ -252,9 +254,9 @@ public class PostActivity extends ItemExpandActivity implements OnActionListener
 			{
 			case 0:
 				return getString(R.string.post_title_published).toUpperCase();
+			//case 1:
+			//	return getString(R.string.post_title_outgoing).toUpperCase();
 			case 1:
-				return getString(R.string.post_title_outgoing).toUpperCase();
-			case 2:
 				return getString(R.string.post_title_drafts).toUpperCase();
 			}
 			return null;
@@ -295,7 +297,7 @@ public class PostActivity extends ItemExpandActivity implements OnActionListener
 		{
 			int tab = getIntent().getIntExtra("go_to_tab", -1);
 			getIntent().removeExtra("go_to_tab");
-			if (tab >= 0 && tab < 3)
+			if (tab >= 0 && tab < 2)
 				mViewPager.setCurrentItem(tab, false);
 		}
 	}

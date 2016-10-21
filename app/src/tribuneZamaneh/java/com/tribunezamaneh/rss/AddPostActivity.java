@@ -495,7 +495,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnActio
 									if (loadingDialog.isShowing())
 									{
 										loadingDialog.dismiss();
-										quitBackToList(1); // "outbox"
+										quitBackToList(0); // "published"
 									}
 								}
 
