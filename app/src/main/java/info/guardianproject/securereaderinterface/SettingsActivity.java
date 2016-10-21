@@ -53,6 +53,7 @@ public class SettingsActivity extends FragmentActivityWithMenu implements ICache
 
 	private ArrayList<RadioButtonChangeListener> mRadioButtonListeners;
 	private ArrayList<CheckBoxChangeListener> mCheckboxListeners;
+	private int mDynamicId = 1;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -531,6 +532,9 @@ public class SettingsActivity extends FragmentActivityWithMenu implements ICache
 							Log.d(LOGTAG, "No settings key defined for control with value " + value);
 					} else if (view != null && view instanceof RadioButton) {
 						bindRadioButton((RadioButton) view, mLastSettingsKey, value);
+					}
+					if (view != null && view.getId() == View.NO_ID) {
+						view.setId(mDynamicId++);
 					}
 				}
 			}
