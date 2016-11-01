@@ -29,13 +29,21 @@
                 style="@style/HelpTitleStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/create_account_title" />
+                android:text="@string/wp_sign_in_title" />
 
             <TextView
                 style="@style/HelpTextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/create_account_info" />
+                android:text="@string/wp_sign_in_info" />
+
+            <TextView
+                style="@style/HelpTextStyle"
+                android:id="@+id/signInError"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#ff0000"
+                android:text="@string/wp_sign_in_error" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -55,7 +63,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/edit_text_disabled"
                     android:ems="10"
-                    android:hint="@string/create_account_hint"
+                    android:hint="@string/wp_sign_in_username"
                     android:imeOptions="actionDone"
                     android:inputType="text"
                     android:textAppearance="?android:attr/textAppearanceSmall" >
@@ -82,11 +90,10 @@
                     android:layout_weight="1"
                     android:background="@drawable/edit_text_disabled"
                     android:ems="10"
-                    android:hint="@string/create_account_hint"
+                    android:hint="@string/wp_sign_in_password"
                     android:imeOptions="actionDone"
-                    android:inputType="text"
+                    android:inputType="text|textPassword"
                     android:textAppearance="?android:attr/textAppearanceSmall" >
-                    <requestFocus />
                 </EditText>
 
             </LinearLayout>
@@ -100,7 +107,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
                 android:layout_marginTop="20dp"
-                android:text="Log in" />
+                android:text="@string/wp_sign_in" />
         </LinearLayout>
     </ScrollView>
 

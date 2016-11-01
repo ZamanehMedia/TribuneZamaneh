@@ -2,6 +2,7 @@
 package com.tribunezamaneh.rss.views;
 
 import android.annotation.TargetApi;
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -27,6 +28,11 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 
+import com.tinymission.rss.Feed;
+import com.tribunezamaneh.rss.App;
+
+import org.xml.sax.InputSource;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -39,28 +45,45 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ch.boye.httpclientandroidlib.Header;
+import ch.boye.httpclientandroidlib.HttpRequest;
 import ch.boye.httpclientandroidlib.HttpResponse;
 import ch.boye.httpclientandroidlib.NameValuePair;
+import ch.boye.httpclientandroidlib.ProtocolException;
 import ch.boye.httpclientandroidlib.client.HttpClient;
+import ch.boye.httpclientandroidlib.client.RedirectStrategy;
 import ch.boye.httpclientandroidlib.client.entity.UrlEncodedFormEntity;
+import ch.boye.httpclientandroidlib.client.methods.HttpGet;
 import ch.boye.httpclientandroidlib.client.methods.HttpPost;
+import ch.boye.httpclientandroidlib.client.methods.HttpUriRequest;
 import ch.boye.httpclientandroidlib.impl.client.DefaultHttpClient;
+import ch.boye.httpclientandroidlib.impl.client.LaxRedirectStrategy;
 import ch.boye.httpclientandroidlib.message.BasicNameValuePair;
+import ch.boye.httpclientandroidlib.protocol.HttpContext;
 import ch.boye.httpclientandroidlib.util.EntityUtils;
 import info.guardianproject.netcipher.client.StrongHttpsClient;
+import info.guardianproject.securereader.SocialReader;
 import info.guardianproject.securereaderinterface.R;
+import info.guardianproject.securereaderinterface.uiutil.UIHelpers;
 
 public class WPSignInView extends FrameLayout {
+
+	private static final String LOGIN_URL = "https://www.postmodernapps.net/home/wp-login.php";
+	private static final String REDIRECT_URL = "https://www.postmodernapps.net/home/wp-admin/";
+
 	private Button mBtnLogin;
 	private EditText mEditUsername;
 	private EditText mEditPassword;
+	private View mErrorView;
 	private PostTask mPostTask;
 
 	public interface OnLoginListener {
-		void onLoggedIn();
+		void onLoggedIn(String username, String password);
 	}
 
 	private OnLoginListener mListener;
@@ -82,6 +105,8 @@ public class WPSignInView extends FrameLayout {
 			mBtnLogin = (Button) findViewById(R.id.btnLogin);
 			mEditUsername = (EditText) findViewById(R.id.editUsername);
 			mEditPassword = (EditText) findViewById(R.id.editPassword);
+			mErrorView = findViewById(R.id.signInError);
+			mErrorView.setVisibility(View.GONE);
 			mBtnLogin.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
@@ -101,46 +126,57 @@ public class WPSignInView extends FrameLayout {
 	private class PostTask extends AsyncTask<String, Void, Integer> {
 
 		private boolean loggedIn;
+		private StrongHttpsClient httpClient;
+		private ProgressDialog progressDialog;
+		private String username;
+		private String password;
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			httpClient = new StrongHttpsClient(App.getInstance().socialReader.applicationContext);
+			progressDialog = new ProgressDialog(getContext(),
+					R.style.ModalDialogTheme);
+			progressDialog.setIndeterminate(true);
+			progressDialog.setMessage(getContext().getString(R.string.wp_sign_in_progress));
+			progressDialog.show();
+		}
 
 		@Override
 		protected Integer doInBackground(String... data) {
 			try {
-				URL url = new URL("https://www.postmodernapps.net/home/wp-login.php");
-				HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-				conn.setReadTimeout(10000);
-				conn.setConnectTimeout(15000);
-				conn.setRequestMethod("POST");
-				conn.setDoOutput(true);
-				OutputStream os = conn.getOutputStream();
-				BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
-				StringBuilder sb = new StringBuilder();
-				sb.append(URLEncoder.encode("log", "UTF-8"));
-				sb.append("=");
-				sb.append(URLEncoder.encode(data[0], "UTF-8"));
-				sb.append("&");
-				sb.append(URLEncoder.encode("pwd", "UTF-8"));
-				sb.append("=");
-				sb.append(URLEncoder.encode(data[1], "UTF-8"));
-				sb.append("&");
-				sb.append(URLEncoder.encode("redirect_to", "UTF-8"));
-				sb.append("=");
-				sb.append(URLEncoder.encode("https://www.postmodernapps.net/home/wp-admin/", "UTF-8"));
-				sb.append("&");
-				sb.append(URLEncoder.encode("wp-submit", "UTF-8"));
-				sb.append("=");
-				sb.append(URLEncoder.encode("Log In", "UTF-8"));
-				writer.write(sb.toString());
-				writer.flush();
-				writer.close();
-				os.close();
-				conn.connect();
-				int code = conn.getResponseCode();
+				username = data[0];
+				password = data[1];
+
+				SocialReader socialReader = App.getInstance().socialReader;
+				if (socialReader.relaxedHTTPS) {
+					httpClient.enableSSLCompatibilityMode();
+				}
+				if (socialReader.useProxy())
+				{
+					httpClient.useProxy(true, socialReader.getProxyType(), socialReader.getProxyHost(), socialReader.getProxyPort());
+				}
+				httpClient.setRedirectStrategy(new LaxRedirectStrategy());
+
+				HttpPost httpPost = new HttpPost(LOGIN_URL);
+				httpPost.setHeader("User-Agent", SocialReader.USERAGENT);
+
+				// Add your data
+				List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(4);
+				nameValuePairs.add(new BasicNameValuePair("log", username));
+				nameValuePairs.add(new BasicNameValuePair("pwd", password));
+				nameValuePairs.add(new BasicNameValuePair("redirect_to", REDIRECT_URL));
+				nameValuePairs.add(new BasicNameValuePair("wp-submit", "Log In"));
+				httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+				// Execute HTTP Post Request
+				HttpResponse response = httpClient.execute(httpPost);
+				int code = response.getStatusLine().getStatusCode();
 				if (code == 200) {
-					Map<String, List<String>> headers = conn.getHeaderFields();
-					if (headers != null && headers.containsKey("Set-Cookie")) {
-						List<String> values = headers.get("Set-Cookie");
-						for (String value : values) {
-							if (value.startsWith("wordpress_logged_in")) {
+					Header[] headers = response.getHeaders("Set-Cookie");
+					if (headers != null) {
+						for (Header header : headers) {
+							if (header.getValue().startsWith("wordpress_logged_in")) {
 								loggedIn = true;
 							}
 						}
@@ -154,13 +190,28 @@ public class WPSignInView extends FrameLayout {
 		}
 
 		@Override
+		protected void onCancelled(Integer integer) {
+			super.onCancelled(integer);
+			progressDialog.dismiss();
+		}
+
+		@Override
+		protected void onCancelled() {
+			super.onCancelled();
+			progressDialog.dismiss();
+		}
+
+		@Override
 		protected void onPostExecute(Integer integer) {
 			super.onPostExecute(integer);
+			progressDialog.dismiss();
 			if (integer == 200 && loggedIn) {
+				mErrorView.setVisibility(View.GONE);
 				if (mListener != null) {
-					mListener.onLoggedIn();
+					mListener.onLoggedIn(username, password);
 				}
 			} else {
+				mErrorView.setVisibility(View.VISIBLE);
 				mEditPassword.setText("");
 			}
 		}

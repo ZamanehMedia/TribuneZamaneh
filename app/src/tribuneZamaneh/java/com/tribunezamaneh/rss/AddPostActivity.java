@@ -1,6 +1,8 @@
 package com.tribunezamaneh.rss;
 
+import info.guardianproject.securereader.DatabaseHelper;
 import info.guardianproject.securereader.SocialReader;
+import info.guardianproject.securereader.SocialReporter;
 import info.guardianproject.securereader.XMLRPCPublisher;
 import info.guardianproject.securereader.XMLRPCPublisher.XMLRPCPublisherCallback;
 import info.guardianproject.securereaderinterface.*;
@@ -25,6 +27,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.ProgressDialog;
@@ -38,11 +41,15 @@ import android.database.Cursor;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ActionProvider;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.LinearLayoutManager;
 import android.text.Editable;
 import android.text.Spannable;
 import android.text.TextUtils;
@@ -77,10 +84,11 @@ import com.tribunezamaneh.rss.views.WPSignInView;
 public class AddPostActivity extends FragmentActivityWithMenu implements OnActionListener, OnFocusChangeListener, OnAgreeListener,
 		FadeInFadeOutListener
 {
-	
 	public static final String LOGTAG = "AddPostActivity";
-	public static final boolean LOGGING = false;
-	
+	public static final boolean LOGGING = true;
+
+	private static final int WRITE_EXTERNAL_STORAGE_PERMISSION_REQUEST = 1;
+
 	ProgressDialog loadingDialog;
 
 	private static final int REQ_CODE_PICK_IMAGE = 1;
@@ -106,6 +114,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnActio
 	private Intent mStartedIntent;
 	private boolean mSignedIn;
 	private MenuItem mMenuPost;
+	private HandlerIntent mPendingIntent; // Start this when/if we get write external permission
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -259,6 +268,23 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnActio
 		updateMediaControls();
 	}
 
+	@Override
+	public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+		switch (requestCode) {
+			case WRITE_EXTERNAL_STORAGE_PERMISSION_REQUEST: {
+				// If request is cancelled, the result arrays are empty.
+				if (grantResults.length > 0
+						&& grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+					if (LOGGING)
+						Log.d(LOGTAG, "Received permission!");
+					if (mPendingIntent != null)
+						startResolvedIntent(mPendingIntent);
+				}
+			}
+		}
+		mPendingIntent = null;
+	}
+
 	private void hookupMediaOperationButtons()
 	{
 		mProgressIcon = findViewById(R.id.ivProgressIcon);
@@ -358,6 +384,10 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnActio
 		if (in == null)
 			in = new java.io.FileInputStream(src);
 		OutputStream out = new info.guardianproject.iocipher.FileOutputStream(dst);
+
+		long cb = src.length();
+		if (LOGGING)
+			Log.d(LOGTAG, "File length is " + cb);
 
 		// Transfer bytes from in to out
 		byte[] buf = new byte[1024];
@@ -505,6 +535,10 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnActio
 								@Override
 								public void publishingFailed(int reason) {
 									loadingDialog.dismiss();
+
+									// Reset to draft
+									mStory.setFeedId(DatabaseHelper.DRAFTS_FEED_ID);
+									info.guardianproject.securereaderinterface.App.getInstance().socialReporter.saveDraft(mStory);
 
 									// Should add in reasons
 									if (reason == XMLRPCPublisher.FAILURE_REASON_NO_PRIVACY_PROXY) {
@@ -671,9 +705,9 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnActio
 	/**
 	 * Add or replace a piece of media in the current draft.
 	 * 
-	 * @param mediaItem
+	 * @param mediaItemUrl
 	 *            Uri to the new media to add
-	 * @param defaultType
+	 * @param mediaType
 	 *            If type can't be decided automatically, use this as a default
 	 *            type
 	 * @param replaceIndex
@@ -1059,7 +1093,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnActio
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id)
 			{
-				startResolvedIntent((HandlerIntent) parent.getAdapter().getItem(position));
+					requirePermissionThenStart((HandlerIntent) parent.getAdapter().getItem(position));
 			}
 		});
 
@@ -1077,7 +1111,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnActio
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id)
 			{
-				startResolvedIntent((HandlerIntent) parent.getAdapter().getItem(position));
+				requirePermissionThenStart((HandlerIntent) parent.getAdapter().getItem(position));
 			}
 		});
 
@@ -1093,6 +1127,20 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnActio
 		alert.setView(contentView);
 
 		mMediaChooserDialog = alert.show();
+	}
+
+	private void requirePermissionThenStart(HandlerIntent info) {
+		int permissionCheck = ContextCompat.checkSelfPermission(this,
+				Manifest.permission.READ_EXTERNAL_STORAGE);
+		if (Build.VERSION.SDK_INT <= 18)
+			permissionCheck = PackageManager.PERMISSION_GRANTED; // For old devices we ask in the manifest!
+		if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+			mPendingIntent = info; // Start this if we get permission
+			ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+					WRITE_EXTERNAL_STORAGE_PERMISSION_REQUEST);
+		} else {
+			startResolvedIntent(info);
+		}
 	}
 
 	protected void startResolvedIntent(HandlerIntent info)
@@ -1126,12 +1174,15 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnActio
 			final WPSignInView signIn = new WPSignInView(this);
 			signIn.setListener(new WPSignInView.OnLoginListener() {
 				@Override
-				public void onLoggedIn() {
+				public void onLoggedIn(String username, String password) {
 					((ViewGroup)signIn.getParent()).removeView(signIn);
 					mSignedIn = true;
+					App.getInstance().socialReader.ssettings.setXMLRPCUsername(username);
+					App.getInstance().socialReader.ssettings.setXMLRPCPassword(password);
 					if (mMenuPost != null)
 						mMenuPost.setVisible(true);
 					showHideCreateAccount(true);
+					UIHelpers.hideSoftKeyboard(AddPostActivity.this);
 				}
 			});
 			((ViewGroup)findViewById(R.id.add_post_root)).addView(signIn, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);

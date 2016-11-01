@@ -66,6 +66,13 @@
     <string name="post_item_no_title">Untitled</string>
     <string name="post_no_drafts">No drafts</string>
     <string name="post_no_outgoing">No outgoing posts</string>
+    <string name="wp_sign_in_title">Log In</string>
+    <string name="wp_sign_in_info">In order to continue you need to login to your account</string>
+    <string name="wp_sign_in">Log In</string>
+    <string name="wp_sign_in_username">Username</string>
+    <string name="wp_sign_in_password">Password</string>
+    <string name="wp_sign_in_progress">Logging in&#8230;</string>
+    <string name="wp_sign_in_error">Wrong username or password, please try again!</string>
     <string name="post_sign_in_agree">I give my permission to use my content</string>
     <string name="post_sign_in_done">Done</string>
     <string name="post_title_drafts">Drafts</string>
