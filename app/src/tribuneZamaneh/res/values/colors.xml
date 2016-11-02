@@ -3,14 +3,14 @@
    <color name="grey_light">#dddddd</color>  
    <color name="grey_light_light">#efefef</color>  
    <color name="grey_light_medium">#aaaaaa</color>  
-   <color name="grey_dark">#4f4f4f</color>  
+   <color name="grey_dark">#555555</color>
    <color name="grey_dark_dark">#353535</color>  
-   <color name="accent">#dddddd</color>  
-      
+   <color name="accent">#dddddd</color>
+
    <color name="grey_light_opacity_60">#9adddddd</color>
 
-   <color name="button_primary">#4C50AF</color>
-   <color name="button_primary_selected">#804C50AF</color>
+   <color name="button_primary">#0bb5e6</color>
+   <color name="button_primary_selected">#800bb5e6</color>
    
    <color name="button_secondary">#CECECC</color>
    <color name="button_secondary_selected">#80CECECC</color>
@@ -28,14 +28,14 @@
    
    <color name="button_download_epub_reader">#231F20</color>
    <color name="button_download_epub_reader_selected">#80231F20</color>
-   
+
    <color name="button_tor">#c3cfd4</color>
-   <color name="button_tor_selected">#01A79D</color>
+   <color name="button_tor_selected">@color/button_primary</color>
    <color name="button_tor_text">#9099c0</color>
    <color name="button_tor_text_selected">#ffffff</color>
 
    <color name="button_photos">#9ba0b3</color>
-   <color name="button_photos_selected">#A7CD5E</color>
+   <color name="button_photos_selected">@color/button_primary</color>
    <color name="button_photos_text">#c3cfd4</color>
    <color name="button_photos_text_selected">#ffffff</color>
 
