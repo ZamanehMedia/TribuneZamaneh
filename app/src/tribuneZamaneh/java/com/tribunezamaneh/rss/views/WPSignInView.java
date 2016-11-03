@@ -39,12 +39,7 @@ import info.guardianproject.securereaderinterface.R;
 public class WPSignInView extends FrameLayout {
 
 	private static final String LOGIN_URL = "https://www.postmodernapps.net/home/wp-login.php";
-	private static final String LOGIN_URL_REDIRECT = "https://www.postmodernapps.net/home/wp-admin/";
-	private static final String REGISTER_URL = "https://www.postmodernapps.net/home/wp-login.php?action=register";
-	private static final String REGISTER_URL_REDIRECT = "https://www.postmodernapps.net/home/wp-login.php?registered=1";
 
-	private Button mBtnLogin;
-	private Button mBtnRegister;
 	private EditText mEditUsername;
 	private EditText mEditEmail;
 	private EditText mEditPassword;
@@ -77,7 +72,7 @@ public class WPSignInView extends FrameLayout {
 			mEditPassword = (EditText) findViewById(R.id.editPassword);
 			mErrorView = (TextView) findViewById(R.id.signInError);
 			mErrorView.setVisibility(View.GONE);
-			mBtnLogin = (Button) findViewById(R.id.btnLogin);
+			Button mBtnLogin = (Button) findViewById(R.id.btnLogin);
 			if (mBtnLogin != null) {
 				mBtnLogin.setOnClickListener(new OnClickListener() {
 					@Override
@@ -89,7 +84,7 @@ public class WPSignInView extends FrameLayout {
 					}
 				});
 			}
-			mBtnRegister = (Button) findViewById(R.id.btnRegister);
+			Button mBtnRegister = (Button) findViewById(R.id.btnRegister);
 			if (mBtnRegister != null) {
 				mBtnRegister.setOnClickListener(new OnClickListener() {
 					@Override
@@ -168,20 +163,20 @@ public class WPSignInView extends FrameLayout {
 				List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(4);
 				nameValuePairs.add(new BasicNameValuePair("log", username));
 				nameValuePairs.add(new BasicNameValuePair("pwd", password));
-				nameValuePairs.add(new BasicNameValuePair("redirect_to", LOGIN_URL_REDIRECT));
+				nameValuePairs.add(new BasicNameValuePair("redirect_to", LOGIN_URL + "?loggedin=1"));
 				nameValuePairs.add(new BasicNameValuePair("wp-submit", "Log In"));
 				httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
 				// Execute HTTP Post Request
-				HttpResponse response = httpClient.execute(httpPost);
+				HttpContext context = new BasicHttpContext();
+				HttpResponse response = httpClient.execute(httpPost, context);
 				int code = response.getStatusLine().getStatusCode();
 				if (code == 200) {
-					Header[] headers = response.getHeaders("Set-Cookie");
-					if (headers != null) {
-						for (Header header : headers) {
-							if (header.getValue().startsWith("wordpress_logged_in")) {
-								loggedIn = true;
-							}
+					RedirectLocations locations = (RedirectLocations) context.getAttribute(DefaultRedirectStrategy.REDIRECT_LOCATIONS);
+					if (locations != null) {
+						URI uri = locations.getAll().get(locations.getAll().size() - 1);
+						if (uri != null && uri.getQuery().contains("loggedin=1")) {
+							loggedIn = true;
 						}
 					}
 				}
@@ -256,27 +251,21 @@ public class WPSignInView extends FrameLayout {
 				{
 					httpClient.useProxy(true, socialReader.getProxyType(), socialReader.getProxyHost(), socialReader.getProxyPort());
 				}
-				httpClient.setRedirectStrategy(new LaxRedirectStrategy() {
-					@Override
-					public URI getLocationURI(HttpRequest request, HttpResponse response, HttpContext context) throws ProtocolException {
-						return super.getLocationURI(request, response, context);
-					}
-				});
+				httpClient.setRedirectStrategy(new LaxRedirectStrategy());
 
-				HttpContext context = new BasicHttpContext();
-
-				HttpPost httpPost = new HttpPost(REGISTER_URL);
+				HttpPost httpPost = new HttpPost(LOGIN_URL + "?action=register");
 				httpPost.setHeader("User-Agent", SocialReader.USERAGENT);
 
 				// Add your data
 				List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(4);
 				nameValuePairs.add(new BasicNameValuePair("user_login", username));
 				nameValuePairs.add(new BasicNameValuePair("user_email", email));
-				nameValuePairs.add(new BasicNameValuePair("redirect_to", REGISTER_URL_REDIRECT));
+				nameValuePairs.add(new BasicNameValuePair("redirect_to", LOGIN_URL + "?registered=1"));
 				nameValuePairs.add(new BasicNameValuePair("wp-submit", "Register"));
 				httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
 				// Execute HTTP Post Request
+				HttpContext context = new BasicHttpContext();
 				HttpResponse response = httpClient.execute(httpPost, context);
 				int code = response.getStatusLine().getStatusCode();
 				if (code == 200) {
