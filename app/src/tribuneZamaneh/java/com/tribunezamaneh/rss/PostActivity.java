@@ -433,7 +433,7 @@ public class PostActivity extends ItemExpandActivity implements OnActionListener
 
 	private void showHideCreateAccount(boolean animate)
 	{
-		if (App.getSettings().acceptedPostPermission())
+		if (true  || App.getSettings().acceptedPostPermission())
 		{
 			mViewCreateAccount.setVisibility(View.GONE);
 			if (animate)

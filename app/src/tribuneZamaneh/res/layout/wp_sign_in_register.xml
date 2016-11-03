@@ -29,13 +29,13 @@
                 style="@style/HelpTitleStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/wp_sign_in_title" />
+                android:text="@string/wp_sign_in_register_title" />
 
             <TextView
                 style="@style/HelpTextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/wp_sign_in_info" />
+                android:text="@string/wp_sign_in_register_info" />
 
             <TextView
                 style="@style/HelpTextStyle"
@@ -82,7 +82,7 @@
                 android:background="@drawable/search_field_background" >
 
                 <EditText
-                    android:id="@+id/editPassword"
+                    android:id="@+id/editEmail"
                     style="@style/SearchFieldStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -90,16 +90,16 @@
                     android:layout_weight="1"
                     android:background="@drawable/edit_text_disabled"
                     android:ems="10"
-                    android:hint="@string/wp_sign_in_password"
+                    android:hint="@string/wp_sign_in_email"
                     android:imeOptions="actionDone"
-                    android:inputType="text|textPassword"
+                    android:inputType="textEmailAddress"
                     android:textAppearance="?android:attr/textAppearanceSmall" >
                 </EditText>
 
             </LinearLayout>
 
             <Button
-                android:id="@+id/btnLogin"
+                android:id="@+id/btnRegister"
                 style="@style/PostSignInCreateButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -107,13 +107,13 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
                 android:layout_marginTop="20dp"
-                android:text="@string/wp_sign_in" />
+                android:text="@string/wp_sign_in_register" />
 
             <TextView
-                android:id="@+id/btnSwitchToRegister"
+                android:id="@+id/btnSwitchToLogin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/wp_sign_in_goto_register"
+                android:text="@string/wp_sign_in_goto_login"
                 style="@style/SearchFieldStyle"
                 android:gravity="center_horizontal"
                 android:textAppearance="?android:attr/textAppearanceMedium"
@@ -122,6 +122,7 @@
                 android:layout_marginEnd="5dp"
                 android:layout_marginTop="20dp"
                 />
+
         </LinearLayout>
     </ScrollView>
 

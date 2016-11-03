@@ -112,7 +112,6 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnActio
 	private AlertDialog mMediaChooserDialog;
 
 	private Intent mStartedIntent;
-	private boolean mSignedIn;
 	private MenuItem mMenuPost;
 	private HandlerIntent mPendingIntent; // Start this when/if we get write external permission
 
@@ -568,6 +567,15 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnActio
 		return ret;
 	}
 
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		MenuItem item = menu.findItem(R.id.menu_logout);
+		if (item != null) {
+			item.setVisible(isSignedIn());
+		}
+		return super.onPrepareOptionsMenu(menu);
+	}
+
 	private boolean saveDraftOrAskForDeletion()
 	{
 		// Does it contain data at the moment?
@@ -609,6 +617,12 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnActio
 		return true;
 	}
 
+	private boolean isSignedIn() {
+		boolean isSignedIn = !TextUtils.isEmpty(App.getInstance().socialReader.ssettings.getXMLRPCPassword()) ||
+				!TextUtils.isEmpty(App.getInstance().socialReader.ssettings.getXMLRPCUsername());
+		return isSignedIn;
+	}
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
@@ -617,6 +631,11 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnActio
 		case android.R.id.home:
 			if (this.saveDraftOrAskForDeletion())
 				quitBackToList(2); // drafts
+			return true;
+		case R.id.menu_logout:
+			App.getInstance().socialReader.ssettings.setXMLRPCUsername("");
+			App.getInstance().socialReader.ssettings.setXMLRPCPassword("");
+			showHideCreateAccount(true);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -1168,7 +1187,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnActio
 
 	private void showHideCreateAccount(boolean animate)
 	{
-		if (!mSignedIn) {
+		if (!isSignedIn()) {
 			if (mMenuPost != null)
 				mMenuPost.setVisible(false);
 			final WPSignInView signIn = new WPSignInView(this);
@@ -1176,7 +1195,6 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnActio
 				@Override
 				public void onLoggedIn(String username, String password) {
 					((ViewGroup)signIn.getParent()).removeView(signIn);
-					mSignedIn = true;
 					App.getInstance().socialReader.ssettings.setXMLRPCUsername(username);
 					App.getInstance().socialReader.ssettings.setXMLRPCPassword(password);
 					if (mMenuPost != null)

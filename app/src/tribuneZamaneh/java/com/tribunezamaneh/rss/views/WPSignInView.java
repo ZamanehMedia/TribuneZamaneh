@@ -1,86 +1,55 @@
 
 package com.tribunezamaneh.rss.views;
 
-import android.annotation.TargetApi;
 import android.app.ProgressDialog;
-import android.content.ContentValues;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.webkit.HttpAuthHandler;
-import android.webkit.PermissionRequest;
-import android.webkit.WebChromeClient;
-import android.webkit.WebResourceRequest;
-import android.webkit.WebResourceResponse;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
-import com.tinymission.rss.Feed;
 import com.tribunezamaneh.rss.App;
 
-import org.xml.sax.InputSource;
-
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
+import java.net.URI;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import ch.boye.httpclientandroidlib.Header;
 import ch.boye.httpclientandroidlib.HttpRequest;
 import ch.boye.httpclientandroidlib.HttpResponse;
 import ch.boye.httpclientandroidlib.NameValuePair;
 import ch.boye.httpclientandroidlib.ProtocolException;
-import ch.boye.httpclientandroidlib.client.HttpClient;
-import ch.boye.httpclientandroidlib.client.RedirectStrategy;
 import ch.boye.httpclientandroidlib.client.entity.UrlEncodedFormEntity;
-import ch.boye.httpclientandroidlib.client.methods.HttpGet;
 import ch.boye.httpclientandroidlib.client.methods.HttpPost;
-import ch.boye.httpclientandroidlib.client.methods.HttpUriRequest;
-import ch.boye.httpclientandroidlib.impl.client.DefaultHttpClient;
+import ch.boye.httpclientandroidlib.impl.client.DefaultRedirectStrategy;
 import ch.boye.httpclientandroidlib.impl.client.LaxRedirectStrategy;
+import ch.boye.httpclientandroidlib.impl.client.RedirectLocations;
 import ch.boye.httpclientandroidlib.message.BasicNameValuePair;
+import ch.boye.httpclientandroidlib.protocol.BasicHttpContext;
 import ch.boye.httpclientandroidlib.protocol.HttpContext;
-import ch.boye.httpclientandroidlib.util.EntityUtils;
 import info.guardianproject.netcipher.client.StrongHttpsClient;
 import info.guardianproject.securereader.SocialReader;
 import info.guardianproject.securereaderinterface.R;
-import info.guardianproject.securereaderinterface.uiutil.UIHelpers;
 
 public class WPSignInView extends FrameLayout {
 
 	private static final String LOGIN_URL = "https://www.postmodernapps.net/home/wp-login.php";
-	private static final String REDIRECT_URL = "https://www.postmodernapps.net/home/wp-admin/";
+	private static final String LOGIN_URL_REDIRECT = "https://www.postmodernapps.net/home/wp-admin/";
+	private static final String REGISTER_URL = "https://www.postmodernapps.net/home/wp-login.php?action=register";
+	private static final String REGISTER_URL_REDIRECT = "https://www.postmodernapps.net/home/wp-login.php?registered=1";
 
 	private Button mBtnLogin;
+	private Button mBtnRegister;
 	private EditText mEditUsername;
+	private EditText mEditEmail;
 	private EditText mEditPassword;
-	private View mErrorView;
-	private PostTask mPostTask;
+	private TextView mErrorView;
+	private AsyncTask<String, Void, Integer> mPostTask;
 
 	public interface OnLoginListener {
 		void onLoggedIn(String username, String password);
@@ -90,32 +59,66 @@ public class WPSignInView extends FrameLayout {
 
 	public WPSignInView(Context context) {
 		super(context);
-		init();
+		init(false);
 	}
 
 	public WPSignInView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		init();
+		init(false);
 	}
 
-	private void init() {
+	private void init(boolean register) {
+		removeAllViews();
 		LayoutInflater inflater = LayoutInflater.from(getContext());
-		inflater.inflate(R.layout.wp_sign_in, this);
+		inflater.inflate(register ? R.layout.wp_sign_in_register : R.layout.wp_sign_in, this);
 		if (!this.isInEditMode()) {
-			mBtnLogin = (Button) findViewById(R.id.btnLogin);
 			mEditUsername = (EditText) findViewById(R.id.editUsername);
+			mEditEmail = (EditText) findViewById(R.id.editEmail);
 			mEditPassword = (EditText) findViewById(R.id.editPassword);
-			mErrorView = findViewById(R.id.signInError);
+			mErrorView = (TextView) findViewById(R.id.signInError);
 			mErrorView.setVisibility(View.GONE);
-			mBtnLogin.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					if (mPostTask != null)
-						mPostTask.cancel(true);
-					mPostTask = new PostTask();
-					mPostTask.execute(mEditUsername.getText().toString(), mEditPassword.getText().toString());
-				}
-			});
+			mBtnLogin = (Button) findViewById(R.id.btnLogin);
+			if (mBtnLogin != null) {
+				mBtnLogin.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						if (mPostTask != null)
+							mPostTask.cancel(true);
+						mPostTask = new PostTask();
+						mPostTask.execute(mEditUsername.getText().toString(), mEditPassword.getText().toString());
+					}
+				});
+			}
+			mBtnRegister = (Button) findViewById(R.id.btnRegister);
+			if (mBtnRegister != null) {
+				mBtnRegister.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						if (mPostTask != null)
+							mPostTask.cancel(true);
+						mPostTask = new PostTaskRegister();
+						mPostTask.execute(mEditUsername.getText().toString(), mEditEmail.getText().toString());
+					}
+				});
+			}
+			View btnSwitchToRegister = findViewById(R.id.btnSwitchToRegister);
+			if (btnSwitchToRegister != null) {
+				btnSwitchToRegister.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						init(true);
+					}
+				});
+			}
+			View btnSwitchToLogin = findViewById(R.id.btnSwitchToLogin);
+			if (btnSwitchToLogin != null) {
+				btnSwitchToLogin.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						init(false);
+					}
+				});
+			}
 		}
 	}
 
@@ -165,7 +168,7 @@ public class WPSignInView extends FrameLayout {
 				List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(4);
 				nameValuePairs.add(new BasicNameValuePair("log", username));
 				nameValuePairs.add(new BasicNameValuePair("pwd", password));
-				nameValuePairs.add(new BasicNameValuePair("redirect_to", REDIRECT_URL));
+				nameValuePairs.add(new BasicNameValuePair("redirect_to", LOGIN_URL_REDIRECT));
 				nameValuePairs.add(new BasicNameValuePair("wp-submit", "Log In"));
 				httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
@@ -210,9 +213,112 @@ public class WPSignInView extends FrameLayout {
 				if (mListener != null) {
 					mListener.onLoggedIn(username, password);
 				}
-			} else {
+			} else if (integer == 200) {
+				mErrorView.setText(R.string.wp_sign_in_error_credentials);
 				mErrorView.setVisibility(View.VISIBLE);
 				mEditPassword.setText("");
+			} else {
+				mErrorView.setText(R.string.wp_sign_in_error_other);
+				mErrorView.setVisibility(View.VISIBLE);
+				mEditPassword.setText("");
+			}
+		}
+	}
+
+	private class PostTaskRegister extends AsyncTask<String, Void, Integer> {
+
+		private boolean registered;
+		private StrongHttpsClient httpClient;
+		private ProgressDialog progressDialog;
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			httpClient = new StrongHttpsClient(App.getInstance().socialReader.applicationContext);
+			progressDialog = new ProgressDialog(getContext(),
+					R.style.ModalDialogTheme);
+			progressDialog.setIndeterminate(true);
+			progressDialog.setMessage(getContext().getString(R.string.wp_sign_in_register_progress));
+			progressDialog.show();
+		}
+
+		@Override
+		protected Integer doInBackground(String... data) {
+			try {
+				String username = data[0];
+				String email = data[1];
+
+				SocialReader socialReader = App.getInstance().socialReader;
+				if (socialReader.relaxedHTTPS) {
+					httpClient.enableSSLCompatibilityMode();
+				}
+				if (socialReader.useProxy())
+				{
+					httpClient.useProxy(true, socialReader.getProxyType(), socialReader.getProxyHost(), socialReader.getProxyPort());
+				}
+				httpClient.setRedirectStrategy(new LaxRedirectStrategy() {
+					@Override
+					public URI getLocationURI(HttpRequest request, HttpResponse response, HttpContext context) throws ProtocolException {
+						return super.getLocationURI(request, response, context);
+					}
+				});
+
+				HttpContext context = new BasicHttpContext();
+
+				HttpPost httpPost = new HttpPost(REGISTER_URL);
+				httpPost.setHeader("User-Agent", SocialReader.USERAGENT);
+
+				// Add your data
+				List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(4);
+				nameValuePairs.add(new BasicNameValuePair("user_login", username));
+				nameValuePairs.add(new BasicNameValuePair("user_email", email));
+				nameValuePairs.add(new BasicNameValuePair("redirect_to", REGISTER_URL_REDIRECT));
+				nameValuePairs.add(new BasicNameValuePair("wp-submit", "Register"));
+				httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+				// Execute HTTP Post Request
+				HttpResponse response = httpClient.execute(httpPost, context);
+				int code = response.getStatusLine().getStatusCode();
+				if (code == 200) {
+					RedirectLocations locations = (RedirectLocations) context.getAttribute(DefaultRedirectStrategy.REDIRECT_LOCATIONS);
+					if (locations != null) {
+						URI uri = locations.getAll().get(locations.getAll().size() - 1);
+						if (uri != null && uri.getQuery().contains("registered=1")) {
+							registered = true;
+						}
+					}
+				}
+				return code;
+			} catch (IOException e) {
+				e.printStackTrace();
+				return 501;
+			}
+		}
+
+		@Override
+		protected void onCancelled(Integer integer) {
+			super.onCancelled(integer);
+			progressDialog.dismiss();
+		}
+
+		@Override
+		protected void onCancelled() {
+			super.onCancelled();
+			progressDialog.dismiss();
+		}
+
+		@Override
+		protected void onPostExecute(Integer integer) {
+			super.onPostExecute(integer);
+			progressDialog.dismiss();
+			if (integer == 200 && registered) {
+				init(false);
+			} else if (integer == 200) {
+				mErrorView.setText(R.string.wp_sign_in_error_register);
+				mErrorView.setVisibility(View.VISIBLE);
+			} else {
+				mErrorView.setText(R.string.wp_sign_in_error_other);
+				mErrorView.setVisibility(View.VISIBLE);
 			}
 		}
 	}
