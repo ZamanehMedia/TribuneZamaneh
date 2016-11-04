@@ -42,7 +42,6 @@
     <string name="add_post_media_chooser_title">Choose media source:</string>
     <string name="add_post_media_chooser_video">Video</string>
     <string name="add_post_menu_post">POST</string>
-    <string name="add_post_logout">Logout</string>
     <string name="add_post_not_valid_data_warning_content">You need to specify at least a photo and a title!</string>
     <string name="add_post_not_valid_data_warning_title">Post</string>
     <string name="add_post_operation_add_more">Add more</string>
@@ -67,6 +66,7 @@
     <string name="post_item_no_title">Untitled</string>
     <string name="post_no_drafts">No drafts</string>
     <string name="post_no_outgoing">No outgoing posts</string>
+    <string name="wp_sign_out">Logout</string>
     <string name="wp_sign_in_title">Log In</string>
     <string name="wp_sign_in_info">In order to continue you need to login to your account</string>
     <string name="wp_sign_in_register_title">Register</string>
