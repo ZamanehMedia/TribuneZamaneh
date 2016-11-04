@@ -19,11 +19,8 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.boye.httpclientandroidlib.Header;
-import ch.boye.httpclientandroidlib.HttpRequest;
 import ch.boye.httpclientandroidlib.HttpResponse;
 import ch.boye.httpclientandroidlib.NameValuePair;
-import ch.boye.httpclientandroidlib.ProtocolException;
 import ch.boye.httpclientandroidlib.client.entity.UrlEncodedFormEntity;
 import ch.boye.httpclientandroidlib.client.methods.HttpPost;
 import ch.boye.httpclientandroidlib.impl.client.DefaultRedirectStrategy;
@@ -37,8 +34,6 @@ import info.guardianproject.securereader.SocialReader;
 import info.guardianproject.securereaderinterface.R;
 
 public class WPSignInView extends FrameLayout {
-
-	private static final String LOGIN_URL = "https://www.postmodernapps.net/home/wp-login.php";
 
 	private EditText mEditUsername;
 	private EditText mEditEmail;
@@ -156,14 +151,14 @@ public class WPSignInView extends FrameLayout {
 				}
 				httpClient.setRedirectStrategy(new LaxRedirectStrategy());
 
-				HttpPost httpPost = new HttpPost(LOGIN_URL);
+				HttpPost httpPost = new HttpPost(App.WORDPRESS_LOGIN_URL);
 				httpPost.setHeader("User-Agent", SocialReader.USERAGENT);
 
 				// Add your data
 				List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(4);
 				nameValuePairs.add(new BasicNameValuePair("log", username));
 				nameValuePairs.add(new BasicNameValuePair("pwd", password));
-				nameValuePairs.add(new BasicNameValuePair("redirect_to", LOGIN_URL + "?loggedin=1"));
+				nameValuePairs.add(new BasicNameValuePair("redirect_to", App.WORDPRESS_LOGIN_URL + "?loggedin=1"));
 				nameValuePairs.add(new BasicNameValuePair("wp-submit", "Log In"));
 				httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
@@ -253,14 +248,14 @@ public class WPSignInView extends FrameLayout {
 				}
 				httpClient.setRedirectStrategy(new LaxRedirectStrategy());
 
-				HttpPost httpPost = new HttpPost(LOGIN_URL + "?action=register");
+				HttpPost httpPost = new HttpPost(App.WORDPRESS_LOGIN_URL + "?action=register");
 				httpPost.setHeader("User-Agent", SocialReader.USERAGENT);
 
 				// Add your data
 				List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(4);
 				nameValuePairs.add(new BasicNameValuePair("user_login", username));
 				nameValuePairs.add(new BasicNameValuePair("user_email", email));
-				nameValuePairs.add(new BasicNameValuePair("redirect_to", LOGIN_URL + "?registered=1"));
+				nameValuePairs.add(new BasicNameValuePair("redirect_to", App.WORDPRESS_LOGIN_URL + "?registered=1"));
 				nameValuePairs.add(new BasicNameValuePair("wp-submit", "Register"));
 				httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 

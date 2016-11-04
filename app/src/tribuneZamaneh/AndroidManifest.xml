@@ -33,7 +33,8 @@
         <activity
             android:name="com.tribunezamaneh.rss.CommentsActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:label="@string/title_activity_comments" >
+            android:label="@string/title_activity_comments"
+            android:theme="@style/AppThemeNoActionBar">
         </activity>
 
 	</application>

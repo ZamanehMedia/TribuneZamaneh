@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 
 import com.tribunezamaneh.rss.adapters.DrawerMenuAdapter;
 
@@ -14,6 +15,8 @@ import info.guardianproject.securereaderinterface.ui.UICallbacks;
 
 public class App extends info.guardianproject.securereaderinterface.App
 {
+	public static final String WORDPRESS_LOGIN_URL = "https://www.tribunezamaneh.com/wp-login.php";
+
 	public static final String LOGTAG = "App";
 	public static final boolean LOGGING = false;
 	
@@ -81,5 +84,11 @@ public class App extends info.guardianproject.securereaderinterface.App
 			return true;
 		}
 		return super.onOptionsItemSelected(activity, itemId);
+	}
+
+	public static boolean isSignedIn() {
+		boolean isSignedIn = !TextUtils.isEmpty(App.getInstance().socialReader.ssettings.getXMLRPCPassword()) ||
+				!TextUtils.isEmpty(App.getInstance().socialReader.ssettings.getXMLRPCUsername());
+		return isSignedIn;
 	}
 }

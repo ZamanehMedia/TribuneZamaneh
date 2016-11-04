@@ -571,7 +571,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnActio
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		MenuItem item = menu.findItem(R.id.menu_logout);
 		if (item != null) {
-			item.setVisible(isSignedIn());
+			item.setVisible(App.isSignedIn());
 		}
 		return super.onPrepareOptionsMenu(menu);
 	}
@@ -615,12 +615,6 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnActio
 			Toast.makeText(this, R.string.add_post_draft_saved, Toast.LENGTH_SHORT).show();
 
 		return true;
-	}
-
-	private boolean isSignedIn() {
-		boolean isSignedIn = !TextUtils.isEmpty(App.getInstance().socialReader.ssettings.getXMLRPCPassword()) ||
-				!TextUtils.isEmpty(App.getInstance().socialReader.ssettings.getXMLRPCUsername());
-		return isSignedIn;
 	}
 
 	@Override
@@ -1187,7 +1181,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnActio
 
 	private void showHideCreateAccount(boolean animate)
 	{
-		if (!isSignedIn()) {
+		if (!App.isSignedIn()) {
 			if (mMenuPost != null)
 				mMenuPost.setVisible(false);
 			final WPSignInView signIn = new WPSignInView(this);

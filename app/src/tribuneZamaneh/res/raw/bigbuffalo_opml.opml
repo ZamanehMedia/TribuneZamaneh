@@ -6,6 +6,6 @@
 		<dateModified>2016-10-10T00:00:00+00:00</dateModified>
 	</head>
 	<body>
-		<outline text="Tribune Zamaneh" htmlUrl="http://www.postmodernapps.net/home/blog/" xmlUrl="http://www.postmodernapps.net/home/blog/" subscribe="true" />
+		<outline text="Tribune Zamaneh" htmlUrl="https://www.tribunezamaneh.com/feed" xmlUrl="https://www.tribunezamaneh.com/feed" subscribe="true" />
 	</body>
 </opml>
