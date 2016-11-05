@@ -24,6 +24,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.view.LayoutInflaterCompat;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -212,36 +213,47 @@ public class CommentsActivity extends FragmentActivityWithMenu implements OnClic
 
 	@Override
 	public void onClick(View v) {
-		if (v == mBtnSend)
-		{
-			Comment comment = new Comment(UUID.randomUUID().toString(), "", new Date(), mEditComment.getEditableText().toString() , mItem.getDatabaseId());
-			//comment.setAuthor(App.getInstance().socialReporter.getAuthorName());
-			comment.setAuthor(App.getInstance().socialReader.ssettings.getXMLRPCUsername());
-			XMLRPCCommentPublisherCallback callback = new XMLRPCCommentPublisherCallback() {
-				
-				@Override
-				public void commentPublished(int commentId) {
-					Toast.makeText(CommentsActivity.this,"Posted", Toast.LENGTH_SHORT).show();
-				}
-				
-				@Override
-				public void commentPublishFailure(int reason) {
-					// Should add in reasons
-					if (reason == XMLRPCCommentPublisher.FAILURE_REASON_NO_PRIVACY_PROXY) {
-						Toast.makeText(CommentsActivity.this, "Posting Failed, Tor or Psiphon Required for Posting", Toast.LENGTH_SHORT).show();
-					} else if (reason == XMLRPCCommentPublisher.FAILURE_REASON_NO_CONNECTION) {
-						Toast.makeText(CommentsActivity.this, "Posting Failed, No Network Connection", Toast.LENGTH_SHORT).show();
-					} else {
-						Toast.makeText(CommentsActivity.this, "Posting Failed, Failure Unknown", Toast.LENGTH_SHORT).show();
+		if (v == mBtnSend) {
+			// Try to get remote post id of item
+			int remotePostId = 0;
+			String guid = mItem.getGuid();
+			if (!TextUtils.isEmpty(guid) && guid.indexOf("?p=") != -1) {
+				remotePostId = Integer.valueOf(guid.substring(guid.indexOf("?p=") + 3));
+			}
+			if (remotePostId != 0) {
+				mItem.setRemotePostId(String.valueOf(remotePostId));
+				App.getInstance().socialReader.setItemData(mItem);
+				Comment comment = new Comment(UUID.randomUUID().toString(), "", new Date(), mEditComment.getEditableText().toString(), mItem.getDatabaseId());
+				//comment.setAuthor(App.getInstance().socialReporter.getAuthorName());
+				comment.setAuthor(App.getInstance().socialReader.ssettings.getXMLRPCUsername());
+				XMLRPCCommentPublisherCallback callback = new XMLRPCCommentPublisherCallback() {
+
+					@Override
+					public void commentPublished(int commentId) {
+						Toast.makeText(CommentsActivity.this, "Posted", Toast.LENGTH_SHORT).show();
 					}
-				}
-			};
-			
-			App.getInstance().socialReporter.postComment(comment, callback);
-			
-			//App.getInstance().socialReader.addCommentToItem(mItem, comment);
-			UIHelpers.hideSoftKeyboard(this);							
-			//mEditComment.setText("Published");
+
+					@Override
+					public void commentPublishFailure(int reason) {
+						// Should add in reasons
+						if (reason == XMLRPCCommentPublisher.FAILURE_REASON_NO_PRIVACY_PROXY) {
+							Toast.makeText(CommentsActivity.this, getString(R.string.comment_error_proxy), Toast.LENGTH_SHORT).show();
+						} else if (reason == XMLRPCCommentPublisher.FAILURE_REASON_NO_CONNECTION) {
+							Toast.makeText(CommentsActivity.this, getString(R.string.comment_error_network), Toast.LENGTH_SHORT).show();
+						} else {
+							Toast.makeText(CommentsActivity.this, getString(R.string.comment_error_unknown), Toast.LENGTH_SHORT).show();
+						}
+					}
+				};
+
+				App.getInstance().socialReporter.postComment(comment, callback);
+
+				//App.getInstance().socialReader.addCommentToItem(mItem, comment);
+				UIHelpers.hideSoftKeyboard(this);
+				mEditComment.setText("");
+			} else {
+				Toast.makeText(CommentsActivity.this, getString(R.string.comment_error_unknown), Toast.LENGTH_SHORT).show();
+			}
 		}
 	}
 	

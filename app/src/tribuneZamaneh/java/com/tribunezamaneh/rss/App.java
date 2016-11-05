@@ -15,7 +15,7 @@ import info.guardianproject.securereaderinterface.ui.UICallbacks;
 
 public class App extends info.guardianproject.securereaderinterface.App
 {
-	public static final String WORDPRESS_LOGIN_URL = "https://www.tribunezamaneh.com/wp-login.php";
+	public static final String WORDPRESS_LOGIN_URL = "https://www.postmodernapps.net/home/wp-login.php";
 
 	public static final String LOGTAG = "App";
 	public static final boolean LOGGING = false;
