@@ -6,6 +6,7 @@ import java.util.UUID;
 import com.tinymission.rss.Comment;
 import com.tinymission.rss.Item;
 
+import info.guardianproject.securereader.SyncService;
 import info.guardianproject.securereaderinterface.FragmentActivityWithMenu;
 import info.guardianproject.securereaderinterface.R;
 import info.guardianproject.securereader.XMLRPCCommentPublisher;
@@ -38,12 +39,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class CommentsActivity extends FragmentActivityWithMenu implements OnClickListener, OnActionListener, FadeInFadeOutListener
+public class CommentsActivity extends FragmentActivityWithMenu implements SyncService.SyncServiceListener, OnClickListener, OnActionListener, FadeInFadeOutListener
 {
 	public static final String LOGTAG = "CommentsActivity";
 	public static final boolean LOGGING = false;
 	
-	private LayoutInflater mInflater;
 	private Item mItem;
 	private ImageView mBtnSend;
 	private Drawable mBtnSendDrawableEnabled;
@@ -62,9 +62,6 @@ public class CommentsActivity extends FragmentActivityWithMenu implements OnClic
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		LayoutInflater inflater = LayoutInflater.from(this);
-		mInflater = inflater.cloneInContext(this);
-		LayoutInflaterCompat.setFactory(mInflater, new LayoutFactoryWrapper(inflater.getFactory()));
 		getWindow().setBackgroundDrawable(null);
 		setContentView(R.layout.activity_comments);
 
@@ -138,6 +135,13 @@ public class CommentsActivity extends FragmentActivityWithMenu implements OnClic
 		mViewCreateAccount = (CreateAccountView) findViewById(R.id.createAccount);
 		mViewCreateAccount.setActionListener(this);
 		showHideCreateAccount(false);
+		App.getInstance().addSyncServiceListener(this);
+	}
+
+	@Override
+	protected void onDestroy() {
+		App.getInstance().removeSyncServiceListener(this);
+		super.onDestroy();
 	}
 
 	@Override
@@ -199,30 +203,12 @@ public class CommentsActivity extends FragmentActivityWithMenu implements OnClic
 		App.getInstance().socialReporter.createAuthorName(authorName);
 		showHideCreateAccount(true);
 	}
-	
-	@Override
-	public Object getSystemService(String name)
-	{
-		if (LAYOUT_INFLATER_SERVICE.equals(name))
-		{
-			if (mInflater != null)
-				return mInflater;
-		}
-		return super.getSystemService(name);
-	}
 
 	@Override
 	public void onClick(View v) {
 		if (v == mBtnSend) {
 			// Try to get remote post id of item
-			int remotePostId = 0;
-			String guid = mItem.getGuid();
-			if (!TextUtils.isEmpty(guid) && guid.indexOf("?p=") != -1) {
-				remotePostId = Integer.valueOf(guid.substring(guid.indexOf("?p=") + 3));
-			}
-			if (remotePostId != 0) {
-				mItem.setRemotePostId(String.valueOf(remotePostId));
-				App.getInstance().socialReader.setItemData(mItem);
+			if (mItem.getRemotePostId() != 0) {
 				Comment comment = new Comment(UUID.randomUUID().toString(), "", new Date(), mEditComment.getEditableText().toString(), mItem.getDatabaseId());
 				//comment.setAuthor(App.getInstance().socialReporter.getAuthorName());
 				comment.setAuthor(App.getInstance().socialReader.ssettings.getXMLRPCUsername());
@@ -231,6 +217,12 @@ public class CommentsActivity extends FragmentActivityWithMenu implements OnClic
 					@Override
 					public void commentPublished(int commentId) {
 						Toast.makeText(CommentsActivity.this, "Posted", Toast.LENGTH_SHORT).show();
+						runOnUiThread(new Runnable() {
+							@Override
+							public void run() {
+								refresh();
+							}
+						});
 					}
 
 					@Override
@@ -287,6 +279,7 @@ public class CommentsActivity extends FragmentActivityWithMenu implements OnClic
 			@Override
 			public void onLoggedIn(String username, String password) {
 				((ViewGroup)mSignInView.getParent()).removeView(mSignInView);
+				mSignInView = null;
 				App.getInstance().socialReader.ssettings.setXMLRPCUsername(username);
 				App.getInstance().socialReader.ssettings.setXMLRPCPassword(password);
 				showHideCreateAccount(true);
@@ -304,5 +297,21 @@ public class CommentsActivity extends FragmentActivityWithMenu implements OnClic
 			return;
 		}
 		super.onBackPressed();
+	}
+
+	private void refresh() {
+		if (App.getInstance().socialReader.getSyncService() != null) {
+			App.getInstance().socialReader.getSyncService().addCommentsSyncTask(mItem);
+		}
+	}
+
+	@Override
+	public void syncEvent(SyncService.SyncTask syncTask) {
+		if (syncTask.type == SyncService.SyncTask.TYPE_COMMENTS && syncTask.status == SyncService.SyncTask.FINISHED) {
+			if (mItem != null && syncTask.item != null && syncTask.item.getDatabaseId() == mItem.getDatabaseId()) {
+				mListCommentsAdapter = new StoryItemCommentsAdapter(this, App.getInstance().socialReader.getItemComments(mItem));
+				mListComments.setAdapter(mListCommentsAdapter);
+			}
+		}
 	}
 }

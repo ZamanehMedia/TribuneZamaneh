@@ -54,7 +54,7 @@ import com.tinymission.rss.Item;
 //import net.hockeyapp.android.CrashManager;
 //import net.hockeyapp.android.UpdateManager;
 
-public class MainActivity extends ItemExpandActivity
+public class MainActivity extends ItemExpandActivity implements SyncService.SyncServiceListener
 {
 	public static String INTENT_EXTRA_SHOW_THIS_TYPE = "info.guardianproject.securereaderinterface.showThisFeedType";
 	public static String INTENT_EXTRA_SHOW_THIS_FEED = "info.guardianproject.securereaderinterface.showThisFeedId";
@@ -103,21 +103,7 @@ public class MainActivity extends ItemExpandActivity
 		mStoryListView.setListener(this);
 		
 		socialReader = ((App) getApplicationContext()).socialReader;
-		socialReader.setSyncServiceListener(new SyncService.SyncServiceListener()
-		{
-			@Override
-			public void syncEvent(SyncService.SyncTask syncTask)
-			{
-				if (LOGGING)
-					Log.v(LOGTAG, "Got a syncEvent");
-				
-				if (syncTask.type == SyncService.SyncTask.TYPE_FEED && syncTask.status == SyncService.SyncTask.FINISHED)
-				{
-					refreshListIfCurrent(syncTask.feed);
-					refreshLeftSideMenu();
-				}
-			}
-		});
+		App.getInstance().addSyncServiceListener(this);
 
 		// Saved what we were looking at?
 		if (savedInstanceState != null && savedInstanceState.containsKey("FeedFilterType"))
@@ -133,6 +119,12 @@ public class MainActivity extends ItemExpandActivity
 		
 		// HockeyApp SDK
 		//checkForUpdates();
+	}
+
+	@Override
+	protected void onDestroy() {
+		App.getInstance().removeSyncServiceListener(this);
+		super.onDestroy();
 	}
 
 	@Override
@@ -706,6 +698,18 @@ public class MainActivity extends ItemExpandActivity
 	{
 		super.onWipe();
 		UICallbacks.setFeedFilter(FeedFilterType.SINGLE_FEED, -1, this);
+	}
+
+	@Override
+	public void syncEvent(SyncService.SyncTask syncTask) {
+		if (LOGGING)
+			Log.v(LOGTAG, "Got a syncEvent");
+
+		if (syncTask.type == SyncService.SyncTask.TYPE_FEED && syncTask.status == SyncService.SyncTask.FINISHED)
+		{
+			refreshListIfCurrent(syncTask.feed);
+			refreshLeftSideMenu();
+		}
 	}
 
 	class UpdateFeedListTask extends ThreadedTask<Void, Void, ArrayList<Feed>>

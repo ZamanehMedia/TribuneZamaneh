@@ -2,6 +2,7 @@ package com.tribunezamaneh.rss.views;
 
 import android.content.Context;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.widget.RelativeLayout;
@@ -64,8 +65,13 @@ public class StoryItemCommentView extends RelativeLayout
 		{
 			mComment = comment;
 
+			String content = mComment.getCleanMainContent();
+			if (content != null)
+				content = content.trim();
+			else
+				content = "";
 			if (mTvContent != null)
-				mTvContent.setText(mComment.getCleanMainContent());
+				mTvContent.setText(content);
 			if (mTvAuthor != null)
 				mTvAuthor.setText(mComment.getAuthor());
 		}

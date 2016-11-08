@@ -3,6 +3,7 @@ package info.guardianproject.securereaderinterface;
 import info.guardianproject.securereader.Settings;
 import info.guardianproject.securereader.Settings.UiLanguage;
 import info.guardianproject.securereader.SocialReader.SocialReaderLockListener;
+import info.guardianproject.securereader.SyncService;
 import info.guardianproject.securereaderinterface.adapters.DrawerMenuRecyclerViewAdapter;
 import info.guardianproject.securereaderinterface.models.FeedFilterType;
 import info.guardianproject.securereaderinterface.ui.UICallbackListener;
@@ -32,6 +33,7 @@ import android.graphics.Bitmap;
 import android.os.Build;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,7 +70,8 @@ public class App extends MultiDexApplication implements OnSharedPreferenceChange
 	private Feed mCurrentFeed = null;
 
 	private boolean mIsWiping = false;
-	
+	private ArrayList<SyncService.SyncServiceListener> mInternalSyncListeners;
+
 	@Override
 	public void onCreate()
 	{
@@ -79,6 +82,19 @@ public class App extends MultiDexApplication implements OnSharedPreferenceChange
 		super.onCreate();
 
 		socialReader = SocialReader.getInstance(this.getApplicationContext());
+		mInternalSyncListeners = new ArrayList<>();
+		socialReader.setSyncServiceListener(new SyncService.SyncServiceListener() {
+												@Override
+												public void syncEvent(SyncService.SyncTask syncTask) {
+													if (LOGGING)
+														Log.v(LOGTAG, "Got a syncEvent of type " + syncTask.type + " status: " + syncTask.status);
+													for (SyncService.SyncServiceListener listener : mInternalSyncListeners) {
+														try {
+															listener.syncEvent(syncTask);
+														} catch (Exception ignored) {};
+													}
+												}
+											});
 		socialReader.setLockListener(this);
 		socialReporter = new SocialReporter(socialReader);
 		//applyPassphraseTimeout();
@@ -457,5 +473,19 @@ public class App extends MultiDexApplication implements OnSharedPreferenceChange
 
 	public boolean onOptionsItemSelected(Activity activity, int itemId) {
 		return false;
+	}
+
+	public void addSyncServiceListener(SyncService.SyncServiceListener listener) {
+		synchronized (mInternalSyncListeners) {
+			if (!mInternalSyncListeners.contains(listener))
+				mInternalSyncListeners.add(listener);
+		}
+	}
+
+	public void removeSyncServiceListener(SyncService.SyncServiceListener listener) {
+		synchronized (mInternalSyncListeners) {
+			if (mInternalSyncListeners.contains(listener))
+				mInternalSyncListeners.remove(listener);
+		}
 	}
 }
