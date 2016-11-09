@@ -137,7 +137,7 @@
                 android:ems="10"
                 android:hint="@string/add_post_headline_hint"
                 android:imeOptions="actionDone"
-                android:inputType="text" >
+                android:inputType="text|textCapSentences" >
 
             </EditText>
 
@@ -148,7 +148,8 @@
                 android:ems="10"
                 android:gravity="top|start"
                 android:hint="@string/add_post_headline_label"
-                android:minHeight="100dp" />
+                android:minHeight="100dp"
+                android:inputType="textMultiLine|textCapSentences"/>
         </LinearLayout>
     </ScrollView>
 
