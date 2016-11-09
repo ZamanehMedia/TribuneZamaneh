@@ -436,6 +436,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnActio
 			{
 				if (sb.length() > 0)
 					sb.append(" ");
+				sb.append("#");
 				sb.append(tag);
 			}
 			mEditTags.setText(sb.toString());
