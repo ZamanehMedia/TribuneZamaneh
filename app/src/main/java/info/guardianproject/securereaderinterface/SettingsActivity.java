@@ -393,8 +393,13 @@ public class SettingsActivity extends FragmentActivityWithMenu implements ICache
 		super.onSharedPreferenceChanged(sharedPreferences, key);
 		if (key == SettingsUI.KEY_PROXY_TYPE) {
 			mSettings.setRequireProxy(mSettings.proxyType() != Settings.ProxyType.None);
-			if (mSettings.requireProxy())
+			if (mSettings.requireProxy()) {
+				if (mSettings.proxyType() == Settings.ProxyType.Tor)
+					App.getInstance().socialReader.checkTorStatus();
+				else
+					App.getInstance().socialReader.checkPsiphonStatus();
 				App.getInstance().socialReader.connectProxy(this);
+			}
 		}
 		if (key.equals(SettingsUI.KEY_PROXY_TYPE) || key.equals(Settings.KEY_SYNC_MODE)) {
 			updateLeftSideMenu();
