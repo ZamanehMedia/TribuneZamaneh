@@ -392,14 +392,7 @@ public class SettingsActivity extends FragmentActivityWithMenu implements ICache
 		mLastChangedSetting = key;
 		super.onSharedPreferenceChanged(sharedPreferences, key);
 		if (key == SettingsUI.KEY_PROXY_TYPE) {
-			mSettings.setRequireProxy(mSettings.proxyType() != Settings.ProxyType.None);
-			if (mSettings.requireProxy()) {
-				if (mSettings.proxyType() == Settings.ProxyType.Tor)
-					App.getInstance().socialReader.checkTorStatus();
-				else
-					App.getInstance().socialReader.checkPsiphonStatus();
-				App.getInstance().socialReader.connectProxy(this);
-			}
+			App.getInstance().socialReader.connectProxy(SettingsActivity.this);
 		}
 		if (key.equals(SettingsUI.KEY_PROXY_TYPE) || key.equals(Settings.KEY_SYNC_MODE)) {
 			updateLeftSideMenu();
@@ -651,8 +644,12 @@ public class SettingsActivity extends FragmentActivityWithMenu implements ICache
 								return;
 							}
 						}
-
 						mSetter.invoke(mSettings, mValue);
+
+						// Special case, if we set proxy need to set requireProxy
+						if (getString(R.string.settingsBindingProxyType).equalsIgnoreCase(mKey)) {
+							mSettings.setRequireProxy(mValue != Settings.ProxyType.None);
+						}
 					}
 				}
 			} catch (Exception e) {
