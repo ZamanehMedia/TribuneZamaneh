@@ -78,6 +78,7 @@
     <string name="wp_sign_in_password">Password</string>
     <string name="wp_sign_in_progress">Logging in&#8230;</string>
     <string name="wp_sign_in_register_progress">Creating account&#8230;</string>
+    <string name="wp_sign_in_register_done">Account created. You will receive an email from where you can set your password.</string>
     <string name="wp_sign_in_error_other">Failed to contact server. Please make sure you have Internet connectivity!</string>
     <string name="wp_sign_in_error_credentials">Wrong username or password, please try again!</string>
     <string name="wp_sign_in_error_register">Username or email already registered, please choose another one.</string>

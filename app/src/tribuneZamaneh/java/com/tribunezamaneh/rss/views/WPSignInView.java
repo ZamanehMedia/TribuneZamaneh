@@ -32,6 +32,7 @@ import ch.boye.httpclientandroidlib.protocol.HttpContext;
 import info.guardianproject.netcipher.client.StrongHttpsClient;
 import info.guardianproject.securereader.SocialReader;
 import info.guardianproject.securereaderinterface.R;
+import info.guardianproject.securereaderinterface.widgets.compat.Toast;
 
 public class WPSignInView extends FrameLayout {
 
@@ -296,6 +297,7 @@ public class WPSignInView extends FrameLayout {
 			super.onPostExecute(integer);
 			progressDialog.dismiss();
 			if (integer == 200 && registered) {
+				Toast.makeText(getContext(), R.string.wp_sign_in_register_done, Toast.LENGTH_LONG).show();
 				init(false);
 			} else if (integer == 200) {
 				mErrorView.setText(R.string.wp_sign_in_error_register);
