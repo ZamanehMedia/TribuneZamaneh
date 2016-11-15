@@ -384,9 +384,10 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnActio
 			in = new java.io.FileInputStream(src);
 		OutputStream out = new info.guardianproject.iocipher.FileOutputStream(dst);
 
-		long cb = src.length();
-		if (LOGGING)
+		if (LOGGING) {
+			long cb = in.available();
 			Log.d(LOGTAG, "File length is " + cb);
+		}
 
 		// Transfer bytes from in to out
 		byte[] buf = new byte[1024];

@@ -3,6 +3,7 @@ package com.tribunezamaneh.rss.views;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -133,6 +134,14 @@ public class WPSignInView extends FrameLayout {
 					R.style.ModalDialogTheme);
 			progressDialog.setIndeterminate(true);
 			progressDialog.setMessage(getContext().getString(R.string.wp_sign_in_progress));
+			progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+				@Override
+				public void onCancel(DialogInterface dialogInterface) {
+					if (!PostTask.this.isCancelled()) {
+						cancel(true);
+					}
+				}
+			});
 			progressDialog.show();
 		}
 
@@ -185,13 +194,6 @@ public class WPSignInView extends FrameLayout {
 
 		@Override
 		protected void onCancelled(Integer integer) {
-			super.onCancelled(integer);
-			progressDialog.dismiss();
-		}
-
-		@Override
-		protected void onCancelled() {
-			super.onCancelled();
 			progressDialog.dismiss();
 		}
 
@@ -230,6 +232,14 @@ public class WPSignInView extends FrameLayout {
 					R.style.ModalDialogTheme);
 			progressDialog.setIndeterminate(true);
 			progressDialog.setMessage(getContext().getString(R.string.wp_sign_in_register_progress));
+			progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+				@Override
+				public void onCancel(DialogInterface dialogInterface) {
+					if (!PostTaskRegister.this.isCancelled()) {
+						cancel(true);
+					}
+				}
+			});
 			progressDialog.show();
 		}
 
@@ -282,13 +292,6 @@ public class WPSignInView extends FrameLayout {
 
 		@Override
 		protected void onCancelled(Integer integer) {
-			super.onCancelled(integer);
-			progressDialog.dismiss();
-		}
-
-		@Override
-		protected void onCancelled() {
-			super.onCancelled();
 			progressDialog.dismiss();
 		}
 

@@ -391,9 +391,6 @@ public class SettingsActivity extends FragmentActivityWithMenu implements ICache
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 		mLastChangedSetting = key;
 		super.onSharedPreferenceChanged(sharedPreferences, key);
-		if (key == SettingsUI.KEY_PROXY_TYPE) {
-			App.getInstance().socialReader.connectProxy(SettingsActivity.this);
-		}
 		if (key.equals(SettingsUI.KEY_PROXY_TYPE) || key.equals(Settings.KEY_SYNC_MODE)) {
 			updateLeftSideMenu();
 		}
@@ -649,6 +646,16 @@ public class SettingsActivity extends FragmentActivityWithMenu implements ICache
 						// Special case, if we set proxy need to set requireProxy
 						if (getString(R.string.settingsBindingProxyType).equalsIgnoreCase(mKey)) {
 							mSettings.setRequireProxy(mValue != Settings.ProxyType.None);
+							if (mSettings.requireProxy()) {
+								mDrawerLayout.post(new Runnable() {
+									@Override
+									public void run() {
+										if (LOGGING)
+											Log.v(LOGTAG, "Changed proxy settings - call connectProxy");
+										App.getInstance().socialReader.connectProxy(SettingsActivity.this);
+									}
+								});
+							}
 						}
 					}
 				}
