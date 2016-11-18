@@ -105,6 +105,7 @@ public class OnboardingProxyFragment extends Fragment {
 			{
 				mWaitingForProxyConnection = mProxyType;
 				App.getSettings().setProxyType(mProxyType);
+                App.getSettings().setRequireProxy(true);
 				App.getInstance().socialReader.connectProxy(getActivity());
 				moveToNextIfProxyOnline(mProxyType);
 			}
@@ -167,7 +168,10 @@ public class OnboardingProxyFragment extends Fragment {
 	private void waitForProxyConnection()
 	{
 		mWaitForProxyTries = 0;
-		App.getInstance().socialReader.checkPsiphonStatus();
+        if (App.getSettings().proxyType() == Settings.ProxyType.Psiphon)
+    		App.getInstance().socialReader.checkPsiphonStatus();
+        else
+            App.getInstance().socialReader.checkTorStatus();
 		mRootView.postDelayed(mCheckProxyRunnable, 1000);
 	}
 
