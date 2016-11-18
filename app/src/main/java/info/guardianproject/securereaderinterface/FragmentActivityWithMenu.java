@@ -318,6 +318,9 @@ public class FragmentActivityWithMenu extends LockableActivity implements Drawer
                 item.setVisible(false);
         }
 
+        // Allow app to respond
+        App.getInstance().onPrepareOptionsMenu(this, menu);
+
         return super.onPrepareOptionsMenu(menu);
     }
 

@@ -35,6 +35,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -471,7 +472,10 @@ public class App extends MultiDexApplication implements OnSharedPreferenceChange
 		return DrawerMenuRecyclerViewAdapter.class;
 	}
 
-	public boolean onOptionsItemSelected(Activity activity, int itemId) {
+	protected void onPrepareOptionsMenu(Activity activity, Menu menu) {
+	}
+
+	protected boolean onOptionsItemSelected(Activity activity, int itemId) {
 		return false;
 	}
 

@@ -21,6 +21,7 @@ import com.tribunezamaneh.rss.views.CreateAccountView.OnActionListener;
 import com.tribunezamaneh.rss.views.WPSignInView;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.view.LayoutInflaterCompat;
@@ -145,33 +146,12 @@ public class CommentsActivity extends FragmentActivityWithMenu implements SyncSe
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		//super.onCreateOptionsMenu(menu);
-		getMenuInflater().inflate(R.menu.activity_comments, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onPrepareOptionsMenu(Menu menu) {
-		MenuItem item = menu.findItem(R.id.menu_logout);
-		if (item != null) {
-			item.setVisible(App.isSignedIn());
-		}
-		return super.onPrepareOptionsMenu(menu);
-	}
-
-	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
 		switch (item.getItemId())
 		{
 			case android.R.id.home:
 				finish();
-				return true;
-			case R.id.menu_logout:
-				App.getInstance().socialReader.ssettings.setXMLRPCUsername("");
-				App.getInstance().socialReader.ssettings.setXMLRPCPassword("");
-				showHideCreateAccount(true);
 				return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -207,6 +187,12 @@ public class CommentsActivity extends FragmentActivityWithMenu implements SyncSe
 	@Override
 	public void onClick(View v) {
 		if (v == mBtnSend) {
+			if (!App.isSignedIn()) {
+				mEditComment.clearFocus();
+				signIn();
+				return;
+			}
+
 			// Try to get remote post id of item
 			if (mItem.getRemotePostId() != 0) {
 				Comment comment = new Comment(UUID.randomUUID().toString(), "", new Date(), mEditComment.getEditableText().toString(), mItem.getDatabaseId());

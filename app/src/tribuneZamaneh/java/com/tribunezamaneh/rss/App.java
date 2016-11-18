@@ -5,9 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.tribunezamaneh.rss.adapters.DrawerMenuAdapter;
 
+import info.guardianproject.securereader.SocialReporter;
 import info.guardianproject.securereaderinterface.BuildConfig;
 import info.guardianproject.securereaderinterface.R;
 import info.guardianproject.securereaderinterface.ui.UICallbackListener;
@@ -24,6 +27,7 @@ public class App extends info.guardianproject.securereaderinterface.App
 	public void onCreate()
 	{
 		super.onCreate();
+		SocialReporter.REQUIRE_PROXY = false;
 		UICallbacks.getInstance().addListener(new UICallbackListener()
 		{
 			@Override
@@ -75,6 +79,17 @@ public class App extends info.guardianproject.securereaderinterface.App
 	}
 
 	@Override
+	protected void onPrepareOptionsMenu(Activity activity, Menu menu) {
+		super.onPrepareOptionsMenu(activity, menu);
+
+		// Show log out if we are logged in!
+		MenuItem item = menu.findItem(R.id.menu_logout);
+		if (item != null) {
+			item.setVisible(com.tribunezamaneh.rss.App.isSignedIn());
+		}
+	}
+
+	@Override
 	public boolean onOptionsItemSelected(Activity activity, int itemId) {
 		if (itemId == R.id.menu_add_post) {
 			Intent intent = new Intent(this, AddPostActivity.class);
@@ -82,13 +97,18 @@ public class App extends info.guardianproject.securereaderinterface.App
 			activity.startActivity(intent);
 			activity.overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left);
 			return true;
+		} else if (itemId == R.id.menu_logout) {
+			//App.getInstance().socialReader.ssettings.setXMLRPCUsername("");
+			App.getInstance().socialReader.ssettings.setXMLRPCPassword("");
+			//return true; Don't return, give Comments and AddPost a change to handle this as well!
 		}
 		return super.onOptionsItemSelected(activity, itemId);
 	}
 
 	public static boolean isSignedIn() {
-		boolean isSignedIn = !TextUtils.isEmpty(App.getInstance().socialReader.ssettings.getXMLRPCPassword()) ||
-				!TextUtils.isEmpty(App.getInstance().socialReader.ssettings.getXMLRPCUsername());
+		boolean isSignedIn = false;
+		if (App.getInstance().socialReader != null && App.getInstance().socialReader.ssettings != null)
+			isSignedIn = !TextUtils.isEmpty(App.getInstance().socialReader.ssettings.getXMLRPCPassword());
 		return isSignedIn;
 	}
 }

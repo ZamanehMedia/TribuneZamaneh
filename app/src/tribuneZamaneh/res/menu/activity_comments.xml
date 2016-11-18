@@ -1,3 +1,0 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:id="@+id/menu_logout" android:orderInCategory="103" android:title="@string/wp_sign_out" app:showAsAction="never" android:visible="true" android:enabled="true"></item>
-</menu>

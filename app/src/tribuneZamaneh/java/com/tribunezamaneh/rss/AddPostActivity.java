@@ -569,15 +569,6 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnActio
 		return ret;
 	}
 
-	@Override
-	public boolean onPrepareOptionsMenu(Menu menu) {
-		MenuItem item = menu.findItem(R.id.menu_logout);
-		if (item != null) {
-			item.setVisible(App.isSignedIn());
-		}
-		return super.onPrepareOptionsMenu(menu);
-	}
-
 	private boolean saveDraftOrAskForDeletion()
 	{
 		// Does it contain data at the moment?
@@ -628,13 +619,13 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnActio
 			if (this.saveDraftOrAskForDeletion())
 				quitBackToList(2); // drafts
 			return true;
-		case R.id.menu_logout:
-			App.getInstance().socialReader.ssettings.setXMLRPCUsername("");
-			App.getInstance().socialReader.ssettings.setXMLRPCPassword("");
-			showHideCreateAccount(true);
-			return true;
 		}
-		return super.onOptionsItemSelected(item);
+		boolean ret = super.onOptionsItemSelected(item);
+		if (item.getItemId() == R.id.menu_logout) {
+			// If we logged out, update views
+			showHideCreateAccount(true);
+		}
+		return ret;
 	}
 
 	@Override
