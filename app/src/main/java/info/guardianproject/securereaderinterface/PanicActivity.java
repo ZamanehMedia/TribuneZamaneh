@@ -10,6 +10,7 @@ import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Rect;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.LayoutInflaterCompat;
@@ -204,7 +205,11 @@ public class PanicActivity extends Activity implements OnTouchListener
 			App.getInstance().wipe(this, App.getSettings().wipeApp() ? SocialReader.FULL_APP_WIPE : SocialReader.DATA_WIPE);
 
 			LocalBroadcastManager.getInstance(this).sendBroadcastSync(new Intent(App.EXIT_BROADCAST_ACTION));
-			finish();
+			if (Build.VERSION.SDK_INT >= 21) {
+				finishAndRemoveTask();
+			} else {
+				finish();
+			}
 			System.exit(0);
 		}
 	}

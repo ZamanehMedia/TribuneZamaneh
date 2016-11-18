@@ -220,13 +220,6 @@ public class App extends MultiDexApplication implements OnSharedPreferenceChange
 
 		// Notify activities (if any)
 		LocalBroadcastManager.getInstance(this).sendBroadcastSync(new Intent(App.WIPE_BROADCAST_ACTION));
-
-		if (wipeMethod == SocialReader.DATA_WIPE)
-		{
-			Intent intent = new Intent(m_context, MainActivity.class);
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-			startActivity(intent);
-		}
 		mIsWiping = false;
 	}
 	
