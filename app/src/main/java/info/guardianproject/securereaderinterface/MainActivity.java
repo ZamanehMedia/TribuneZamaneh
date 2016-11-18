@@ -457,6 +457,28 @@ public class MainActivity extends ItemExpandActivity implements SyncService.Sync
 
 	private void setIsLoading(boolean isLoading)
 	{
+		// Are we sure we are not loading anything?
+		if (!isLoading && mAdapter != null && mAdapter.getCount() == 0) {
+			if (getCurrentFeedFilterType() == FeedFilterType.ALL_FEEDS ||
+					getCurrentFeedFilterType() == FeedFilterType.SINGLE_FEED) {
+				if (socialReader.getSyncService() != null) {
+					for (SyncService.SyncTask task : socialReader.getSyncService().syncList) {
+						if (task.type == SyncService.SyncTask.TYPE_FEED) {
+							if (task.status == SyncService.SyncTask.CREATED ||
+									task.status == SyncService.SyncTask.QUEUED ||
+									task.status == SyncService.SyncTask.STARTED) {
+								if (getCurrentFeedFilterType() == FeedFilterType.ALL_FEEDS ||
+										(getCurrentFeedFilterType() == FeedFilterType.SINGLE_FEED && getCurrentFeed() != null && task.feed != null && getCurrentFeed().getDatabaseId() == task.feed.getDatabaseId())) {
+									isLoading = true; // No, one is actually syncing!
+									break;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
 		mIsLoading = isLoading;
 		if (mStoryListView != null)
 			mStoryListView.setIsLoading(mIsLoading);
@@ -705,8 +727,7 @@ public class MainActivity extends ItemExpandActivity implements SyncService.Sync
 		if (LOGGING)
 			Log.v(LOGTAG, "Got a syncEvent");
 
-		if (syncTask.type == SyncService.SyncTask.TYPE_FEED && syncTask.status == SyncService.SyncTask.FINISHED)
-		{
+		if (syncTask.type == SyncService.SyncTask.TYPE_FEED && syncTask.status == SyncService.SyncTask.FINISHED) {
 			refreshListIfCurrent(syncTask.feed);
 			refreshLeftSideMenu();
 		}
