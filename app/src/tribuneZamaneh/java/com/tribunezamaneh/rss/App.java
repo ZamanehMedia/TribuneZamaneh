@@ -18,7 +18,7 @@ import info.guardianproject.securereaderinterface.ui.UICallbacks;
 
 public class App extends info.guardianproject.securereaderinterface.App
 {
-	public static final String WORDPRESS_LOGIN_URL = "https://www.postmodernapps.net/home/wp-login.php";
+	public static final String WORDPRESS_LOGIN_URL = "https://www.tribunezamaneh.com/wp-login.php";
 
 	public static final String LOGTAG = "App";
 	public static final boolean LOGGING = false;
@@ -98,7 +98,7 @@ public class App extends info.guardianproject.securereaderinterface.App
 			activity.overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left);
 			return true;
 		} else if (itemId == R.id.menu_logout) {
-			//App.getInstance().socialReader.ssettings.setXMLRPCUsername("");
+			App.getInstance().socialReader.ssettings.setXMLRPCUsername("");
 			App.getInstance().socialReader.ssettings.setXMLRPCPassword("");
 			//return true; Don't return, give Comments and AddPost a change to handle this as well!
 		}
