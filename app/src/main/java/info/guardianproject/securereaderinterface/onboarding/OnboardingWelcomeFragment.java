@@ -1,7 +1,5 @@
 package info.guardianproject.securereaderinterface.onboarding;
 
-import android.app.Fragment;
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
@@ -17,12 +15,10 @@ import android.widget.PopupWindow;
 
 import info.guardianproject.securereader.Settings;
 import info.guardianproject.securereaderinterface.App;
-import info.guardianproject.securereaderinterface.OnboardingFragmentListener;
 import info.guardianproject.securereaderinterface.R;
 import info.guardianproject.securereaderinterface.uiutil.UIHelpers;
 
-public class OnboardingWelcomeFragment extends Fragment {
-    private OnboardingFragmentListener mListener;
+public class OnboardingWelcomeFragment extends OnboardingFragment {
     private View mRootView;
 
     public OnboardingWelcomeFragment() {
@@ -47,8 +43,8 @@ public class OnboardingWelcomeFragment extends Fragment {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mListener != null)
-                    mListener.onNextPressed();
+                if (getListener() != null)
+                    getListener().onNextPressed();
             }
         });
         return mRootView;
@@ -150,22 +146,5 @@ public class OnboardingWelcomeFragment extends Fragment {
         {
             return getName();
         }
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnboardingFragmentListener) {
-            mListener = (OnboardingFragmentListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnboardingFragmentListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
     }
 }

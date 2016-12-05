@@ -402,6 +402,8 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 			setContentView(layoutId);
 		} else {
 			if (!BuildConfig.UI_ENABLE_CREATE_PASSPHRASE) {
+				if (mRootView != null)
+					mRootView.setAlpha(0.5f); // Fade it out a bit. TODO - show progress spinner?
 				App.getSettings().setPassphraseTimeout(0);	//TODO - add a setting for this!
 				try {
 					mCacheWord.setPassphrase(getCWPassword().toCharArray());

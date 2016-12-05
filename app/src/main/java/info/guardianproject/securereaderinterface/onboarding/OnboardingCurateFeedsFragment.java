@@ -27,8 +27,7 @@ import info.guardianproject.securereaderinterface.R;
 import info.guardianproject.securereaderinterface.adapters.FeedListAdapterCurate;
 import info.guardianproject.securereaderinterface.uiutil.UIHelpers;
 
-public class OnboardingCurateFeedsFragment extends Fragment {
-    private OnboardingFragmentListener mListener;
+public class OnboardingCurateFeedsFragment extends OnboardingFragment {
     private View mRootView;
 
     public OnboardingCurateFeedsFragment() {
@@ -48,8 +47,8 @@ public class OnboardingCurateFeedsFragment extends Fragment {
                 String processedXML = adapter.getProcessedXML();
                 if (processedXML != null)
                     App.getInstance().setOverrideResources(new OPMLOverrideResources(processedXML));
-                if (mListener != null)
-                    mListener.onNextPressed();
+                if (getListener() != null)
+                    getListener().onNextPressed();
             }
         });
 
@@ -57,23 +56,6 @@ public class OnboardingCurateFeedsFragment extends Fragment {
         lv.setAdapter(adapter);
 
         return mRootView;
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnboardingFragmentListener) {
-            mListener = (OnboardingFragmentListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnboardingFragmentListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
     }
 
     public class OPMLOverrideResources extends Resources

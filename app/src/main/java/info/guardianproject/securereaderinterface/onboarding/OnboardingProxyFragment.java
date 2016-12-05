@@ -1,7 +1,5 @@
 package info.guardianproject.securereaderinterface.onboarding;
 
-import android.app.Fragment;
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -15,12 +13,10 @@ import android.widget.Toast;
 import info.guardianproject.securereader.Settings;
 import info.guardianproject.securereader.SocialReader;
 import info.guardianproject.securereaderinterface.App;
-import info.guardianproject.securereaderinterface.OnboardingFragmentListener;
 import info.guardianproject.securereaderinterface.R;
 import info.guardianproject.securereaderinterface.uiutil.UIHelpers;
 
-public class OnboardingProxyFragment extends Fragment {
-    private OnboardingFragmentListener mListener;
+public class OnboardingProxyFragment extends OnboardingFragment {
     private View mRootView;
     private Settings.ProxyType mWaitingForProxyConnection;
 
@@ -47,8 +43,8 @@ public class OnboardingProxyFragment extends Fragment {
             public void onClick(View v) {
                 App.getSettings().setProxyType(Settings.ProxyType.None);
                 App.getSettings().setRequireProxy(false);
-                if (mListener != null)
-                    mListener.onNextPressed();
+                if (getListener() != null)
+                    getListener().onNextPressed();
             }
         });
 
@@ -59,23 +55,6 @@ public class OnboardingProxyFragment extends Fragment {
         btnConnectPsiphon.setOnClickListener(new ProxyConnectClickListener(Settings.ProxyType.Psiphon));
 
         return mRootView;
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnboardingFragmentListener) {
-            mListener = (OnboardingFragmentListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnboardingFragmentListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
     }
 
     private class ProxyConnectClickListener implements View.OnClickListener
@@ -195,8 +174,8 @@ public class OnboardingProxyFragment extends Fragment {
 				Toast.makeText(mRootView.getContext(), R.string.onboarding_proxy_tor_connected, Toast.LENGTH_LONG).show();
 			else if (type == Settings.ProxyType.Psiphon)
 				Toast.makeText(mRootView.getContext(), R.string.onboarding_proxy_psiphon_connected, Toast.LENGTH_LONG).show();
-            if (mListener != null)
-                mListener.onNextPressed();
+            if (getListener() != null)
+                getListener().onNextPressed();
 			return true;
 		}
 		return false;
