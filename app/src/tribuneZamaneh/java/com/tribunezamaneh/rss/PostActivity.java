@@ -2,19 +2,13 @@ package com.tribunezamaneh.rss;
 
 import java.util.ArrayList;
 
-import info.guardianproject.securereaderinterface.App;
 import info.guardianproject.securereaderinterface.ItemExpandActivity;
 
 import com.tribunezamaneh.rss.PostListFragment.PostListType;
 import info.guardianproject.securereaderinterface.adapters.StoryListAdapter.OnTagClickedListener;
-import info.guardianproject.securereaderinterface.uiutil.AnimationHelpers;
 import info.guardianproject.securereaderinterface.uiutil.UIHelpers;
-import info.guardianproject.securereaderinterface.uiutil.AnimationHelpers.FadeInFadeOutListener;
-import com.tribunezamaneh.rss.views.CreateAccountView;
 import info.guardianproject.securereaderinterface.views.FullScreenStoryItemView;
-import com.tribunezamaneh.rss.views.PostSignInView;
-import com.tribunezamaneh.rss.views.CreateAccountView.OnActionListener;
-import com.tribunezamaneh.rss.views.PostSignInView.OnAgreeListener;
+
 import com.tribunezamaneh.rss.views.WPSignInView;
 
 import info.guardianproject.securereaderinterface.widgets.CustomFontCheckableButton;
@@ -66,6 +60,7 @@ public class PostActivity extends ItemExpandActivity implements OnTagClickedList
 	private MenuItem mMenuAddPost;
 	private ArrayList<View> mTabs;
 	private ViewGroup mTabContainer;
+	private WPSignInView mSignIn;
 
 	@SuppressLint("NewApi") @Override
 	public void onCreate(Bundle savedInstanceState)
@@ -433,20 +428,23 @@ public class PostActivity extends ItemExpandActivity implements OnTagClickedList
 		if (!com.tribunezamaneh.rss.App.isSignedIn()) {
 			if (mMenuAddPost != null)
 				mMenuAddPost.setVisible(false);
-			final WPSignInView signIn = new WPSignInView(this);
-			signIn.setListener(new WPSignInView.OnLoginListener() {
-				@Override
-				public void onLoggedIn(String username, String password) {
-					((ViewGroup)signIn.getParent()).removeView(signIn);
-					com.tribunezamaneh.rss.App.getInstance().socialReader.ssettings.setXMLRPCUsername(username);
-					com.tribunezamaneh.rss.App.getInstance().socialReader.ssettings.setXMLRPCPassword(password);
-					if (mMenuAddPost != null)
-						mMenuAddPost.setVisible(true);
-					showHideCreateAccount(true);
-					UIHelpers.hideSoftKeyboard(PostActivity.this);
-				}
-			});
-			((ViewGroup)findViewById(R.id.post_root)).addView(signIn, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+			if (mSignIn == null) {
+				mSignIn = new WPSignInView(this);
+				mSignIn.setListener(new WPSignInView.OnLoginListener() {
+					@Override
+					public void onLoggedIn(String username, String password) {
+						UIHelpers.hideSoftKeyboard(PostActivity.this);
+						((ViewGroup) mSignIn.getParent()).removeView(mSignIn);
+						mSignIn = null;
+						com.tribunezamaneh.rss.App.getInstance().socialReader.ssettings.setXMLRPCUsername(username);
+						com.tribunezamaneh.rss.App.getInstance().socialReader.ssettings.setXMLRPCPassword(password);
+						if (mMenuAddPost != null)
+							mMenuAddPost.setVisible(true);
+						showHideCreateAccount(true);
+					}
+				});
+				((ViewGroup) findViewById(R.id.post_root)).addView(mSignIn, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+			}
 		}
 	}
 

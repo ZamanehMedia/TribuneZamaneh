@@ -111,6 +111,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 	private Intent mStartedIntent;
 	private MenuItem mMenuPost;
 	private HandlerIntent mPendingIntent; // Start this when/if we get write external permission
+	private WPSignInView mSignIn;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -1168,20 +1169,23 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 		if (!App.isSignedIn()) {
 			if (mMenuPost != null)
 				mMenuPost.setVisible(false);
-			final WPSignInView signIn = new WPSignInView(this);
-			signIn.setListener(new WPSignInView.OnLoginListener() {
-				@Override
-				public void onLoggedIn(String username, String password) {
-					((ViewGroup)signIn.getParent()).removeView(signIn);
-					App.getInstance().socialReader.ssettings.setXMLRPCUsername(username);
-					App.getInstance().socialReader.ssettings.setXMLRPCPassword(password);
-					if (mMenuPost != null)
-						mMenuPost.setVisible(true);
-					showHideCreateAccount(true);
-					UIHelpers.hideSoftKeyboard(AddPostActivity.this);
-				}
-			});
-			((ViewGroup)findViewById(R.id.add_post_root)).addView(signIn, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+			if (mSignIn == null) {
+				mSignIn = new WPSignInView(this);
+				mSignIn.setListener(new WPSignInView.OnLoginListener() {
+					@Override
+					public void onLoggedIn(String username, String password) {
+						UIHelpers.hideSoftKeyboard(AddPostActivity.this);
+						((ViewGroup) mSignIn.getParent()).removeView(mSignIn);
+						mSignIn = null;
+						App.getInstance().socialReader.ssettings.setXMLRPCUsername(username);
+						App.getInstance().socialReader.ssettings.setXMLRPCPassword(password);
+						if (mMenuPost != null)
+							mMenuPost.setVisible(true);
+						showHideCreateAccount(true);
+					}
+				});
+				((ViewGroup) findViewById(R.id.add_post_root)).addView(mSignIn, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+			}
 		}
 	}
 
