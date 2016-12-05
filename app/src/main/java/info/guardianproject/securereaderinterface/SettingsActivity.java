@@ -40,7 +40,7 @@ import info.guardianproject.cacheword.ICacheWordSubscriber;
 import info.guardianproject.cacheword.PassphraseSecrets;
 
 public class SettingsActivity extends FragmentActivityWithMenu implements ICacheWordSubscriber, LayoutFactoryWrapper.Callback {
-	private static final boolean LOGGING = true;
+	private static final boolean LOGGING = false;
 	private static final String LOGTAG = "Settings";
 
 	public static final String EXTRA_GO_TO_GROUP = "go_to_group";
