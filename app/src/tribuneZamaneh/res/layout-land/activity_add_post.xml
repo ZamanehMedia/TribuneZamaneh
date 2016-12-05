@@ -1,5 +1,6 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/add_post_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:descendantFocusability="beforeDescendants"
@@ -148,22 +149,4 @@
                 android:minHeight="50dp" />
         </RelativeLayout>
     </LinearLayout>
-
-    <com.tribunezamaneh.rss.views.PostSignInView
-        android:id="@+id/signIn"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:visibility="gone" >
-
-    </com.tribunezamaneh.rss.views.PostSignInView>
-
-    <com.tribunezamaneh.rss.views.CreateAccountView
-        android:id="@+id/createAccount"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:visibility="gone" >
-
-    </com.tribunezamaneh.rss.views.CreateAccountView>
 </FrameLayout>

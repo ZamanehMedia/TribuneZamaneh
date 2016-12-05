@@ -81,11 +81,10 @@ import com.tinymission.rss.Item;
 import com.tinymission.rss.MediaContent;
 import com.tribunezamaneh.rss.views.WPSignInView;
 
-public class AddPostActivity extends FragmentActivityWithMenu implements OnActionListener, OnFocusChangeListener, OnAgreeListener,
-		FadeInFadeOutListener
+public class AddPostActivity extends FragmentActivityWithMenu implements OnFocusChangeListener
 {
 	public static final String LOGTAG = "AddPostActivity";
-	public static final boolean LOGGING = true;
+	public static final boolean LOGGING = false;
 
 	private static final int WRITE_EXTERNAL_STORAGE_PERMISSION_REQUEST = 1;
 
@@ -97,8 +96,6 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnActio
 	private EditText mEditContent;
 	private EditText mEditTags;
 	private Item mStory;
-	private CreateAccountView mViewCreateAccount;
-	private PostSignInView mViewSignIn;
 	private View mBtnMediaAdd;
 	private View mBtnMediaAddMore;
 	private View mBtnMediaReplace;
@@ -215,7 +212,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnActio
 		// shown correctly. This is taken from:
 		// http://stackoverflow.com/questions/2150078/how-to-check-visibility-of-software-keyboard-in-android/4737265#4737265
 		//
-		final View activityRootView = findViewById(R.id.llRoot);
+		final View activityRootView = findViewById(R.id.add_post_root);
 		activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener()
 		{
 			@Override
@@ -246,12 +243,6 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnActio
 				}
 			}
 		});
-
-		mViewSignIn = (PostSignInView) findViewById(R.id.signIn);
-		mViewSignIn.setActionListener(this);
-
-		mViewCreateAccount = (CreateAccountView) findViewById(R.id.createAccount);
-		mViewCreateAccount.setActionListener(this);
 
 		mEditTags.addTextChangedListener(new TagTextWatcher());
 
@@ -1192,47 +1183,6 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnActio
 			});
 			((ViewGroup)findViewById(R.id.add_post_root)).addView(signIn, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 		}
-/*
-		if (info.guardianproject.securereaderinterface.App.getSettings().acceptedPostPermission())
-		{
-			mViewCreateAccount.setVisibility(View.GONE);
-			if (animate)
-				AnimationHelpers.fadeOut(mViewSignIn, 500, 0, false, this);
-			else
-				mViewSignIn.setVisibility(View.GONE);
-		}
-		else if (info.guardianproject.securereaderinterface.App.getInstance().socialReporter.getAuthorName() != null)
-		{
-			if (animate)
-			{
-				AnimationHelpers.fadeOut(mViewCreateAccount, 500, 0, false, this);
-				AnimationHelpers.fadeIn(mViewSignIn, 500, 0, false, this);
-			}
-			else
-			{
-				mViewSignIn.setVisibility(View.VISIBLE);
-				mViewCreateAccount.setVisibility(View.GONE);
-			}
-		}
-		else
-		{
-			mViewCreateAccount.setVisibility(View.VISIBLE);
-		}
-*/
-	}
-
-	@Override
-	public void onCreateIdentity(String authorName)
-	{
-		info.guardianproject.securereaderinterface.App.getInstance().socialReporter.createAuthorName(authorName);
-		showHideCreateAccount(true);
-	}
-
-	@Override
-	public void onAgreed()
-	{
-		info.guardianproject.securereaderinterface.App.getSettings().setAcceptedPostPermission(true);
-		showHideCreateAccount(true);
 	}
 
 	@Override
@@ -1241,31 +1191,4 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnActio
 		super.onWipe();
 		quitBackToList(0); // published
 	}
-
-	@Override
-	public void onFadeInStarted(View view)
-	{
-		if (view == mViewSignIn)
-			view.setVisibility(View.VISIBLE);
-	}
-
-	@Override
-	public void onFadeInEnded(View view)
-	{
-	}
-
-	@Override
-	public void onFadeOutStarted(View view)
-	{
-	}
-
-	@Override
-	public void onFadeOutEnded(View view)
-	{
-		view.setVisibility(View.GONE);
-		// To avoid old device bug, see
-		// http://stackoverflow.com/questions/4728908/android-view-with-view-gone-still-receives-ontouch-and-onclick
-		view.clearAnimation();
-	}
-
 }

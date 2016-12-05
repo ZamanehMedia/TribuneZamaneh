@@ -15,6 +15,8 @@ import info.guardianproject.securereaderinterface.views.FullScreenStoryItemView;
 import com.tribunezamaneh.rss.views.PostSignInView;
 import com.tribunezamaneh.rss.views.CreateAccountView.OnActionListener;
 import com.tribunezamaneh.rss.views.PostSignInView.OnAgreeListener;
+import com.tribunezamaneh.rss.views.WPSignInView;
+
 import info.guardianproject.securereaderinterface.widgets.CustomFontCheckableButton;
 import info.guardianproject.securereaderinterface.R;
 import android.annotation.SuppressLint;
@@ -45,8 +47,7 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
 
-public class PostActivity extends ItemExpandActivity implements OnActionListener, OnTagClickedListener, OnAgreeListener,
-		FadeInFadeOutListener
+public class PostActivity extends ItemExpandActivity implements OnTagClickedListener
 {
 	public static final String LOGTAG = "PostActivity";
 	public static final boolean LOGGING = false;
@@ -57,9 +58,6 @@ public class PostActivity extends ItemExpandActivity implements OnActionListener
 	 * The {@link ViewPager} that will host the section contents.
 	 */
 	ViewPager mViewPager;
-
-	CreateAccountView mViewCreateAccount;
-	PostSignInView mViewSignIn;
 
 	private String mCurrentSearchTag;
 
@@ -83,12 +81,6 @@ public class PostActivity extends ItemExpandActivity implements OnActionListener
 		mPostPagerAdapter = new PostPagerAdapter(getSupportFragmentManager());
 
 		setActionBarTitle(getString(R.string.title_activity_post));
-		
-		mViewSignIn = (PostSignInView) findViewById(R.id.signIn);
-		mViewSignIn.setActionListener(this);
-
-		mViewCreateAccount = (CreateAccountView) findViewById(R.id.createAccount);
-		mViewCreateAccount.setActionListener(this);
 
 		// Set up the ViewPager with the sections adapter.
 		mViewPager = (ViewPager) findViewById(R.id.pager);
@@ -172,7 +164,12 @@ public class PostActivity extends ItemExpandActivity implements OnActionListener
 		}
 		}
 
-		return super.onOptionsItemSelected(item);
+		boolean ret = super.onOptionsItemSelected(item);
+		if (item.getItemId() == R.id.menu_logout) {
+			// If we logged out, update views
+			showHideCreateAccount(true);
+		}
+		return ret;
 	}
 
 	/**
@@ -433,45 +430,24 @@ public class PostActivity extends ItemExpandActivity implements OnActionListener
 
 	private void showHideCreateAccount(boolean animate)
 	{
-		if (true  || App.getSettings().acceptedPostPermission())
-		{
-			mViewCreateAccount.setVisibility(View.GONE);
-			if (animate)
-				AnimationHelpers.fadeOut(mViewSignIn, 500, 0, false, this);
-			else
-				mViewSignIn.setVisibility(View.GONE);
+		if (!com.tribunezamaneh.rss.App.isSignedIn()) {
+			if (mMenuAddPost != null)
+				mMenuAddPost.setVisible(false);
+			final WPSignInView signIn = new WPSignInView(this);
+			signIn.setListener(new WPSignInView.OnLoginListener() {
+				@Override
+				public void onLoggedIn(String username, String password) {
+					((ViewGroup)signIn.getParent()).removeView(signIn);
+					com.tribunezamaneh.rss.App.getInstance().socialReader.ssettings.setXMLRPCUsername(username);
+					com.tribunezamaneh.rss.App.getInstance().socialReader.ssettings.setXMLRPCPassword(password);
+					if (mMenuAddPost != null)
+						mMenuAddPost.setVisible(true);
+					showHideCreateAccount(true);
+					UIHelpers.hideSoftKeyboard(PostActivity.this);
+				}
+			});
+			((ViewGroup)findViewById(R.id.post_root)).addView(signIn, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 		}
-		else if (App.getInstance().socialReporter.getAuthorName() != null)
-		{
-			if (animate)
-			{
-				AnimationHelpers.fadeOut(mViewCreateAccount, 500, 0, false, this);
-				AnimationHelpers.fadeIn(mViewSignIn, 500, 0, false, this);
-			}
-			else
-			{
-				mViewSignIn.setVisibility(View.VISIBLE);
-				mViewCreateAccount.setVisibility(View.GONE);
-			}
-		}
-		else
-		{
-			mViewCreateAccount.setVisibility(View.VISIBLE);
-		}
-	}
-
-	@Override
-	public void onCreateIdentity(String authorName)
-	{
-		App.getInstance().socialReporter.createAuthorName(authorName);
-		showHideCreateAccount(true);
-	}
-
-	@Override
-	public void onAgreed()
-	{
-		App.getSettings().setAcceptedPostPermission(true);
-		showHideCreateAccount(true);
 	}
 
 	@Override
@@ -482,34 +458,6 @@ public class PostActivity extends ItemExpandActivity implements OnActionListener
 		// Reload the adapters after the the wipe!
 		if (mPostPagerAdapter != null)
 			mPostPagerAdapter.updateAdapter();
-	}
-
-	@Override
-	public void onFadeInStarted(View view)
-	{
-		if (view == mViewSignIn)
-			view.setVisibility(View.VISIBLE);
-	}
-
-	@Override
-	public void onFadeInEnded(View view)
-	{
-	}
-
-	@Override
-	public void onFadeOutStarted(View view)
-	{
-	}
-
-	@Override
-	public void onFadeOutEnded(View view)
-	{
-		view.setVisibility(View.GONE);
-		// To avoid old device bug, see
-		// http://stackoverflow.com/questions/4728908/android-view-with-view-gone-still-receives-ontouch-and-onclick
-		view.clearAnimation();
-		
-		UIHelpers.hideSoftKeyboard(this);
 	}
 
 	@Override

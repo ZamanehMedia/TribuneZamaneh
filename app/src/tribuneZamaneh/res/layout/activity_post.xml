@@ -1,7 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:id="@+id/post_root">
 
     <LinearLayout 
         android:id="@+id/tab_container"
@@ -19,21 +20,5 @@
         android:layout_alignWithParentIfMissing="true"
         android:background="#ffffff"
         tools:context=".PostActivity" />
-    
-    <com.tribunezamaneh.rss.views.PostSignInView
-        android:id="@+id/signIn"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/tab_container"
-        android:layout_alignWithParentIfMissing="true"
-         />
 
-    <com.tribunezamaneh.rss.views.CreateAccountView
-        android:id="@+id/createAccount"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/tab_container"
-        android:layout_alignWithParentIfMissing="true"
-         />
-    
 </RelativeLayout>
