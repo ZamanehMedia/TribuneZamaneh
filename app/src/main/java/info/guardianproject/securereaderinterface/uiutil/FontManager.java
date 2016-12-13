@@ -9,11 +9,14 @@ import java.util.regex.Pattern;
 import org.ironrabbit.type.CustomTypefaceManager;
 #endif*/
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.support.v4.text.BidiFormatter;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -49,7 +52,9 @@ public class FontManager
 	private static Pattern gTibetanPattern = null;
 	private static Pattern gTibetanTransformedPattern = null;
 	private static Pattern gCyrillicPattern = null;
-	
+	private static Pattern gFarsiPattern = null;
+	private static Pattern gFarsiTransformedPattern = null;
+
 	public static boolean isTibetan(CharSequence text)
 	{
 		if (!TextUtils.isEmpty(text))
@@ -79,8 +84,44 @@ public class FontManager
 		}
 		return false;
 	}
-	
-	public static void getTibetanSpans(Context context, Spannable text)
+
+	public static boolean isFarsi(CharSequence text)
+	{
+		if (!TextUtils.isEmpty(text))
+		{
+			if (gFarsiPattern == null)
+				gFarsiPattern = Pattern.compile("[[\u0600-\u06FF][\uFB50-\uFDFF][\uFE70-\uFEFF]]+", 0);
+			Matcher unicodeFarsiMatcher = gFarsiPattern.matcher(text);
+			if (unicodeFarsiMatcher.find())
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public static void getFarsiSpans(Context context, Spannable text)
+	{
+		if (!TextUtils.isEmpty(text))
+		{
+			Typeface font = FontManager.getFontByName(context, "NotoNaskhArabic-Regular");
+			if (gFarsiTransformedPattern == null)
+				gFarsiTransformedPattern = Pattern.compile("[[\u0600-\u06FF][\u200C-\u200F][\u202A-\u202E][\uFB50-\uFDFF][\uFE70-\uFEFF]]+", 0);
+			Matcher unicodeFarsiMatcher = gFarsiTransformedPattern.matcher(text);
+			while (unicodeFarsiMatcher.find())
+			{
+				CustomFontSpan fontSpan = new CustomFontSpan(font);
+				text.setSpan(fontSpan, unicodeFarsiMatcher.start(0), unicodeFarsiMatcher.end(0), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+				// For debugging, make spanned text red
+				 //ForegroundColorSpan cs = new ForegroundColorSpan(Color.RED);
+				 //text.setSpan(cs, unicodeFarsiMatcher.start(0),
+				 //unicodeFarsiMatcher.end(0),
+				 //Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+			}
+		}
+	}
+
+/*	public static void getTibetanSpans(Context context, Spannable text)
 	{
 		if (!TextUtils.isEmpty(text))
 		{
@@ -99,7 +140,7 @@ public class FontManager
 	        }
 		}
 	}
-
+*/
 	/*#if FLAVOR_YAKREADER_TODO
 	public static SpannableStringBuilder getTibetanText(Context context, String text)
 	{
@@ -120,6 +161,16 @@ public class FontManager
 
 	public static CharSequence transformText(TextView view, CharSequence text)
 	{
+		if (isFarsi(text)) {
+			if (text instanceof Spannable) {
+				getFarsiSpans(view.getContext(), (Spannable)text);
+			} else {
+				SpannableStringBuilder ssb = new SpannableStringBuilder(text);
+				ssb.clearSpans();
+				getFarsiSpans(view.getContext(), ssb);
+				text = ssb;
+			}
+		}
 		/*#if FLAVOR_YAKREADER_TODO
 		if (isTibetan(text))
 		{
@@ -147,13 +198,13 @@ public class FontManager
 		}
 		else
 		#endif*/
-		if (isCyrillic(text))
+/*		if (isCyrillic(text))
 		{
 			if (view.getTypeface() == FontManager.getFontByName(view.getContext(), "Lato-Light"))
 			{
 				view.setTypeface(Typeface.DEFAULT);
 			}
-		}
+		}*/
 		return text;
 	}
 	
