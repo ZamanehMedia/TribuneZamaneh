@@ -516,6 +516,7 @@ public class SettingsActivity extends FragmentActivityWithMenu implements ICache
 			if (a.hasValue(R.styleable.SettingsControls_settings_key)) {
 				mLastSettingsKey = a.getString(R.styleable.SettingsControls_settings_key);
 				if (!TextUtils.isEmpty(mLastSettingsKey) && view != null && view instanceof CheckBox) {
+					((CheckBox) view).setChecked(false);
 					bindCheckbox((CheckBox) view, mLastSettingsKey);
 				}
 			}
@@ -526,6 +527,7 @@ public class SettingsActivity extends FragmentActivityWithMenu implements ICache
 						if (LOGGING)
 							Log.d(LOGTAG, "No settings key defined for control with value " + value);
 					} else if (view != null && view instanceof RadioButton) {
+						((RadioButton) view).setChecked(false);
 						bindRadioButton((RadioButton) view, mLastSettingsKey, value);
 					}
 					if (view != null && view.getId() == View.NO_ID) {
