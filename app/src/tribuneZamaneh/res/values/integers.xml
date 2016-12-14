@@ -2,4 +2,5 @@
 <resources>
     <integer name="command_posts_list">0</integer>
     <integer name="command_post_add">0</integer>
+    <integer name="command_read_more">0</integer>
 </resources>

@@ -1,10 +1,15 @@
 package info.guardianproject.securereaderinterface.views;
 
+import info.guardianproject.securereader.HTMLToPlainTextFormatter;
+import info.guardianproject.securereader.Settings;
 import info.guardianproject.securereaderinterface.R;
 import info.guardianproject.securereader.Settings.ReaderSwipeDirection;
 import info.guardianproject.securereaderinterface.App;
 import info.guardianproject.securereaderinterface.ItemExpandActivity;
 import info.guardianproject.securereaderinterface.models.FeedFilterType;
+import com.tribunezamaneh.rss.HTMLContentFormatter;
+
+import info.guardianproject.securereaderinterface.ui.ContentFormatter;
 import info.guardianproject.securereaderinterface.ui.MediaViewCollection;
 import info.guardianproject.securereaderinterface.ui.UICallbacks;
 import info.guardianproject.securereaderinterface.ui.MediaViewCollection.OnMediaLoadedListener;
@@ -23,8 +28,12 @@ import android.content.pm.ResolveInfo;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Message;
 import android.os.Parcelable;
+import android.text.Spannable;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.util.SparseArray;
 import android.util.TypedValue;
@@ -41,14 +50,19 @@ public class StoryItemView implements OnUpdateListener, OnMediaLoadedListener
 {
 	public static final String LOGTAG = "StoryItemView";
 	public static final boolean LOGGING = false;
-	
+
+	private static HTMLContentFormatter gFormatter;
+
 	private final Item mItem;
 	private MediaViewCollection mMediaViewCollection;
 	private SparseArray<Rect> mStoredPositions;
 	private float mDefaultTextSize;
 	private float mDefaultAuthorTextSize;
 	private View mView;
-	
+	private TextView mTvContent;
+	private TextView mTvAuthor;
+	private Thread mSetContentThread;
+
 	public StoryItemView(Item item)
 	{
 		mItem = item;
@@ -67,6 +81,8 @@ public class StoryItemView implements OnUpdateListener, OnMediaLoadedListener
 			mMediaViewCollection.recycle();
 		}
 		mView = null;
+		mTvAuthor = null;
+		mTvContent = null;
 	}
 	
 	public View getView(ViewGroup parentContainer)
@@ -76,7 +92,7 @@ public class StoryItemView implements OnUpdateListener, OnMediaLoadedListener
 			if (mItem.getMediaContent() != null && mItem.getMediaContent().size()> 0)
 			{
 				mMediaViewCollection  = new MediaViewCollection(parentContainer.getContext(), mItem);
-				mMediaViewCollection.load(false, true);
+				mMediaViewCollection.load(App.getSettings().syncMode() == Settings.SyncMode.LetItFlow, true);
 				mMediaViewCollection.addListener(this);
 			}
 			
@@ -87,6 +103,8 @@ public class StoryItemView implements OnUpdateListener, OnMediaLoadedListener
 			blueprint.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT));
 			mView = blueprint;
 			mView.setTag(this);
+			mTvContent = (TextView)mView.findViewById(R.id.tvContent);
+			mTvAuthor = (TextView)mView.findViewById(R.id.tvAuthor);
 			updateTextSize();
 		}
 		return mView;
@@ -138,15 +156,13 @@ public class StoryItemView implements OnUpdateListener, OnMediaLoadedListener
 	{
 		if (mView != null)
 		{
-			TextView tv = (TextView)mView.findViewById(R.id.tvContent);
-			if (tv != null)
+			if (mTvContent != null)
 			{
-				tv.setTextSize(TypedValue.COMPLEX_UNIT_PX, this.mDefaultTextSize + App.getSettings().getContentFontSizeAdjustment());
+				mTvContent.setTextSize(TypedValue.COMPLEX_UNIT_PX, this.mDefaultTextSize + App.getSettings().getContentFontSizeAdjustment());
 			}
-			tv = (TextView)mView.findViewById(R.id.tvAuthor);
-			if (tv != null)
+			if (mTvAuthor != null)
 			{
-				tv.setTextSize(TypedValue.COMPLEX_UNIT_PX, this.mDefaultAuthorTextSize + App.getSettings().getContentFontSizeAdjustment());
+				mTvAuthor.setTextSize(TypedValue.COMPLEX_UNIT_PX, this.mDefaultAuthorTextSize + App.getSettings().getContentFontSizeAdjustment());
 			}
 		}
 	}
@@ -207,10 +223,35 @@ public class StoryItemView implements OnUpdateListener, OnMediaLoadedListener
 		{
 			mDefaultTextSize = tv.getTextSize();
 			tv.setTextSize(TypedValue.COMPLEX_UNIT_PX, tv.getTextSize() + App.getSettings().getContentFontSizeAdjustment());
-			tv.setText(story.getCleanMainContent());
+			tv.setMovementMethod(LinkMovementMethod.getInstance());
+			tv.setFocusable(false);
+			tv.setFocusableInTouchMode(false);
 			tv.setPaintFlags(tv.getPaintFlags() | Paint.SUBPIXEL_TEXT_FLAG);
-			if (TextUtils.isEmpty(tv.getText()))
-				tv.setVisibility(View.GONE);
+			if (mSetContentThread != null)
+				mSetContentThread.interrupt();
+			final ContentFormatter formatter = App.getInstance().getItemContentFormatter();
+			if (formatter == null) {
+				// No Formatter, just use the clean content
+				tv.setText(story.getCleanMainContent());
+			} else {
+				mSetContentThread = new Thread(new Runnable() {
+
+					private TextView tv;
+
+					public Runnable init(TextView tv) {
+						this.tv = tv;
+						return this;
+					}
+
+					@Override
+					public void run() {
+						CharSequence formattedContent = formatter.getFormattedItemContent(tv.getContext(), mItem);
+						mHandler.sendMessage(mHandler.obtainMessage(0, formattedContent));
+					}
+				}.init(tv));
+				tv.setText("");
+				mSetContentThread.start();
+			}
 		}
 
 		// Set source
@@ -247,7 +288,7 @@ public class StoryItemView implements OnUpdateListener, OnMediaLoadedListener
 		tv = (TextView) blueprint.findViewById(R.id.tvReadMore);
 		if (tv != null)
 		{
-			if (story.getLink() != null)
+			if (false && story.getLink() != null)
 			{
 				boolean isReadMoreEnabled = !TextUtils.isEmpty(story.getLink()) && App.getInstance().socialReader.isOnline() == SocialReader.ONLINE;
 
@@ -261,7 +302,7 @@ public class StoryItemView implements OnUpdateListener, OnMediaLoadedListener
 				{
 					//tv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_read_orweb, 0, 0, 0);
 					//if (PackageHelper.isOrwebInstalled(blueprint.getContext()))
-						tv.setOnClickListener(new ReadMoreClickListener(story));
+					//	tv.setOnClickListener(new ReadMoreClickListener(story));
 					//else
 					//	tv.setOnClickListener(new PromptOrwebClickListener(blueprint.getContext()));
 				}
@@ -361,13 +402,13 @@ public class StoryItemView implements OnUpdateListener, OnMediaLoadedListener
 		}
 	}
 
-	private class ReadMoreClickListener implements View.OnClickListener
+	public class ReadMoreClickListener implements View.OnClickListener
 	{
-		private final Item mItem;
+		private final String mLink;
 
-		public ReadMoreClickListener(Item item)
+		public ReadMoreClickListener(String link)
 		{
-			mItem = item;
+			mLink = link;
 		}
 
 		@Override
@@ -375,7 +416,7 @@ public class StoryItemView implements OnUpdateListener, OnMediaLoadedListener
 		{
 			try
 			{
-				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(mItem.getLink()));
+				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(mLink));
 
 				String thisPackageName = App.getInstance().getPackageName();
 
@@ -411,7 +452,7 @@ public class StoryItemView implements OnUpdateListener, OnMediaLoadedListener
 			catch (Exception e)
 			{
 				if (LOGGING)
-					Log.d(LOGTAG, "Error trying to open read more link: " + mItem.getLink());
+					Log.d(LOGTAG, "Error trying to open read more link: " + mLink);
 			}
 		}
 	}
@@ -432,5 +473,16 @@ public class StoryItemView implements OnUpdateListener, OnMediaLoadedListener
 //					android.R.string.cancel, PackageHelper.URI_ORWEB_PLAY);
 //		}
 //	}
+
+	private Handler mHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+			if (mView != null) {
+				TextView tv = (TextView)mView.findViewById(R.id.tvContent);
+				tv.setText((CharSequence)msg.obj);
+			}
+		}
+	};
 }
 

@@ -6,6 +6,7 @@ import info.guardianproject.securereader.SocialReader.SocialReaderLockListener;
 import info.guardianproject.securereader.SyncService;
 import info.guardianproject.securereaderinterface.adapters.DrawerMenuRecyclerViewAdapter;
 import info.guardianproject.securereaderinterface.models.FeedFilterType;
+import info.guardianproject.securereaderinterface.ui.ContentFormatter;
 import info.guardianproject.securereaderinterface.ui.UICallbackListener;
 import info.guardianproject.securereaderinterface.ui.UICallbacks;
 import info.guardianproject.securereaderinterface.widgets.AnimatedRelativeLayout;
@@ -464,6 +465,8 @@ public class App extends MultiDexApplication implements OnSharedPreferenceChange
 	public Class getDrawerMenuAdapterClass() {
 		return DrawerMenuRecyclerViewAdapter.class;
 	}
+
+	public ContentFormatter getItemContentFormatter() { return null; }
 
 	protected void onPrepareOptionsMenu(Activity activity, Menu menu) {
 	}
