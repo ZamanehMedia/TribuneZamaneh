@@ -12,12 +12,28 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.tinymission.rss.Feed;
 import com.tinymission.rss.Item;
 import com.tribunezamaneh.rss.adapters.DrawerMenuAdapter;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.TransformerFactoryConfigurationError;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+
+import info.guardianproject.securereader.SocialReader;
 import info.guardianproject.securereader.SocialReporter;
 import info.guardianproject.securereaderinterface.BuildConfig;
 import info.guardianproject.securereaderinterface.R;
@@ -26,7 +42,7 @@ import info.guardianproject.securereaderinterface.ui.UICallbackListener;
 import info.guardianproject.securereaderinterface.ui.UICallbacks;
 import info.guardianproject.securereaderinterface.views.StoryItemView;
 
-public class App extends info.guardianproject.securereaderinterface.App
+public class App extends info.guardianproject.securereaderinterface.App implements SocialReader.SocialReaderFeedPreprocessor
 {
 	public static final String WORDPRESS_LOGIN_URL = "https://www.tribunezamaneh.com/wp-login.php";
 
@@ -39,6 +55,7 @@ public class App extends info.guardianproject.securereaderinterface.App
 	public void onCreate()
 	{
 		super.onCreate();
+		socialReader.setFeedPreprocessor(this);
 		SocialReporter.REQUIRE_PROXY = false;
 		UICallbacks.getInstance().addListener(new UICallbackListener()
 		{
@@ -179,5 +196,40 @@ public class App extends info.guardianproject.securereaderinterface.App
 		if (App.getInstance().socialReader != null && App.getInstance().socialReader.ssettings != null)
 			isSignedIn = !TextUtils.isEmpty(App.getInstance().socialReader.ssettings.getXMLRPCPassword());
 		return isSignedIn;
+	}
+
+	@Override
+	public String onGetFeedURL(Feed feed) {
+		return null;
+	}
+
+	@Override
+	public InputStream onFeedDownloaded(Feed feed, InputStream content, Map<String, String> headers) {
+		return XsltTransform(m_context.getResources().openRawResource(R.raw.feed_transform_inline_images), content);
+	}
+
+	public static InputStream XsltTransform(InputStream stylesheet, InputStream data) {
+		String html = "";
+
+		try {
+			Source xmlSource = new StreamSource(data);
+			Source xsltSource = new StreamSource(stylesheet);
+
+			StringWriter writer = new StringWriter();
+			Result result = new StreamResult(writer);
+			TransformerFactory tFactory = TransformerFactory.newInstance();
+			Transformer transformer = tFactory.newTransformer(xsltSource);
+			transformer.transform(xmlSource, result);
+			html = writer.toString();
+		} catch (TransformerConfigurationException e) {
+			e.printStackTrace();
+		} catch (TransformerFactoryConfigurationError e) {
+			e.printStackTrace();
+		} catch (TransformerException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new ByteArrayInputStream(html.getBytes());
 	}
 }
