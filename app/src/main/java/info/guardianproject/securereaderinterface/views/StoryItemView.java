@@ -51,9 +51,8 @@ public class StoryItemView implements OnUpdateListener, OnMediaLoadedListener
 	public static final String LOGTAG = "StoryItemView";
 	public static final boolean LOGGING = false;
 
-	private static HTMLContentFormatter gFormatter;
-
 	private final Item mItem;
+	private int mItemUsesReverseSwipe;
 	private MediaViewCollection mMediaViewCollection;
 	private SparseArray<Rect> mStoredPositions;
 	private float mDefaultTextSize;
@@ -66,6 +65,7 @@ public class StoryItemView implements OnUpdateListener, OnMediaLoadedListener
 	public StoryItemView(Item item)
 	{
 		mItem = item;
+		mItemUsesReverseSwipe = -1;
 	}
 
 	public Item getItem()
@@ -92,7 +92,7 @@ public class StoryItemView implements OnUpdateListener, OnMediaLoadedListener
 			if (mItem.getMediaContent() != null && mItem.getMediaContent().size()> 0)
 			{
 				mMediaViewCollection  = new MediaViewCollection(parentContainer.getContext(), mItem);
-				mMediaViewCollection.load(App.getSettings().syncMode() == Settings.SyncMode.LetItFlow, true);
+				mMediaViewCollection.load(App.getSettings().syncMode() == Settings.SyncMode.LetItFlow, false);
 				mMediaViewCollection.addListener(this);
 			}
 			
@@ -315,6 +315,30 @@ public class StoryItemView implements OnUpdateListener, OnMediaLoadedListener
 		}
 	}
 
+	private boolean itemUsesReverseSwipe() {
+		try
+		{
+			CharSequence formattedContent = null;
+			if (App.getInstance().getItemContentFormatter() != null) {
+				formattedContent = App.getInstance().getItemContentFormatter().getFormattedItemContent(App.getContext(), mItem); // Can use app context, we are not following links
+			} else {
+				formattedContent = mItem.getCleanMainContent();
+			}
+			Bidi bidi = new Bidi(formattedContent.toString(), Bidi.DIRECTION_DEFAULT_LEFT_TO_RIGHT);
+			if (!bidi.baseIsLeftToRight())
+				return true;
+		}
+		catch (IllegalArgumentException e)
+		{
+			// Content probably null for some reason.
+		}
+		catch (NullPointerException e)
+		{
+			// Content probably null for some reason.
+		}
+		return false;
+	}
+
 	public boolean usesReverseSwipe()
 	{
 		boolean bReverse = false;
@@ -323,20 +347,10 @@ public class StoryItemView implements OnUpdateListener, OnMediaLoadedListener
 			// Use the bidi class to figure out the swipe direction!
 			if (App.getSettings().readerSwipeDirection() == ReaderSwipeDirection.Automatic)
 			{
-				try
-				{
-					Bidi bidi = new Bidi(mItem.getCleanMainContent().toString(), Bidi.DIRECTION_DEFAULT_LEFT_TO_RIGHT);
-					if (!bidi.baseIsLeftToRight())
-						bReverse = true;
+				if (mItemUsesReverseSwipe == -1) {
+					mItemUsesReverseSwipe = itemUsesReverseSwipe() ? 1 : 0;
 				}
-				catch (IllegalArgumentException e)
-				{
-					// Content probably null for some reason.
-				}
-				catch (NullPointerException e)
-				{
-					// Content probably null for some reason.
-				}
+				bReverse = (mItemUsesReverseSwipe == 1);
 			}
 			else if (App.getSettings().readerSwipeDirection() == ReaderSwipeDirection.Ltr)
 			{
