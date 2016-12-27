@@ -1,5 +1,6 @@
 package info.guardianproject.securereaderinterface;
 		
+import info.guardianproject.iocipher.FileInputStream;
 import info.guardianproject.securereader.Settings;
 import info.guardianproject.securereader.Settings.UiLanguage;
 import info.guardianproject.securereader.SocialReader.SocialReaderLockListener;
@@ -17,6 +18,7 @@ import info.guardianproject.securereaderinterface.widgets.CustomFontTextView;
 import info.guardianproject.securereader.SocialReader;
 import info.guardianproject.securereader.SocialReporter;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -43,6 +45,9 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Request;
+import com.squareup.picasso.RequestHandler;
 import com.tinymission.rss.Feed;
 
 public class App extends MultiDexApplication implements OnSharedPreferenceChangeListener, SocialReaderLockListener
@@ -82,6 +87,25 @@ public class App extends MultiDexApplication implements OnSharedPreferenceChange
 		m_settings = new SettingsUI(m_context);
 		applyUiLanguage(false);
 		super.onCreate();
+
+		// Load images from secure storage
+		//
+		Picasso.setSingletonInstance(new Picasso.Builder(getContext())
+				.addRequestHandler(new RequestHandler() {
+					@Override
+					public boolean canHandleRequest(Request data) {
+						return true;
+					}
+
+					@Override
+					public Result load(Request request, int networkPolicy) throws IOException {
+						FileInputStream is = new FileInputStream(request.uri.toString());
+						return new Result(is, Picasso.LoadedFrom.NETWORK);
+					}
+				})
+				//.indicatorsEnabled(true)
+				.defaultBitmapConfig(Bitmap.Config.RGB_565)
+				.build());
 
 		socialReader = SocialReader.getInstance(this.getApplicationContext());
 		mInternalSyncListeners = new ArrayList<>();

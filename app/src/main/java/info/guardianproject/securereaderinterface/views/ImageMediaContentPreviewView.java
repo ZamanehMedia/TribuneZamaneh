@@ -1,30 +1,28 @@
 package info.guardianproject.securereaderinterface.views;
 
-import info.guardianproject.securereaderinterface.uiutil.AnimationHelpers;
-import info.guardianproject.securereaderinterface.uiutil.UIHelpers;
-import info.guardianproject.iocipher.File;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.os.Handler;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.squareup.picasso.Picasso;
 import com.tinymission.rss.MediaContent;
+
+import info.guardianproject.iocipher.File;
+import info.guardianproject.securereaderinterface.uiutil.AnimationHelpers;
 
 public class ImageMediaContentPreviewView extends ImageView implements MediaContentPreviewView
 {
-	public static final String LOGTAG = "ImageMediaContentPreviewView";
-	public static final boolean LOGGING = false;
+	public static final String LOGTAG = "ImageMediaPreviewView";
+	public static final boolean LOGGING = true;
 	
 	private MediaContent mMediaContent;
 	private File mMediaFile;
-	private Bitmap mRealBitmap;
-	private Thread mSetImageThread;
-	private Handler mHandler;
 	private boolean mUseThisThread;
 	private boolean mIsUpdate; // true if this view has already shown this content previously
+	private boolean mHasSetDrawable;
 
 	public ImageMediaContentPreviewView(Context context, AttributeSet attrs, int defStyle)
 	{
@@ -52,105 +50,43 @@ public class ImageMediaContentPreviewView extends ImageView implements MediaCont
 	@Override
 	protected void onLayout(boolean changed, int left, int top, int right, int bottom)
 	{
-		setBitmapIfDownloaded();
 		super.onLayout(changed, left, top, right, bottom);
+		setBitmapIfDownloaded();
 	}
 
 	@Override
-	public void setImageBitmap(Bitmap bm)
+	public void setImageDrawable(Drawable d)
 	{
 		// If we are setting the image from a different thread, make sure to
 		// fade it in.
 		// If we, however, set it from this thread (as we do when closing the
 		// full screen mode
 		// view) we want it to show immediately!
-		if (bm != null && !mUseThisThread && !mIsUpdate)
-			AnimationHelpers.fadeOut(this, 0, 0, false);
-		super.setImageBitmap(bm);
-		if (bm != null && !mUseThisThread && !mIsUpdate)
-			AnimationHelpers.fadeIn(this, 500, 0, false);
-		else if (bm != null)
-			AnimationHelpers.fadeIn(this, 0, 0, false);
+		//if (d != null && !mUseThisThread && !mIsUpdate)
+		//	AnimationHelpers.fadeOut(this, 0, 0, false);
+		super.setImageDrawable(d);
+		//if (d != null && !mUseThisThread && !mIsUpdate)
+		//	AnimationHelpers.fadeIn(this, 500, 0, false);
+		//else if (d != null)
+		//	AnimationHelpers.fadeIn(this, 0, 0, false);
 	}
 
 	public void recycle()
 	{
-		setImageBitmap(null);
-		if (mRealBitmap != null)
-		{
-			mRealBitmap.recycle();
-			mRealBitmap = null;
+		setImageDrawable(null);
+	}
+
+	private synchronized void setBitmapIfDownloaded() {
+		int w = getWidth();
+		int h = getHeight();
+		if (mMediaFile != null && w > 0 && h > 0 && !mHasSetDrawable) {
+			mHasSetDrawable = true;
+			Picasso.with(getContext())
+					.load(Uri.parse(mMediaFile.getAbsolutePath()))
+					.centerCrop()
+					.resize(w, h)
+					.into(this);
 		}
-	}
-
-	private synchronized void setBitmapIfDownloaded()
-	{
-		if (mMediaFile != null && mRealBitmap == null && mSetImageThread == null)
-		{
-			if (mHandler == null && !mUseThisThread)
-				mHandler = new Handler();
-
-			Runnable setImageRunnable = new Runnable()
-			{
-				@Override
-				public void run()
-				{
-					int w = getWidth();
-					int h = getHeight();
-					Bitmap bmp = UIHelpers.scaleToMaxGLSize(getContext(), mMediaFile, w, h);
-
-					Runnable doSetImageRunnable = new Runnable()
-					{
-						private Bitmap mBitmap;
-
-						@Override
-						public void run()
-						{
-							mRealBitmap = mBitmap;
-							setImageBitmap(mRealBitmap);
-						}
-
-						private Runnable init(Bitmap bitmap)
-						{
-							mBitmap = bitmap;
-							return this;
-						}
-
-					}.init(bmp);
-
-					if (mUseThisThread)
-						doSetImageRunnable.run();
-					else
-						mHandler.post(doSetImageRunnable);
-				}
-			};
-
-			if (mUseThisThread)
-			{
-				setImageRunnable.run();
-			}
-			else
-			{
-				mSetImageThread = new Thread(setImageRunnable);
-				mSetImageThread.start();
-			}
-		}
-	}
-
-	@Override
-	protected int getSuggestedMinimumHeight()
-	{
-		if (mMediaContent != null && mRealBitmap == null)
-			return mMediaContent.getHeight();
-		return super.getSuggestedMinimumHeight();
-	}
-
-	@Override
-	protected int getSuggestedMinimumWidth()
-	{
-		if (mMediaContent != null && mRealBitmap == null)
-			return mMediaContent.getWidth();
-		return super.getSuggestedMinimumWidth();
 	}
 
 	@Override
@@ -159,6 +95,7 @@ public class ImageMediaContentPreviewView extends ImageView implements MediaCont
 		mIsUpdate = (mediaContent == mMediaContent && mMediaFile != null && mMediaFile.equals(mediaFile));
 		mMediaContent = mediaContent;
 		mMediaFile = mediaFile;
+		mHasSetDrawable = false;
 		mUseThisThread = useThisThread;
 		if (mMediaFile == null)
 		{
@@ -166,13 +103,7 @@ public class ImageMediaContentPreviewView extends ImageView implements MediaCont
 				Log.v(LOGTAG, "Failed to download media, no file.");
 			return;
 		}
-		
-		int w = getWidth();
-		int h = getHeight();
-		if (w > 0 && h > 0)
-		{
-			setBitmapIfDownloaded();
-		}
+		setBitmapIfDownloaded();
 	}
 
 	@Override
