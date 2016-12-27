@@ -242,7 +242,7 @@ public class MediaViewCollection
 				}
 				else
 				{
-					if (!isLoading())
+					if (!isLoading() && !isLoaded())
 					{
 						mIsLoading = true;
 						if (!App.getInstance().socialReader.loadMediaContent(mContent, this, forceBitwiseDownloads))
