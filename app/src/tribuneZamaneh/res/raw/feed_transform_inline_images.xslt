@@ -16,15 +16,17 @@
   <xsl:template match="content:encoded">
     <xsl:copy><xsl:apply-templates select="@*|node()"/></xsl:copy>
     <xsl:for-each select="text()[contains(., '&lt;img')]">
-      <media:content>
         <xsl:variable name="afteropen" select="substring-after(.,'&lt;img')" />
         <xsl:variable name="body" select="substring-before($afteropen, '&gt;')" />
         <xsl:variable name="srcstart" select="substring-after($body,'src=&quot;')" />
         <xsl:variable name="src" select="substring-before($srcstart,'&quot;')" />
-        <xsl:attribute name="url">
-          <xsl:value-of select="$src" />
-        </xsl:attribute>
-      </media:content>
+          <xsl:if test="contains($src, '://www.tribunezamaneh.com')">
+            <media:content>
+              <xsl:attribute name="url">
+               <xsl:value-of select="$src" />
+             </xsl:attribute>
+            </media:content>
+          </xsl:if>
     </xsl:for-each>
   </xsl:template>
 
