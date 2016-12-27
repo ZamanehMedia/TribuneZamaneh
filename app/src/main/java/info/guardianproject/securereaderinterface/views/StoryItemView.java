@@ -92,7 +92,7 @@ public class StoryItemView implements OnUpdateListener, OnMediaLoadedListener
 			if (mItem.getMediaContent() != null && mItem.getMediaContent().size()> 0)
 			{
 				mMediaViewCollection  = new MediaViewCollection(parentContainer.getContext(), mItem);
-				mMediaViewCollection.load(App.getSettings().syncMode() == Settings.SyncMode.LetItFlow, false);
+				mMediaViewCollection.load(App.getSettings().syncMode() == Settings.SyncMode.LetItFlow, true);
 				mMediaViewCollection.addListener(this);
 			}
 			
