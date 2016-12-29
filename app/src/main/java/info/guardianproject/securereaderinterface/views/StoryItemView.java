@@ -1,13 +1,11 @@
 package info.guardianproject.securereaderinterface.views;
 
-import info.guardianproject.securereader.HTMLToPlainTextFormatter;
 import info.guardianproject.securereader.Settings;
 import info.guardianproject.securereaderinterface.R;
 import info.guardianproject.securereader.Settings.ReaderSwipeDirection;
 import info.guardianproject.securereaderinterface.App;
 import info.guardianproject.securereaderinterface.ItemExpandActivity;
 import info.guardianproject.securereaderinterface.models.FeedFilterType;
-import com.tribunezamaneh.rss.HTMLContentFormatter;
 
 import info.guardianproject.securereaderinterface.ui.ContentFormatter;
 import info.guardianproject.securereaderinterface.ui.MediaViewCollection;
