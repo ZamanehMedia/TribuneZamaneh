@@ -194,7 +194,17 @@ public class CommentsActivity extends FragmentActivityWithMenu implements SyncSe
 			}
 
 			// Try to get remote post id of item
-			if (mItem.getRemotePostId() != 0) {
+			if (mItem.getRemotePostId() == Item.DEFAULT_REMOTE_POST_ID) {
+				// Try to parse it from GUID
+				String guid = mItem.getGuid();
+				if (!TextUtils.isEmpty(guid) && guid.contains("?p=")) {
+					try {
+						int id = Integer.valueOf(guid.substring(guid.indexOf("?p=") + 3));
+						mItem.dbsetRemotePostId(id);
+					} catch (NumberFormatException ignored) {}
+				}
+			}
+			if (mItem.getRemotePostId() > 0) {
 				Comment comment = new Comment(UUID.randomUUID().toString(), "", new Date(), mEditComment.getEditableText().toString(), mItem.getDatabaseId());
 				//comment.setAuthor(App.getInstance().socialReporter.getAuthorName());
 				comment.setAuthor(App.getInstance().socialReader.ssettings.getXMLRPCUsername());
