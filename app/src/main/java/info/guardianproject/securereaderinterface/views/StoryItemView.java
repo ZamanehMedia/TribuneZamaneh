@@ -314,7 +314,7 @@ public class StoryItemView implements OnUpdateListener, OnMediaLoadedListener
 	}
 
 	private boolean itemUsesReverseSwipe() {
-		try
+/*		try
 		{
 			CharSequence formattedContent = null;
 			if (App.getInstance().getItemContentFormatter() != null) {
@@ -326,15 +326,12 @@ public class StoryItemView implements OnUpdateListener, OnMediaLoadedListener
 			if (!bidi.baseIsLeftToRight())
 				return true;
 		}
-		catch (IllegalArgumentException e)
+		catch (Exception e)
 		{
 			// Content probably null for some reason.
 		}
-		catch (NullPointerException e)
-		{
-			// Content probably null for some reason.
-		}
-		return false;
+		return false;*/
+		return true; // TEMP TEMP to avoid bidi overflow JNI error!
 	}
 
 	public boolean usesReverseSwipe()
