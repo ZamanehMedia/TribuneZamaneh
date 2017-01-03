@@ -12,6 +12,8 @@ import info.guardianproject.securereaderinterface.uiutil.AnimationHelpers.FadeIn
 import info.guardianproject.securereaderinterface.widgets.CheckableImageView;
 import info.guardianproject.securereaderinterface.widgets.compat.Spinner;
 import info.guardianproject.securereaderinterface.R;
+
+import android.graphics.Color;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 
@@ -107,6 +109,7 @@ public class FullScreenStoryItemView extends FrameLayout
 
 	private void initialize()
 	{
+		setBackgroundResource(R.drawable.background_detail);
 		mContentPager = (ViewPager) findViewById(R.id.horizontalPagerContent);
 		mContentPagerAdapter = new ContentPagerAdapter();
 		mContentPager.setAdapter(mContentPagerAdapter);

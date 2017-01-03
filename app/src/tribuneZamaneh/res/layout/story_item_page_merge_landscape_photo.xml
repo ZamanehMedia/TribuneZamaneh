@@ -1,0 +1,81 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:layout_width="match_parent"
+	android:layout_height="140dp"
+	android:layoutDirection="rtl"
+	>
+
+	<ViewStub android:id="@+id/layout_tags" android:layout_width="0dp" android:layout_height="0dp" />
+	<RelativeLayout
+		android:layout_width="match_parent"
+		android:layout_height="120dp"
+		android:layout_toLeftOf="@+id/layout_media"
+		android:layout_centerVertical="true"
+		android:background="@drawable/list_item_3"
+		android:id="@+id/content">
+
+		    <include
+                android:id="@+id/layout_source"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/source_height"
+				android:layout_marginStart="60dp"
+                layout="@layout/story_item_page_source_list"
+                android:layout_alignParentTop="true"
+                />
+
+		<info.guardianproject.securereaderinterface.widgets.CustomFontTextView
+			android:id="@+id/tvTitle"
+			style="@style/ItemTitleStyleList"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:paddingTop="20dp"
+			android:ellipsize="end"
+			android:text="@string/story_item_short_title"
+			android:layout_centerVertical="true"
+			android:gravity="center_vertical"
+			android:layout_marginStart="60dp"
+			android:maxLines="2"
+			android:textDirection="rtl"
+			android:layoutDirection="rtl"
+			/>
+
+	</RelativeLayout>
+
+	<com.tribunezamaneh.rss.views.RoundRelativeLayout
+		android:id="@+id/layout_media"
+		android:layout_width="120dp"
+		android:layout_height="120dp"
+		app:height_limit="1"
+		android:layout_alignParentRight="true"
+		android:layout_centerVertical="true"
+		android:layout_marginRight="10dp"
+		android:layout_marginLeft="-60dp"
+		android:layout_marginTop="10dp"
+		android:layout_marginBottom="10dp"
+		android:background="#f9f9f9"
+		app:borderColor="#ffffff"
+		app:borderSize="4dp"
+		>
+
+		<info.guardianproject.securereaderinterface.widgets.NestedViewPager
+			android:id="@+id/mediaPager"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent" />
+
+		<info.guardianproject.securereaderinterface.widgets.DottedProgressView
+			android:id="@+id/mediaPagerIndicator"
+			android:layout_width="match_parent"
+			android:layout_height="30dp"
+			android:layout_gravity="bottom"
+			android:background="#cdefefef"
+			app:dot_color="@color/grey_light_medium"
+			app:dot_color_current="@color/button_primary"
+			app:dot_distance="25"
+			app:dot_radius="6"
+			app:dot_rim_color="@color/grey_light_medium"
+			app:dot_rim_color_current="@color/button_primary" />
+
+
+	</com.tribunezamaneh.rss.views.RoundRelativeLayout>
+
+</merge>

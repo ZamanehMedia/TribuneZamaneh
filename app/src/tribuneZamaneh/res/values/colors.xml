@@ -50,4 +50,7 @@
    <color name="modal_button_secondary">#92938D</color>
    <color name="modal_button_secondary_selected">#303030</color>
    <color name="modal_button_secondary_disabled">#303030</color>
+
+   <color name="rz_blue_dark">#0bb5e6</color>
+   <color name="rz_grey_dark">#555555</color>
 </resources>

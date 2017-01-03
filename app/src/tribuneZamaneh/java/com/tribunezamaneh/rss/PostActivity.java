@@ -123,11 +123,11 @@ public class PostActivity extends ItemExpandActivity implements OnTagClickedList
 		setSelectedTab(0);
 		
 		// Turn off toolbar shadow, it would overlay our tabs
-		findViewById(R.id.toolbar_shadow).setVisibility(View.GONE);
-		if (Build.VERSION.SDK_INT >= 21)
-		{
-			mToolbar.setElevation(0);
-		}
+		//findViewById(R.id.toolbar_shadow).setVisibility(View.GONE);
+		//if (Build.VERSION.SDK_INT >= 21)
+		//{
+		//	mToolbar.setElevation(0);
+		//}
 	}
 
 	@Override

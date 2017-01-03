@@ -1,0 +1,91 @@
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    >
+
+    <info.guardianproject.securereaderinterface.widgets.AnimatedRelativeLayout
+        android:id="@+id/animatedRoot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipChildren="false"
+        android:paddingBottom="10dp" >
+
+            <info.guardianproject.securereaderinterface.widgets.HeightLimitedRelativeLayout
+                android:id="@+id/layout_media"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                app:height_limit="1.75" >
+
+                <include
+                    android:id="@+id/ivPhotos"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    layout="@layout/story_media_content_view" />
+            </info.guardianproject.securereaderinterface.widgets.HeightLimitedRelativeLayout>
+
+            <include
+                android:id="@+id/layout_source"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/source_height"
+                android:layout_alignWithParentIfMissing="true"
+                android:layout_below="@id/layout_media"
+                android:layout_marginLeft="@dimen/card_left_margin"
+                android:layout_marginRight="@dimen/card_right_margin"
+                android:layout_marginTop="@dimen/source_top_margin"
+                layout="@layout/story_item_page_source" />
+
+            <info.guardianproject.securereaderinterface.widgets.CustomFontTextView
+                android:id="@+id/tvTitle"
+                style="@style/ItemTitleStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/layout_source"
+                android:layout_marginStart="@dimen/card_left_margin"
+                android:layout_marginEnd="@dimen/card_right_margin"
+                android:layout_marginTop="@dimen/title_top_margin"
+                android:text="@string/story_item_short_title" />
+
+            <include
+                android:id="@+id/layout_author"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvTitle"
+                android:layout_marginLeft="@dimen/card_left_margin"
+                android:layout_marginRight="@dimen/card_right_margin"
+                android:layout_marginTop="@dimen/author_top_margin"
+                layout="@layout/story_item_page_author" />
+
+            <info.guardianproject.securereaderinterface.widgets.CustomFontTextView
+                android:id="@+id/tvContent"
+                style="@style/ItemContentStyle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/layout_author"
+                android:layout_marginStart="@dimen/card_left_margin"
+                android:layout_marginEnd="@dimen/card_right_margin"
+                android:layout_marginTop="@dimen/content_top_margin"
+                android:text="TextView" />
+
+            <info.guardianproject.securereaderinterface.widgets.CustomFontTextView
+                android:id="@+id/tvReadMore"
+                style="@style/ItemOrwebLinkStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvContent"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="10dp"
+                android:layout_marginStart="@dimen/card_left_margin"
+                android:layout_marginEnd="@dimen/card_right_margin"
+                android:background="#ffffff"
+                android:drawableStart="@drawable/ic_read_orweb"
+                android:drawablePadding="10dp"
+                android:gravity="center_vertical"
+                android:paddingTop="10dp"
+                android:text="@string/story_item_read_with_orweb" />
+
+    </info.guardianproject.securereaderinterface.widgets.AnimatedRelativeLayout>
+
+</android.support.v4.widget.NestedScrollView>

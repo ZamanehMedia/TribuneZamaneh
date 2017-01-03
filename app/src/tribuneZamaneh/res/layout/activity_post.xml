@@ -18,7 +18,6 @@
         android:layout_height="match_parent"
         android:layout_below="@id/tab_container"
         android:layout_alignWithParentIfMissing="true"
-        android:background="#ffffff"
         tools:context=".PostActivity" />
 
 </RelativeLayout>
