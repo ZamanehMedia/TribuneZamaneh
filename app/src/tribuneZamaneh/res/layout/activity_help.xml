@@ -1,5 +1,4 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="top" >
@@ -19,7 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@id/btnDone"
         android:layout_alignWithParentIfMissing="true"
-        android:background="@drawable/background_news" >
+        >
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -38,21 +37,44 @@
                     style="@style/HelpTitleStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="start|center_vertical"
+                    android:gravity="left|center_vertical|start"
+                    android:text="@string/help_rz_info_title" />
+
+                <TextView
+                    style="@style/HelpTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/help_rz_info_content"
+                    android:gravity="start|left" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@drawable/white_with_bottom_shadow"
+                android:orientation="vertical" >
+
+                <info.guardianproject.securereaderinterface.widgets.CustomFontTextView
+                    style="@style/HelpTitleStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left|center_vertical|start"
                     android:text="@string/help_tor_title" />
 
                 <TextView
                     style="@style/HelpTextStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/help_tor_content" />
+                    android:text="@string/help_tor_content"
+                    android:gravity="start|left" />
 
                 <Button
                     android:id="@+id/btnConnectTor"
                     style="@style/HelpButtonDiscreteStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableEnd="@drawable/ic_menu_tor"
+                    android:drawableRight="@drawable/ic_menu_tor"
                     android:text="@string/help_tor_button"
                     android:visibility="gone" />
             </LinearLayout>
@@ -85,14 +107,15 @@
                         style="@style/HelpTitleStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="start|center_vertical"
+                        android:gravity="center_vertical|start|left"
                         android:text="@string/help_wipe_title" />
 
                     <TextView
                         style="@style/HelpTextStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/help_wipe_content" />
+                        android:text="@string/help_wipe_content"
+                        android:gravity="start|left" />
 
                     <Button
                         android:id="@+id/btnTestPanic"
@@ -108,7 +131,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:background="@drawable/white_with_bottom_shadow"
-                android:weightSum="1" >
+                android:weightSum="1"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -121,14 +145,15 @@
                         style="@style/HelpTitleStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="start|center_vertical"
+                        android:gravity="center_vertical|start|left"
                         android:text="@string/help_share_title" />
 
                     <TextView
                         style="@style/HelpTextStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/help_share_content" />
+                        android:text="@string/help_share_content"
+                        android:gravity="start" />
                 </LinearLayout>
 
                 <ImageView
@@ -142,43 +167,6 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-               android:layout_height="wrap_content"
-               android:layout_margin="5dp"
-               android:background="@drawable/white_with_bottom_shadow"
-               android:weightSum="1" >
-	      
-              <ImageView
-                  android:layout_width="match_parent"
-                 android:layout_height="match_parent"
-                 android:layout_weight="0.6"
-                 android:adjustViewBounds="true"
-                 android:scaleType="fitStart"
-                 android:src="@drawable/img_about_discuss" />
-	      
-              <LinearLayout
-                  android:layout_width="match_parent"
-                 android:layout_height="wrap_content"
-                 android:layout_weight="0.4"
-                 android:background="#ffffff"
-                 android:orientation="vertical" >
-		
-                <info.guardianproject.securereaderinterface.widgets.CustomFontTextView
-                    style="@style/HelpTitleStyle"
-                   android:layout_width="match_parent"
-                   android:layout_height="wrap_content"
-                   android:gravity="start|center_vertical"
-                   android:text="@string/help_chat_title" />
-		
-                <TextView
-                    style="@style/HelpTextStyle"
-                   android:layout_width="match_parent"
-                   android:layout_height="wrap_content"
-                   android:text="@string/help_chat_content" />
-              </LinearLayout>
-            </LinearLayout>
-	    
-            <LinearLayout
-                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:background="@drawable/white_with_bottom_shadow"
@@ -188,14 +176,15 @@
                     style="@style/HelpTitleStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="start|center_vertical"
+                    android:gravity="center_vertical|start|left"
                     android:text="@string/help_data_title" />
 
                 <TextView
                     style="@style/HelpTextStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/help_data_content" />
+                    android:text="@string/help_data_content"
+                    android:gravity="start|left" />
             </LinearLayout>
 
             <LinearLayout
@@ -209,14 +198,15 @@
                     style="@style/HelpTitleStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="start|center_vertical"
-                    android:text="@string/about_guardian_title" />
+                    android:gravity="center_vertical|start|left"
+                    android:text="@string/about_zamaneh_title" />
 
                 <TextView
                     style="@style/HelpTextLinkedStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/about_guardian_content" />
+                    android:text="@string/about_zamaneh_content"
+                    android:gravity="start|left" />
             </LinearLayout>
 
             <LinearLayout
@@ -224,20 +214,22 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:background="@drawable/white_with_bottom_shadow"
-                android:orientation="vertical" >
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <info.guardianproject.securereaderinterface.widgets.CustomFontTextView
                     style="@style/HelpTitleStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="start|center_vertical"
+                    android:gravity="center_vertical|start|left"
                     android:text="@string/help_terms_title" />
 
                 <TextView
                     style="@style/HelpTextLinkedStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/help_terms_content" />
+                    android:text="@string/help_terms_content"
+                    android:gravity="start|left" />
             </LinearLayout>
 
             <TextView
