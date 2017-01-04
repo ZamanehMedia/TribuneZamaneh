@@ -10,7 +10,6 @@ import info.guardianproject.securereaderinterface.ui.UICallbacks;
 import info.guardianproject.securereaderinterface.uiutil.AnimationHelpers;
 import info.guardianproject.securereaderinterface.uiutil.AnimationHelpers.FadeInFadeOutListener;
 import info.guardianproject.securereaderinterface.widgets.CheckableImageView;
-import info.guardianproject.securereaderinterface.widgets.NestedViewPager;
 import info.guardianproject.securereaderinterface.widgets.compat.Spinner;
 import info.guardianproject.securereaderinterface.R;
 import android.support.v4.view.PagerAdapter;
@@ -319,7 +318,7 @@ public class FullScreenStoryItemView extends FrameLayout
 	{
 		if (mItemAdapter == null)
 			return null;
-		return (Item) mItemAdapter.getItem(mCurrentIndex);
+		return mItemAdapter.getDataItem(mCurrentIndex);
 	}
 
 	public int getCurrentStoryIndex()
@@ -517,24 +516,24 @@ public class FullScreenStoryItemView extends FrameLayout
 			mCurrentView = null;
 			mRightView = null;
 			
-			if (mItemAdapter != null && mCurrentIndex >= 0 && mCurrentIndex < mItemAdapter.getCount())
-				mCurrentView = getViewForItem((Item)mItemAdapter.getItem(mCurrentIndex), mViews);
+			if (mItemAdapter != null && mCurrentIndex >= 0 && mCurrentIndex < mItemAdapter.getDataItemCount())
+				mCurrentView = getViewForItem(mItemAdapter.getDataItem(mCurrentIndex), mViews);
 			
 			if (mCurrentView != null)
 			{
 				if (mCurrentView.usesReverseSwipe())
 				{
 					if (mCurrentIndex > 0)
-						mRightView = getViewForItem((Item)mItemAdapter.getItem(mCurrentIndex - 1), mViews);
-					if (mCurrentIndex < (mItemAdapter.getCount() - 1))
-						mLeftView = getViewForItem((Item)mItemAdapter.getItem(mCurrentIndex + 1), mViews);
+						mRightView = getViewForItem(mItemAdapter.getDataItem(mCurrentIndex - 1), mViews);
+					if (mCurrentIndex < (mItemAdapter.getDataItemCount() - 1))
+						mLeftView = getViewForItem(mItemAdapter.getDataItem(mCurrentIndex + 1), mViews);
 				}
 				else
 				{
 					if (mCurrentIndex > 0)
-						mLeftView = getViewForItem((Item)mItemAdapter.getItem(mCurrentIndex - 1), mViews);
-					if (mCurrentIndex < (mItemAdapter.getCount() - 1))
-						mRightView = getViewForItem((Item)mItemAdapter.getItem(mCurrentIndex + 1), mViews);
+						mLeftView = getViewForItem(mItemAdapter.getDataItem(mCurrentIndex - 1), mViews);
+					if (mCurrentIndex < (mItemAdapter.getDataItemCount() - 1))
+						mRightView = getViewForItem(mItemAdapter.getDataItem(mCurrentIndex + 1), mViews);
 				}
 			}
 						

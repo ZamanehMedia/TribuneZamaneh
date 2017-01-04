@@ -193,11 +193,31 @@ public class StoryListAdapter extends BaseAdapter implements OnMediaLoadedListen
 	@Override
 	public Object getItem(int position)
 	{
-		if (position == 0 && hasHeaderView())
-			return mResIdHeaderView;
-		if (mFilteredStories == null || mFilteredStories.size() == 0)
+		if (hasHeaderView()) {
+			if (position == 0)
+				return mResIdHeaderView;
+			position--;
+		}
+		if (mFilteredStories == null || mFilteredStories.size() == 0 || position < 0 || position >= mFilteredStories.size())
 			return null;
-		return mFilteredStories.get(position - (hasHeaderView() ? 1 : 0));
+		return mFilteredStories.get(position);
+	}
+
+	public int getDataItemCount() {
+		int count = 0;
+		if (mFilteredStories != null)
+			count = mFilteredStories.size();
+		return count;
+	}
+
+	public Item getDataItem(int position) {
+		if (hasHeaderView())
+			position++;
+		Object o = getItem(position);
+		if (o instanceof Item) {
+			return (Item)o;
+		}
+		return null;
 	}
 
 	@Override

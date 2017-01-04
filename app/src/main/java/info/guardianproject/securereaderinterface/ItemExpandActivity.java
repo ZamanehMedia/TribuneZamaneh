@@ -369,17 +369,21 @@ public class ItemExpandActivity extends FragmentActivityWithMenu implements Stor
 						mFullListStories.setOnScrollListener(null);
 
 					Item currentItem = mFullView.getCurrentStory();
-					for (int i = firstVisibleItem; i < totalItemCount
-							&& i < (firstVisibleItem + visibleItemCount); i++) {
-						Item item = (Item) mFullListStories
-								.getItemAtPosition(i);
-						if (item.getDatabaseId() == currentItem.getDatabaseId()) {
-							View storyView = mFullListStories.getChildAt(i
-									- mFullListStories
+					if (currentItem != null) {
+						for (int i = firstVisibleItem; i < totalItemCount
+								&& i < (firstVisibleItem + visibleItemCount); i++) {
+							Object o = mFullListStories.getItemAtPosition(i);
+							if (o instanceof Item) {
+								Item item = (Item)o;
+								if (item.getDatabaseId() == currentItem.getDatabaseId()) {
+									View storyView = mFullListStories.getChildAt(i
+											- mFullListStories
 											.getFirstVisiblePosition());
-							if (storyView != null)
-								setCollapsedSizeToStoryViewSize(storyView);
-							break;
+									if (storyView != null)
+										setCollapsedSizeToStoryViewSize(storyView);
+									break;
+								}
+							}
 						}
 					}
 				}
