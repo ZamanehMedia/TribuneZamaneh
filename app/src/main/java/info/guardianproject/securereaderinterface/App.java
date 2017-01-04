@@ -202,7 +202,7 @@ public class App extends MultiDexApplication implements OnSharedPreferenceChange
 	}
 
 	@SuppressLint("NewApi")
-	private void applyUiLanguage(boolean sendNotifications)
+	protected void applyUiLanguage(boolean sendNotifications)
 	{
 		// Update language!
 		//

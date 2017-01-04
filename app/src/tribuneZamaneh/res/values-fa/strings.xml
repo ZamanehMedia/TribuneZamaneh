@@ -13,32 +13,12 @@
   <string name="help_chat_content">با بقیه اعضای Tribune Zamaneh از طریق Tribune Zamaneh تاک حرف بزنید</string>
   <string name="help_data_content">توصیه‌هایی برای کاهش مصرف دیتا: ۱- تنها فیدهایی را که برایستان مهم هستند دربافت کنید. ۲- در بخش تنظیمات خود، گزینه همگام سازی - سینک- هوشمند را انتخاب کنید. این گزینه تنها متن‌ها را سینک می‌کند و امکان لود کردن عکس‌های گزارش را هم به شما می‌دهد. ۳- مقاله‌ها را پس از مدتی حدف کنید. می‌توانید زمانبندی حدف مطالب قدیمی را در بخش تنظیمات فعال کنید.  </string>
   <string name="help_terms_title">شرایط و گواهی‌نامه نرم‌افزار </string>
-  <string name="help_terms_content">محتوای ثبت شده از سوی کاربران
-
-این برنامه به کاربر امکان می‌دهد که پست بگذارد و آن را منتشر کند یا اینکه نظر بگذارد، پیام بدهد، عکس بگذارد، ایده برای گزارش بدهد یا هر محتوای دیگری را تولید کند (محتوای ثبت شده از سوی کاربران). در نظر داشته باشید که این محتواها از طریق سرورهایی که توسط بی بی جی اداره می‌شود یا از طریق سرورهایی در ارتباط با بی بی جی منتشر خواهند شد. همچنین توجه داشته باشید که سایت‌های بی بی جی متعلق به عموم هستند نه برای ارتباطات خصوصی و شخصی.
-
-شما تنها می‌توانید موادی را در وب‌سایت ‌های بی بی جی منتشر کنید که کپی رایت یا اجازه انتشار الکترونیکی آنها را داشته باشید. شما نمی‌توانید حقوق شخصی را نقض کنید یا به کپی رایت تجاوز کنید. رعایت کپی رایت، حق ثبت اختراع، علامت تجاری، اسرار تجاری، حریم خصوصی، شخصی، تبلیغاتی، اخلاقی یا حقوق انحصاری ضروری است. شما تایید می‌کنید که حق کپی رایت یا سایر حقوق ضروری و اجازه‌های لازم را برای انتشار و استفاده از محتویات مورد نظرتان دارید و به بی بی جی این اجازه را می‌دهید که از این محتویات استفاده کند یا آنها را منتشر کند. 
-
-شما کپی رایت یا سایر حقوق مالکیت را در هرگونه محتوا یا ماده‌ای که  در یا از طریق وب سایت بی بی جی منتشر می‌کنید، حفظ خواهید کرد. با این حال، با ارسال هر گونه محتوا از طریق وب سایت، به بی بی جی حق غیر انحصاری و دائمی و امتیاز رایگان می‌دهید تا این محتوا را در سراسر جهان منتشر کند. مجوز انتقال برای استفاده، کپی، واگذاری، اصلاح، انتقال، نمایش، خلق آثاری بر گرفته از اصل محتوا، میزبانی، تعیین شاخص، حافظه نهان، تگ، رمزگذاری به این ترتیب به بی بی جی داده می‌شود. این وب‌سایت می‌تواند از آنها  در همه فرمت‌های رسانه ای که در  حال حاضر شناخته شده هستند یا بعدا ابداع می‌شوند استفاده کند.
-
-قوانین اضافه مربوط به محتوای ثبت شده از سوی کاربران
-
-بی بی جی تمام سعی خود را می کند که محتوای ثبت شده از سوی کاربران را ظرف ۴۸ ساعت بازبینی و منتشر کند. بی بی جی اجباری ندارد  که محتوای تولید شده را بر اساس مهلت مشخصی منتشر کند. همچنین اجباری به انتشار همه محتواها ندارد. بی بی جی مباحثات مفید را تشویق می‌کند و کامنت‌ها و نظرات سیاسی و مذهبی را سانسور نمی‌کند. بی بی جی کامنت‌ها را ویرایش نمی‌کند؛ یا آنها را پست می‌کند یا نه. همه کامنت‌ها باید از این قوانین پیروی کنند:
-
-روی موضوع باقی بمانید
-
- زبان بدون وقاحت، ناسزا، ابتذال، نفرت، فریاد، یا دیگر رفتارهای بد ممنوع است.
-
-جملات شخصی، زبان بی‌ادبانه ا دعوت به خشونت ممنوع است.
-
-دعوت به انجام هر عمل غیرقانونی یا انجام اعمال غیرقانونی ممنوع است.
-
-تبلیغات، انتشار مواد تبلیغاتی، فرستادن ایمیل‌های تبلیغاتی، نامه‌های سریالی، اجرای طرح‌های هرمی یا هرگونه کار تبلیغاتی دیگر ممنوع است.
-
-تنها استفاده از متن‌های ساده ممکن است، متن های اچ تی ام ال یا کدهای دیگر ممنوع است. </string>
+  <string name="help_terms_content"></string>
   <string name="story_comment_add_hint">یک چیزی بنویسید...</string>
   <string name="menu_chat">Tribune Zamaneh تاک</string>
   <string name="menu_help">درباره</string>
+  <string name="onboarding_welcome_title">خوش آمدید</string>
+  <string name="onboarding_welcome_text">به تریبون زمانه</string>
   <string name="menu_search">جست و جو</string>
   <string name="lock_screen_passphrases_not_matching">کلمه عبور غلط است، دوباره وارد کنید</string>
   <string name="change_passphrase_not_matching">کلمه عبور غلط است، دوباره وارد کنید </string>
@@ -48,6 +28,12 @@
   <string name="bluetooth_send_info">دوستتان باید برنامه Tribune Zamaneh خود را باز کند تا بتواند از منوی کناری، صفحه دریافت یک خبر به اشتراک گذاشته را ببیند.</string>
   <string name="bluetooth_receive_title">از طریق Tribune Zamaneh دور و بر، یک گزارش که از دوستتان رسیده دریافت کنید</string>
   <string name="create_account_title">برای خودتان اسم کاربری بسازید</string>
+  <string name="feed_filter_all_feeds">تمامی مطلب‌ها</string>
+
+  <string name="settings_proxy_none">بدون پروکسی</string>
+  <string name="settings_security_password_attempts_1">۳</string>
+  <string name="settings_security_password_attempts_2">۵</string>
+
   <string name="feed_category_world_news">خبرهای خارجی</string>
   <string name="feed_category_national_news">خبرهای داخلی</string>
   <string name="feed_category_arts_culture">هنر و ادبیات</string>
@@ -92,10 +78,31 @@
   <string name="post_item_no_title">بدون عنوان</string>
   <string name="post_no_drafts">بدون پیش‌نویس</string>
   <string name="post_no_outgoing">بدون نوشته بعدی</string>
+  <string name="wp_sign_out">خروج</string>
+  <string name="wp_sign_in_title">ورود</string>
+  <string name="wp_sign_in_info">لازم است برای ادامه به برنامه ورود کنید.</string>
+  <string name="wp_sign_in_register_title">ثبت‌نام</string>
+  <string name="wp_sign_in_register_info">برای ادامه ثبت‌نام کنید. پس از ثبت‌نام ایمیل تأیید برای شما ارسال خواهد شد.</string>
+  <string name="wp_sign_in">ورود</string>
+  <string name="wp_sign_in_register">ثبت‌نام</string>
+  <string name="wp_sign_in_username">نام کاربری</string>
+  <string name="wp_sign_in_email">ایمیل</string>
+  <string name="wp_sign_in_password">رمزعبور</string>
+  <string name="wp_sign_in_progress">در حال ورود…</string>
+  <string name="wp_sign_in_register_progress">در حال ثبت‌نام…</string>
+  <string name="wp_sign_in_register_done">شناسه شما ساخته شد. برای دریافت رمز عبور به ایمیل خود مراجعه کنید.</string>
+  <string name="wp_sign_in_error_other">امکان اتصال وجود ندارد. لطفاً اتصال خود به اینترنت را کنترل کنید.</string>
+  <string name="wp_sign_in_error_credentials">نام کاربری یا رمز عبور اشتباه بود. دوباره امتحان کنید.</string>
+  <string name="wp_sign_in_error_register">نام کاربری یا ایمیل تکراری است. لطفاً دوباره تلاش کنید.</string>
+  <string name="wp_sign_in_goto_register">شناسه‌ایی در سایت ندارید؟ ثبت‌نام کنید.</string>
+  <string name="wp_sign_in_goto_login">قبلاً در سایت ثبت‌نام کرده‌اید؟‌ از اینجا ورود کنید.</string>
   <string name="post_sign_in_agree">اجازه می‌دهم از محتوای من استفاده شود.‏</string>
   <string name="post_sign_in_done">انجام شد</string>
   <string name="post_title_drafts">پیش‌نویس‌ها</string>
   <string name="post_title_outgoing">نوشته بعدی</string>
   <string name="post_title_published">منتشرشده</string>
   <string name="title_activity_post">نوشته‌های من</string>
+  <string name="comment_error_proxy">امکان نظردادن وجود ندارد. برای گذاشتن نظر باید پروکسی خود را روشن کنید.</string>
+  <string name="comment_error_network">امکان نظر دادن وجود ندارد. اتصال به اینترنت را کنترل کنید.</string>
+  <string name="comment_error_unknown">امکان نظردادن وجود ندارد. مشکل نامشخص!</string>
 </resources>

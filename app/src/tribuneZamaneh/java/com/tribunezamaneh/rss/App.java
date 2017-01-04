@@ -33,6 +33,7 @@ import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import info.guardianproject.securereader.Settings;
 import info.guardianproject.securereader.SocialReader;
 import info.guardianproject.securereader.SocialReporter;
 import info.guardianproject.securereaderinterface.BuildConfig;
@@ -55,6 +56,12 @@ public class App extends info.guardianproject.securereaderinterface.App implemen
 	public void onCreate()
 	{
 		super.onCreate();
+
+		// Currently hardcode Farsi
+		m_settings.setUiLanguage(Settings.UiLanguage.Farsi);
+		m_settings.setReaderSwipeDirection(Settings.ReaderSwipeDirection.Rtl);
+		applyUiLanguage(false);
+
 		socialReader.setFeedPreprocessor(this);
 		SocialReporter.REQUIRE_PROXY = false;
 		UICallbacks.getInstance().addListener(new UICallbackListener()
