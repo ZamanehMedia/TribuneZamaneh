@@ -37,6 +37,9 @@
             android:theme="@style/AppThemeNoActionBar">
         </activity>
 
+        <!-- Remove these from parent -->
+        <activity android:name="info.guardianproject.securereaderinterface.AddFeedActivity" tools:node="remove"/>
+        <activity android:name="info.guardianproject.securereaderinterface.AddFeedSearchActivity" tools:node="remove"/>
 	</application>
 
 </manifest>
