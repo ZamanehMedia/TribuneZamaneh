@@ -89,7 +89,7 @@
                         android:gravity="center_horizontal"
                         android:text="@string/add_post_operation_replace" />
 
-                    <TextView
+                    <!--<TextView
                         android:id="@+id/btnMediaView"
                         style="@style/PostAddOperationText"
                         android:layout_width="match_parent"
@@ -97,7 +97,7 @@
                         android:layout_weight="0.25"
                         android:drawableTop="@drawable/ic_post_view"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_post_operation_view" />
+                        android:text="@string/add_post_operation_view" />-->
 
                     <TextView
                         android:id="@+id/btnMediaDelete"

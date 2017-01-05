@@ -1,5 +1,6 @@
 package info.guardianproject.securereaderinterface.views;
 
+import info.guardianproject.securereader.DatabaseHelper;
 import info.guardianproject.securereader.Settings;
 import info.guardianproject.securereaderinterface.R;
 import info.guardianproject.securereader.Settings.ReaderSwipeDirection;
@@ -178,7 +179,8 @@ public class StoryItemView implements OnUpdateListener, OnMediaLoadedListener
 		StoryMediaContentView mediaContent = (StoryMediaContentView) blueprint.findViewById(R.id.ivPhotos);
 		if (mediaContent != null && mMediaViewCollection != null)
 		{
-			mediaContent.setMediaCollection(mMediaViewCollection, true, true);
+			boolean allowFullScreenMediaView = (story.getDatabaseId() != DatabaseHelper.DRAFTS_FEED_ID);
+			mediaContent.setMediaCollection(mMediaViewCollection, allowFullScreenMediaView, true);
 		}
 		View mediaContainer = blueprint.findViewById(R.id.layout_media);
 		if (mediaContainer != null)

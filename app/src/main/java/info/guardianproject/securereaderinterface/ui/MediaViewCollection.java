@@ -5,6 +5,7 @@ import info.guardianproject.securereader.MediaDownloader.MediaDownloaderCallback
 import info.guardianproject.securereaderinterface.App;
 import info.guardianproject.securereaderinterface.adapters.DownloadsAdapter;
 import info.guardianproject.securereaderinterface.views.ApplicationMediaContentPreviewView;
+import info.guardianproject.securereaderinterface.views.AudioMediaContentPreviewView;
 import info.guardianproject.securereaderinterface.views.EPubMediaContentPreviewView;
 import info.guardianproject.securereaderinterface.views.ImageMediaContentPreviewView;
 import info.guardianproject.securereaderinterface.views.MediaContentPreviewView;
@@ -140,7 +141,7 @@ public class MediaViewCollection
 		}
 		else if (content.isAudio())
 		{
-			VideoMediaContentPreviewView vmc = new VideoMediaContentPreviewView(mContext);
+			AudioMediaContentPreviewView vmc = new AudioMediaContentPreviewView(mContext);
 			mediaView = vmc;
 		}
 		else

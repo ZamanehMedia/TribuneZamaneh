@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
+import android.widget.TextView;
 
 import com.tinymission.rss.MediaContent;
 
@@ -28,6 +29,7 @@ public class VideoMediaContentPreviewView extends FrameLayout implements MediaCo
 	private Handler mHandler;
 	private boolean mUseThisThread;
 	private MediaContent mMediaContent;
+	private TextView mTvDisplayName;
 
 	public VideoMediaContentPreviewView(Context context, AttributeSet attrs, int defStyle)
 	{
@@ -59,7 +61,9 @@ public class VideoMediaContentPreviewView extends FrameLayout implements MediaCo
 
 		mImageView = (ImageView) findViewById(R.id.image);
 		mPlayView = findViewById(R.id.btnPlay);
-		mPlayView.setVisibility(View.GONE);
+		if (mPlayView != null)
+			mPlayView.setVisibility(View.GONE);
+		mTvDisplayName = (TextView)findViewById(R.id.mediaDisplayName);
 	}
 
 	public void setMediaContent(MediaContent mediaContent, info.guardianproject.iocipher.File mediaFile, java.io.File mediaFileNonVFS, boolean useThisThread)
@@ -67,11 +71,19 @@ public class VideoMediaContentPreviewView extends FrameLayout implements MediaCo
 		mMediaContent = mediaContent;
 		mUseThisThread = useThisThread;
 
+		if (mTvDisplayName != null && mediaContent.getExpression() != null) {
+			mTvDisplayName.setText(mediaContent.getExpression());
+		}
+
 		mMediaFile = mediaFile;
 		if (mMediaFile == null)
 		{
 			if (LOGGING)
 				Log.v(LOGTAG, "Failed to download media, no file.");
+			return;
+		}
+
+		if (mImageView == null) {
 			return;
 		}
 
@@ -85,7 +97,7 @@ public class VideoMediaContentPreviewView extends FrameLayout implements MediaCo
 			{
 				if (LOGGING)
 					Log.v(LOGTAG, "getOrientationThread");
-				
+
 				Bitmap preview = ThumbnailUtils.createVideoThumbnail(mMediaFile.getPath(), Video.Thumbnails.MINI_KIND);
 
 				Runnable reportRunnable = new Runnable()
@@ -146,6 +158,8 @@ public class VideoMediaContentPreviewView extends FrameLayout implements MediaCo
 	
 	public void recycle()
 	{
-		mImageView.setImageBitmap(null);
+
+		if (mImageView != null)
+			mImageView.setImageBitmap(null);
 	}
 }

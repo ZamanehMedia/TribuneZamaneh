@@ -41,6 +41,7 @@
     <string name="add_post_media_chooser_photo">Photo</string>
     <string name="add_post_media_chooser_title">Choose media source:</string>
     <string name="add_post_media_chooser_video">Video</string>
+    <string name="add_post_media_chooser_audio">Audio</string>
     <string name="add_post_menu_post">POST</string>
     <string name="add_post_not_valid_data_warning_content">You need to specify at least a photo and a title!</string>
     <string name="add_post_not_valid_data_warning_title">Post</string>

@@ -49,6 +49,15 @@
 
                 </ListView>
 
+                <ListView
+                    android:id="@+id/lvAudio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:choiceMode="singleChoice"
+                    android:listSelector="@drawable/light_or_transparent_selector" >
+
+                </ListView>
+
             </FrameLayout>
         </LinearLayout>
     </TabHost>
