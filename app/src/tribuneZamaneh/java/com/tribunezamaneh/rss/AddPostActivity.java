@@ -632,7 +632,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 		switch (requestCode)
 		{
 		case REQ_CODE_PICK_IMAGE:
-			if (resultCode == RESULT_OK && imageReturnedIntent != null)
+			if (resultCode == RESULT_OK)
 			{
 				try
 				{
@@ -646,7 +646,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 						defaultType = "video/mp4";
 						this.addMediaItem(null, mCurrentPhotoFile, null, defaultType, mReplaceThisIndex, null);
 					}
-					else {
+					else  if (imageReturnedIntent != null) {
 						Uri mediaUri = imageReturnedIntent.getData();
 						if (mediaUri == null && imageReturnedIntent.getDataString() != null)
 							mediaUri = Uri.parse(imageReturnedIntent.getDataString());
@@ -668,6 +668,8 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 
 						mediaItemStream = getContentResolver().openInputStream(mediaUri);
 						this.addMediaItem(mediaItemStream, null, imageReturnedIntent.getData().toString(), defaultType, mReplaceThisIndex, mediaDisplayName);
+					} else {
+						cleanupAfterFilePicking();
 					}
 				}
 				catch (Exception ex)
