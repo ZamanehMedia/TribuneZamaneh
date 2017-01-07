@@ -201,6 +201,7 @@ public class CommentsActivity extends FragmentActivityWithMenu implements SyncSe
 					try {
 						int id = Integer.valueOf(guid.substring(guid.indexOf("?p=") + 3));
 						mItem.dbsetRemotePostId(id);
+						App.getInstance().socialReader.setItemData(mItem);
 					} catch (NumberFormatException ignored) {}
 				}
 			}

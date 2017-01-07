@@ -805,6 +805,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 					try
 					{
 						copyFileFromFStoAppFS(mediaItemStream, mediaItemFile, outputFile);
+						mediaContent.setDownloaded(true);
 					}
 					catch (IOException e)
 					{
