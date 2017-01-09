@@ -12,6 +12,7 @@ import info.guardianproject.securereaderinterface.ui.ContentFormatter;
 import info.guardianproject.securereaderinterface.ui.MediaViewCollection;
 import info.guardianproject.securereaderinterface.ui.UICallbacks;
 import info.guardianproject.securereaderinterface.ui.MediaViewCollection.OnMediaLoadedListener;
+import info.guardianproject.securereaderinterface.uiutil.FontManager;
 import info.guardianproject.securereaderinterface.uiutil.UIHelpers;
 import info.guardianproject.securereaderinterface.widgets.AnimatedRelativeLayout;
 import info.guardianproject.securereaderinterface.widgets.UpdatingTextView;
@@ -59,12 +60,14 @@ public class StoryItemView implements OnUpdateListener, OnMediaLoadedListener
 	private View mView;
 	private TextView mTvContent;
 	private TextView mTvAuthor;
+	private CharSequence mFormattedContent;
 	private Thread mSetContentThread;
 
 	public StoryItemView(Item item)
 	{
 		mItem = item;
 		mItemUsesReverseSwipe = -1;
+		mFormattedContent = null;
 	}
 
 	public Item getItem()
@@ -230,7 +233,10 @@ public class StoryItemView implements OnUpdateListener, OnMediaLoadedListener
 			if (mSetContentThread != null)
 				mSetContentThread.interrupt();
 			final ContentFormatter formatter = App.getInstance().getItemContentFormatter();
-			if (formatter == null) {
+			if (mFormattedContent != null) {
+				tv.setText(mFormattedContent); // May have been set when getting the swipe direction
+			}
+			else if (formatter == null) {
 				// No Formatter, just use the clean content
 				tv.setText(story.getCleanMainContent());
 			} else {
@@ -316,24 +322,21 @@ public class StoryItemView implements OnUpdateListener, OnMediaLoadedListener
 	}
 
 	private boolean itemUsesReverseSwipe() {
-/*		try
+		try
 		{
-			CharSequence formattedContent = null;
 			if (App.getInstance().getItemContentFormatter() != null) {
-				formattedContent = App.getInstance().getItemContentFormatter().getFormattedItemContent(App.getContext(), mItem); // Can use app context, we are not following links
+				mFormattedContent = App.getInstance().getItemContentFormatter().getFormattedItemContent(App.getContext(), mItem); // Can use app context, we are not following links
 			} else {
-				formattedContent = mItem.getCleanMainContent();
+				mFormattedContent = mItem.getCleanMainContent();
 			}
-			Bidi bidi = new Bidi(formattedContent.toString(), Bidi.DIRECTION_DEFAULT_LEFT_TO_RIGHT);
-			if (!bidi.baseIsLeftToRight())
+			if (FontManager.isFarsi(mFormattedContent))
 				return true;
 		}
 		catch (Exception e)
 		{
 			// Content probably null for some reason.
 		}
-		return false;*/
-		return true; // TEMP TEMP to avoid bidi overflow JNI error!
+		return false;
 	}
 
 	public boolean usesReverseSwipe()
