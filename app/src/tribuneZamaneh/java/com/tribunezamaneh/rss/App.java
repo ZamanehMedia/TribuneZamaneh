@@ -57,9 +57,12 @@ public class App extends info.guardianproject.securereaderinterface.App implemen
 	{
 		super.onCreate();
 
-		// Currently hardcode Farsi
-		m_settings.setUiLanguage(Settings.UiLanguage.Farsi);
-		m_settings.setReaderSwipeDirection(Settings.ReaderSwipeDirection.Rtl);
+		// Default language is Farsi
+		if (!m_settings.hasShownHelp()) {
+			// First start
+			m_settings.setUiLanguage(Settings.UiLanguage.Farsi);
+			//m_settings.setReaderSwipeDirection(Settings.ReaderSwipeDirection.Ltr);
+		}
 		applyUiLanguage(false);
 
 		socialReader.setFeedPreprocessor(this);

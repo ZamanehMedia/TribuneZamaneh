@@ -464,7 +464,6 @@
             android:layout_margin="5dp"
             android:background="@color/grey_light"
             android:orientation="vertical"
-            android:visibility="gone"
             app:collapse_layout="@layout/add_feed_closer"
             app:header_layout="@layout/settings_group_header_item"
             app:header_text="@string/settings_heading_language" >
