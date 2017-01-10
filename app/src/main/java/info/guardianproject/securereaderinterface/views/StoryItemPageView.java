@@ -42,6 +42,7 @@ public class StoryItemPageView extends RelativeLayout
 	protected TextView mTvContent;
 	protected TextView mTvTime;
 	protected TextView mTvSource;
+	protected TextView mTvSourceAuthor;
 	protected TextView mTvAuthor;
 	protected View mLayoutTags;
 	protected LinearLayout mLlTags;
@@ -141,6 +142,7 @@ public class StoryItemPageView extends RelativeLayout
 		mTvContent = (TextView) view.findViewById(R.id.tvContent);
 		mTvTime = (TextView) view.findViewById(R.id.tvTime);
 		mTvSource = (TextView) view.findViewById(R.id.tvSource);
+		mTvSourceAuthor = (TextView) view.findViewById(R.id.tvSourceAuthor);
 		mTvAuthor = (TextView) view.findViewById(R.id.tvAuthor);
 		mLayoutTags = view.findViewById(R.id.layout_tags);
 		mLlTags = (LinearLayout) view.findViewById(R.id.llTags);
@@ -193,6 +195,9 @@ public class StoryItemPageView extends RelativeLayout
 						}
 					}
 				});
+			}
+			if (mTvSourceAuthor != null) {
+				mTvSourceAuthor.setText(item.getCleanAuthor());
 			}
 			if (mTvAuthor != null) {
 				mTvAuthor.setText(item.getCleanAuthor());

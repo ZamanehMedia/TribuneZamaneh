@@ -24,7 +24,7 @@
             android:text="@string/story_item_short_time" />
 
         <TextView
-            android:id="@+id/tvAuthor"
+            android:id="@+id/tvSourceAuthor"
             style="@style/ItemSourceStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
