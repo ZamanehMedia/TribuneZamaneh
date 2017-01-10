@@ -1,20 +1,9 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ImageView
     android:id="@+id/rlRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_splash">
-
-    <ImageView
-        android:id="@+id/imageView1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:adjustViewBounds="true"
-        android:scaleType="fitCenter"
-        android:src="@drawable/splash"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp" />
-
-
-</RelativeLayout>
+    android:scaleType="center"
+    android:src="@drawable/ic_launch_logo"
+    android:background="@drawable/splash_background"
+    xmlns:android="http://schemas.android.com/apk/res/android" />
 
