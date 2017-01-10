@@ -5,11 +5,23 @@
     android:background="@color/drawer_menu_background_color"
     android:paddingEnd="1dp" >
 
+    <ImageView
+        android:id="@+id/ivLogo"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:paddingTop="10dp"
+        android:src="@drawable/tz_logo"
+        android:scaleType="centerInside"
+        android:background="@android:color/white"
+        android:layout_alignParentStart="true"
+        />
+
     <info.guardianproject.securereaderinterface.widgets.CustomFontCheckableButton
         android:id="@+id/btnMenuTor"
         style="@style/LeftMenuLabelStyle"
         android:layout_width="match_parent"
         android:layout_height="75dp"
+        android:layout_below="@id/ivLogo"
         android:background="@drawable/button_tor_background_selector"
         android:drawableTop="@drawable/button_tor_icon_selector"
         android:padding="10dp"
