@@ -9,6 +9,7 @@ import android.content.IntentFilter;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
@@ -64,6 +65,11 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
+		// If not auto-login, make us non-transparent
+		if (App.getSettings().passphraseTimeout() != 0) {
+			getWindow().setBackgroundDrawableResource(R.drawable.background_news);
+			setTheme(R.style.AppTheme);
+		}
 		super.onCreate(savedInstanceState);
 		LayoutInflater inflater = LayoutInflater.from(this);
 		mInflater = inflater.cloneInContext(this);

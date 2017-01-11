@@ -197,7 +197,9 @@
         <activity
             android:name="info.guardianproject.securereaderinterface.LockScreenActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:label="@string/title_activity_lock_screen" >
+            android:label="@string/title_activity_lock_screen"
+            android:theme="@style/AppTheme.Transparent"
+            >
         </activity>
         <activity
             android:name="info.guardianproject.securereaderinterface.installer.HTTPDAppSender"    
