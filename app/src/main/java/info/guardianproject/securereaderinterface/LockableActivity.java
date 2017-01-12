@@ -13,13 +13,14 @@ import android.os.Bundle;
 import android.os.PowerManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
-public class LockableActivity extends ActionBarActivity  implements OnSharedPreferenceChangeListener 
+public class LockableActivity extends AppCompatActivity implements OnSharedPreferenceChangeListener
 {
 	public static final String LOGTAG = "LockableActivity";
 	public static final boolean LOGGING = false;
