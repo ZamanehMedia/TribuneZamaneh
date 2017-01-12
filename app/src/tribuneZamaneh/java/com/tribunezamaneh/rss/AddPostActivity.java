@@ -2,20 +2,14 @@ package com.tribunezamaneh.rss;
 
 import info.guardianproject.securereader.DatabaseHelper;
 import info.guardianproject.securereader.SocialReader;
-import info.guardianproject.securereader.SocialReporter;
 import info.guardianproject.securereader.XMLRPCPublisher;
 import info.guardianproject.securereader.XMLRPCPublisher.XMLRPCPublisherCallback;
 import info.guardianproject.securereaderinterface.*;
 import info.guardianproject.securereaderinterface.ui.MediaViewCollection;
 import info.guardianproject.securereaderinterface.ui.UICallbacks;
 import info.guardianproject.securereaderinterface.uiutil.AnimationHelpers;
-import info.guardianproject.securereaderinterface.uiutil.AnimationHelpers.FadeInFadeOutListener;
 import info.guardianproject.securereaderinterface.uiutil.UIHelpers;
-import com.tribunezamaneh.rss.views.CreateAccountView;
-import com.tribunezamaneh.rss.views.PostSignInView;
 import info.guardianproject.securereaderinterface.views.StoryMediaContentView;
-import com.tribunezamaneh.rss.views.CreateAccountView.OnActionListener;
-import com.tribunezamaneh.rss.views.PostSignInView.OnAgreeListener;
 import info.guardianproject.iocipher.File;
 
 import java.io.IOException;
@@ -26,14 +20,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.RunnableFuture;
 
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.ProgressDialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
@@ -47,10 +44,10 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.SupportActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ActionProvider;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.widget.LinearLayoutManager;
 import android.text.Editable;
 import android.text.Spannable;
 import android.text.TextUtils;
@@ -84,12 +81,12 @@ import com.tribunezamaneh.rss.views.WPSignInView;
 
 public class AddPostActivity extends FragmentActivityWithMenu implements OnFocusChangeListener
 {
-	public static final String LOGTAG = "AddPostActivity";
-	public static final boolean LOGGING = true;
+	private static final String LOGTAG = "AddPostActivity";
+	private static final boolean LOGGING = true;
 
 	private static final int WRITE_EXTERNAL_STORAGE_PERMISSION_REQUEST = 1;
 
-	ProgressDialog loadingDialog;
+	private ProgressDialog loadingDialog;
 
 	private static final int REQ_CODE_PICK_IMAGE = 1;
 	private StoryMediaContentView mMediaView;
@@ -98,10 +95,6 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 	private EditText mEditTags;
 	private Item mStory;
 	private View mBtnMediaAdd;
-	private View mBtnMediaAddMore;
-	private View mBtnMediaReplace;
-	private View mBtnMediaView;
-	private View mBtnMediaDelete;
 	private View mOperationButtons;
 	private View mProgressIcon;
 	private java.io.File mCurrentPhotoFile;
@@ -111,7 +104,6 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 
 	private Intent mStartedIntent;
 	private MenuItem mMenuPost;
-	private HandlerIntent mPendingIntent; // Start this when/if we get write external permission
 	private WPSignInView mSignIn;
 
 	@Override
@@ -198,13 +190,12 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 			}
 			else if (type.startsWith("image/"))
 			{
-				Uri imageUri = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
-
+				//Uri imageUri = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
 				// addMediaItem(imageUri, type, -1);
 			}
 			else if (type.startsWith("video/"))
 			{
-				Uri imageUri = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
+				//Uri imageUri = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
 				// addMediaItem(imageUri, type, -1);
 			}
 		}
@@ -248,7 +239,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 
 		mEditTags.addTextChangedListener(new TagTextWatcher());
 
-		showHideCreateAccount(false);
+		showHideCreateAccount();
 
 		// Sat focus change listener so we can auto save draft on lost focus
 		// event
@@ -266,15 +257,22 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 			case WRITE_EXTERNAL_STORAGE_PERMISSION_REQUEST: {
 				// If request is cancelled, the result arrays are empty.
 				if (grantResults.length > 0
-						&& grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+						&& grantResults[0] == PackageManager.PERMISSION_GRANTED
+						&& grantResults[1] == PackageManager.PERMISSION_GRANTED) {
 					if (LOGGING)
 						Log.d(LOGTAG, "Received permission!");
-					if (mPendingIntent != null)
-						startResolvedIntent(mPendingIntent);
+					runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+							createMediaChooser(mReplaceThisIndex);
+						}
+					});
+				} else {
+					if (LOGGING)
+						Log.d(LOGTAG, "Aborted or denied permissions");
 				}
 			}
 		}
-		mPendingIntent = null;
 	}
 
 	private void hookupMediaOperationButtons()
@@ -292,7 +290,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 			}
 		});
 
-		mBtnMediaAddMore = findViewById(R.id.btnMediaAddMore);
+		View mBtnMediaAddMore = findViewById(R.id.btnMediaAddMore);
 		mBtnMediaAddMore.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
@@ -302,7 +300,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 			}
 		});
 
-		mBtnMediaReplace = findViewById(R.id.btnMediaReplace);
+		View mBtnMediaReplace = findViewById(R.id.btnMediaReplace);
 		mBtnMediaReplace.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
@@ -313,7 +311,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 			}
 		});
 
-		mBtnMediaView = findViewById(R.id.btnMediaView);
+		View mBtnMediaView = findViewById(R.id.btnMediaView);
 		if (mBtnMediaView != null) {
 			mBtnMediaView.setOnClickListener(new View.OnClickListener() {
 				@Override
@@ -329,7 +327,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 			});
 		}
 
-		mBtnMediaDelete = findViewById(R.id.btnMediaDelete);
+		View mBtnMediaDelete = findViewById(R.id.btnMediaDelete);
 		mBtnMediaDelete.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
@@ -357,8 +355,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 		String imageFileName = timeStamp + "_";
 		java.io.File dir = getAlbumDir();
 		dir.mkdir();
-		java.io.File image = File.createTempFile(imageFileName, isVideo ? ".mp4" : ".jpg", dir);
-		mCurrentPhotoFile = image;
+		mCurrentPhotoFile = File.createTempFile(imageFileName, isVideo ? ".mp4" : ".jpg", dir);
 	}
 
 	private void deleteImageFile()
@@ -443,10 +440,8 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 	private ArrayList<String> getTagsFromInput()
 	{
 		ArrayList<String> ret = null;
-
-		String tagsString = mEditTags.getText().toString();
-		if (tagsString != null)
-		{
+		if (mEditTags.getText() != null) {
+			String tagsString = mEditTags.getText().toString();
 			tagsString = tagsString.replace("#", ""); // remove # from the
 														// string
 			if (tagsString.length() > 0)
@@ -504,7 +499,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 						@Override
 						public void onClick(View v)
 						{
-							if (!checkValidPost())
+							if (invalidPost())
 							{
 								showNoValidDataWarning();
 								return;
@@ -615,7 +610,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 		boolean ret = super.onOptionsItemSelected(item);
 		if (item.getItemId() == R.id.menu_logout) {
 			// If we logged out, update views
-			showHideCreateAccount(true);
+			showHideCreateAccount();
 		}
 		return ret;
 	}
@@ -659,14 +654,13 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 						if (LOGGING)
 							Log.d(LOGTAG, "Adding file " + mediaUri);
 
-						java.io.InputStream mediaItemStream = null;
 						String mediaDisplayName = getMediaDisplayName(mediaUri);
 
 						String type = getContentResolver().getType(mediaUri);
 						if (type != null)
 							defaultType = type;
 
-						mediaItemStream = getContentResolver().openInputStream(mediaUri);
+						java.io.InputStream mediaItemStream = getContentResolver().openInputStream(mediaUri);
 						this.addMediaItem(mediaItemStream, null, imageReturnedIntent.getData().toString(), defaultType, mReplaceThisIndex, mediaDisplayName);
 					} else {
 						cleanupAfterFilePicking();
@@ -788,18 +782,18 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 			@Override
 			protected Void doInBackground(Void... values) 
 			{
-				if (AddPostActivity.this.LOGGING)
-					Log.d(AddPostActivity.this.LOGTAG, "addMediaItem - doInBackground");
+				if (AddPostActivity.LOGGING)
+					Log.d(AddPostActivity.LOGTAG, "addMediaItem - doInBackground");
 				if (mediaItemStream != null || mediaItemFile != null)
 				{
-					if (AddPostActivity.this.LOGGING)
-						Log.d(AddPostActivity.this.LOGTAG, "addMediaItem - copy file");
+					if (AddPostActivity.LOGGING)
+						Log.d(AddPostActivity.LOGTAG, "addMediaItem - copy file");
 					// Now we can copy the file
 					File outputFile;
 					outputFile = new File(info.guardianproject.securereaderinterface.App.getInstance().socialReader.getFileSystemDir(), SocialReader.MEDIA_CONTENT_FILE_PREFIX + mediaContent.getDatabaseId());
 					
-					if (AddPostActivity.this.LOGGING)
-						Log.v(AddPostActivity.this.LOGTAG, "Local App Storage File: " + outputFile);
+					if (AddPostActivity.LOGGING)
+						Log.v(AddPostActivity.LOGTAG, "Local App Storage File: " + outputFile);
 
 					// First copy file to encrypted storage
 					try
@@ -819,8 +813,8 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 				{
 					mediaContent.setUrl(mediaItemUrl);
 				}
-				if (AddPostActivity.this.LOGGING)
-					Log.v(AddPostActivity.this.LOGTAG, "Set Url to: " + mediaContent.getUrl());
+				if (AddPostActivity.LOGGING)
+					Log.v(AddPostActivity.LOGTAG, "Set Url to: " + mediaContent.getUrl());
 				return null;
 			}
 
@@ -899,11 +893,9 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 		return true;
 	}
 
-	private boolean checkValidPost()
+	private boolean invalidPost()
 	{
-		if (TextUtils.isEmpty(mEditTitle.getText()))
-			return false;
-		return true;
+		return TextUtils.isEmpty(mEditTitle.getText());
 	}
 
 	private void showNoValidDataWarning()
@@ -1007,10 +999,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 		@Override
 		public void onTextChanged(CharSequence s, int start, int before, int count)
 		{
-			if (count < before)
-				mRemoved = true;
-			else
-				mRemoved = false;
+			mRemoved = count < before;
 		}
 	}
 
@@ -1081,24 +1070,29 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 
 			return v;
 		}
-	};
+	}
 
 	private void getHandlersForIntent(Intent intent, ArrayList<HandlerIntent> rgIntents)
 	{
 		PackageManager pm = getPackageManager();
-		List<ResolveInfo> resInfos = pm.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+		List<ResolveInfo> resInfos = pm.queryIntentActivities(intent, 0); //PackageManager.MATCH_DEFAULT_ONLY);
 
 		for (ResolveInfo resInfo : resInfos)
 		{
-			rgIntents.add(new HandlerIntent(intent, resInfo));
+			if (resInfo != null && resInfo.activityInfo != null) {
+				rgIntents.add(new HandlerIntent(intent, resInfo));
+			}
 		}
 	}
 
 	private void createMediaChooser(int replaceThisIndex)
 	{
 		mReplaceThisIndex = replaceThisIndex; // Remember which index to
-												// replace, if any (set to -1
-												// for "add")
+		// replace, if any (set to -1
+		// for "add")
+		if (!hasSharePermissions()) {
+			return; // We'll ask and maybe come back if we get permission
+		}
 
 		Builder alert = new AlertDialog.Builder(this);
 
@@ -1132,7 +1126,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id)
 			{
-					requirePermissionThenStart((HandlerIntent) parent.getAdapter().getItem(position));
+				startResolvedIntent((HandlerIntent) parent.getAdapter().getItem(position));
 			}
 		});
 
@@ -1150,7 +1144,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id)
 			{
-				requirePermissionThenStart((HandlerIntent) parent.getAdapter().getItem(position));
+				startResolvedIntent((HandlerIntent) parent.getAdapter().getItem(position));
 			}
 		});
 
@@ -1179,7 +1173,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id)
 			{
-				requirePermissionThenStart((HandlerIntent) parent.getAdapter().getItem(position));
+				startResolvedIntent((HandlerIntent) parent.getAdapter().getItem(position));
 			}
 		});
 
@@ -1196,41 +1190,40 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 		mMediaChooserDialog = alert.show();
 	}
 
-	private void requirePermissionThenStart(HandlerIntent info) {
+	private boolean hasSharePermissions() {
 		if (LOGGING)
-			Log.d(LOGTAG, "requirePermissionThenStart");
-		int permissionCheck = ContextCompat.checkSelfPermission(this,
-				Manifest.permission.READ_EXTERNAL_STORAGE);
+			Log.d(LOGTAG, "Check for share permissions");
 		if (Build.VERSION.SDK_INT <= 18) {
-			permissionCheck = PackageManager.PERMISSION_GRANTED; // For old devices we ask in the manifest!
 			if (LOGGING)
 				Log.d(LOGTAG, "Old device - granted");
+			return true;
 		}
-		if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+		int permissionCheckRead = ActivityCompat.checkSelfPermission(this,
+				Manifest.permission.READ_EXTERNAL_STORAGE);
+		int permissionCheckWrite = ActivityCompat.checkSelfPermission(this,
+				Manifest.permission.WRITE_EXTERNAL_STORAGE);
+		if (permissionCheckRead != PackageManager.PERMISSION_GRANTED || permissionCheckWrite != PackageManager.PERMISSION_GRANTED) {
 			if (LOGGING)
 				Log.d(LOGTAG, "Permission not granted - ask");
-			mPendingIntent = info; // Start this if we get permission
-			ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+			ActivityCompat.requestPermissions(this, new String[]{
+						Manifest.permission.READ_EXTERNAL_STORAGE,
+						Manifest.permission.WRITE_EXTERNAL_STORAGE
+					},
 					WRITE_EXTERNAL_STORAGE_PERMISSION_REQUEST);
+			return false;
 		} else {
 			if (LOGGING)
-				Log.d(LOGTAG, "Permission granted - start resolved intent");
-			startResolvedIntent(info);
+				Log.d(LOGTAG, "Permission granted");
+			return true;
 		}
 	}
 
-	protected void startResolvedIntent(HandlerIntent info)
+	private void startResolvedIntent(HandlerIntent info)
 	{
 		try
 		{
 			if (LOGGING) {
-				String packageName = "<null>";
-				if (info.resolveInfo != null && info.resolveInfo.activityInfo != null && info.resolveInfo.activityInfo.packageName != null)
-					packageName = info.resolveInfo.activityInfo.packageName;
-				String name = "<null>";
-				if (info.resolveInfo != null && info.resolveInfo.activityInfo != null && info.resolveInfo.activityInfo.name != null)
-					packageName = info.resolveInfo.activityInfo.name;
-				Log.e(LOGTAG, "startResolvedIntent: " + info.intent.toString() + " package " + packageName + " name " + name);
+				Log.d(LOGTAG, "startResolvedIntent: " + info.resolveInfo.toString());
 			}
 			if (MediaStore.ACTION_IMAGE_CAPTURE.equals(info.intent.getAction()) || MediaStore.ACTION_VIDEO_CAPTURE.equals(info.intent.getAction()))
 			{
@@ -1239,7 +1232,10 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 				Uri uriSavedImage = Uri.fromFile(mCurrentPhotoFile.getAbsoluteFile());
 				info.intent.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedImage);
 			}
-			info.intent.setClassName(info.resolveInfo.activityInfo.packageName, info.resolveInfo.activityInfo.name);
+			ActivityInfo activity = info.resolveInfo.activityInfo;
+			ComponentName name=new ComponentName(activity.applicationInfo.packageName,
+				activity.name);
+			info.intent.setComponent(name);
 			mStartedIntent = info.intent;
 			startActivityForResult(info.intent, REQ_CODE_PICK_IMAGE);
 			mMediaChooserDialog.dismiss();
@@ -1253,7 +1249,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 		}
 	}
 
-	private void showHideCreateAccount(boolean animate)
+	private void showHideCreateAccount()
 	{
 		if (!App.isSignedIn()) {
 			if (mMenuPost != null)
@@ -1270,7 +1266,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 						App.getInstance().socialReader.ssettings.setXMLRPCPassword(password);
 						if (mMenuPost != null)
 							mMenuPost.setVisible(true);
-						showHideCreateAccount(true);
+						showHideCreateAccount();
 					}
 				});
 				((ViewGroup) findViewById(R.id.add_post_root)).addView(mSignIn, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
