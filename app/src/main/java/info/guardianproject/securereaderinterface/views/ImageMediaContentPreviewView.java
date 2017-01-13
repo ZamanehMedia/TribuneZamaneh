@@ -16,7 +16,7 @@ import info.guardianproject.securereaderinterface.uiutil.AnimationHelpers;
 public class ImageMediaContentPreviewView extends ImageView implements MediaContentPreviewView
 {
 	public static final String LOGTAG = "ImageMediaPreviewView";
-	public static final boolean LOGGING = true;
+	public static final boolean LOGGING = false;
 	
 	private MediaContent mMediaContent;
 	private File mMediaFile;
