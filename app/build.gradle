@@ -51,13 +51,13 @@ android {
         tribuneZamaneh {
             applicationId = "com.tribunezamaneh.rss"
             versionName = "1.0.0"
-            versionCode = 30
+            versionCode = 34
             minSdkVersion 17
             buildConfigField "boolean", "UI_ENABLE_COMMENTS", "true"
             buildConfigField "boolean", "UI_ENABLE_PROXY_VIEW", "false"
             buildConfigField "boolean", "UI_ENABLE_TAGS", "true"
             buildConfigField "boolean", "UI_ENABLE_CHAT", "true"
-            buildConfigField "boolean", "UI_ENABLE_STARTUP_HELP", "true"
+            buildConfigField "boolean", "UI_ENABLE_STARTUP_HELP", "false"
             buildConfigField "boolean", "UI_ENABLE_CREATE_PASSPHRASE", "false"
             manifestPlaceholders = ["launcherActivity" : "info.guardianproject.securereaderinterface.SplashActivity"]
             dependencies {

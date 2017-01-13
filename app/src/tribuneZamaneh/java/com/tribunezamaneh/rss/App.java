@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
+import android.content.res.TypedArray;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -58,10 +59,9 @@ public class App extends info.guardianproject.securereaderinterface.App implemen
 		super.onCreate();
 
 		// Default language is Farsi
-		if (!m_settings.hasShownHelp()) {
+		if (info.guardianproject.securereaderinterface.App.getSettings().getOnboardingStage() == 0) {
 			// First start
 			m_settings.setUiLanguage(Settings.UiLanguage.Farsi);
-			//m_settings.setReaderSwipeDirection(Settings.ReaderSwipeDirection.Ltr);
 		}
 		applyUiLanguage(false);
 
