@@ -101,7 +101,7 @@ public class MainActivity extends ItemExpandActivity implements SyncService.Sync
 
 		mStoryListView = (StoryListView) findViewById(R.id.storyList);
 		mStoryListView.setListener(this);
-		
+
 		socialReader = ((App) getApplicationContext()).socialReader;
 		App.getInstance().addSyncServiceListener(this);
 
@@ -479,6 +479,17 @@ public class MainActivity extends ItemExpandActivity implements SyncService.Sync
 			}
 		}
 
+		// Is all initialized?
+		if (!isLoading &&
+				getCurrentFeedFilterType() == FeedFilterType.ALL_FEEDS &&
+				mStoryListView != null && mStoryListView.getListView() != null && mStoryListView.getListView().getAdapter().isEmpty()) {
+			ArrayList<Feed> allFeeds = socialReader.getFeedsList();
+			if (allFeeds == null || allFeeds.isEmpty() || allFeeds.get(0).getNetworkPullDate() == null) {
+				// No feeds, so still loading!
+				isLoading = true;
+			}
+		}
+
 		mIsLoading = isLoading;
 		if (mStoryListView != null)
 			mStoryListView.setIsLoading(mIsLoading);
@@ -534,18 +545,18 @@ public class MainActivity extends ItemExpandActivity implements SyncService.Sync
 	private void refreshListIfCurrent(Feed feed)
 	{
 		if (getCurrentFeedFilterType() == FeedFilterType.ALL_FEEDS)
-		{
-			refreshList();
-		}
-		else if (getCurrentFeedFilterType() == FeedFilterType.SINGLE_FEED && 
-				getCurrentFeed() != null && getCurrentFeed().getDatabaseId() == feed.getDatabaseId())
-		{
-			//TODO - this seems a little ugly
-			App.getInstance().updateCurrentFeed(feed);
-			refreshList();
-		}
+	{
+		refreshList();
 	}
-	
+	else if (getCurrentFeedFilterType() == FeedFilterType.SINGLE_FEED &&
+	getCurrentFeed() != null && getCurrentFeed().getDatabaseId() == feed.getDatabaseId())
+	{
+		//TODO - this seems a little ugly
+		App.getInstance().updateCurrentFeed(feed);
+		refreshList();
+	}
+}
+
 	private void checkShowStoryFullScreen()
 	{
 		if (mShowItemId != 0 && mAdapter != null)
@@ -558,9 +569,9 @@ public class MainActivity extends ItemExpandActivity implements SyncService.Sync
 				Item item = mAdapter.getItems().get(itemIndex);
 				if (item.getDatabaseId() == mShowItemId)
 				{
-					if (LOGGING) 
+					if (LOGGING)
 						Log.v(LOGTAG, "Found item at index " + itemIndex);
-					
+
 					this.openStoryFullscreen(mAdapter, itemIndex, mStoryListView.getListView(), null);
 				}
 			}
@@ -578,12 +589,12 @@ public class MainActivity extends ItemExpandActivity implements SyncService.Sync
 			while (itFeed.hasNext())
 			{
 				Feed feed = itFeed.next();
-				if (LOGGING) 
+				if (LOGGING)
 					Log.v(LOGTAG, "Adding " + feed.getItemCount() + " items");
 				items.addAll(feed.getItems());
 			}
 		}
-		if (LOGGING) 
+		if (LOGGING)
 			Log.v(LOGTAG, "There are " + items.size() + " items total");
 		return items;
 	}
@@ -618,7 +629,7 @@ public class MainActivity extends ItemExpandActivity implements SyncService.Sync
 		@Override
 		public void feedFetched(Feed _feed)
 		{
-			if (LOGGING) 
+			if (LOGGING)
 				Log.v(LOGTAG, "feedFetched Callback");
 			refreshListIfCurrent(_feed);
 			refreshLeftSideMenu();
@@ -787,6 +798,7 @@ public class MainActivity extends ItemExpandActivity implements SyncService.Sync
 				listOfFeeds = new ArrayList<Feed>();
 				listOfFeeds.add(socialReader.getFeed(mFeed));
 			}
+
 			return listOfFeeds;
 		}
 
