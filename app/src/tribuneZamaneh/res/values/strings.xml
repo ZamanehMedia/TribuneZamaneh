@@ -98,4 +98,7 @@
     <string name="about_zamaneh_content">Since 2007, Radio Zamaneh has focused particularly on increasing public awareness on democracy and human rights in Iran. We strive for an informed, educated and empowered civil society that can act as a catalyst for change and reform and put an end to increasing violations of basic human rights in Iran.</string>
     <string name="help_rz_info_title"></string>
     <string name="help_rz_info_content"></string>
+    <string name="add_media_permission_needed_title">Permissions needed</string>
+    <string name="add_media_permission_needed_message">To add media you need to give the app \"Storage\" permission.</string>
+    <string name="add_media_permission_needed_settings">Settings</string>
 </resources>

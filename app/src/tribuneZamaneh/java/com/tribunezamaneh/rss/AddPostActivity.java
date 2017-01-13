@@ -43,6 +43,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.SupportActivity;
 import android.support.v4.content.ContextCompat;
@@ -82,9 +83,7 @@ import com.tribunezamaneh.rss.views.WPSignInView;
 public class AddPostActivity extends FragmentActivityWithMenu implements OnFocusChangeListener
 {
 	private static final String LOGTAG = "AddPostActivity";
-	private static final boolean LOGGING = true;
-
-	private static final int WRITE_EXTERNAL_STORAGE_PERMISSION_REQUEST = 1;
+	private static final boolean LOGGING = false;
 
 	private ProgressDialog loadingDialog;
 
@@ -249,30 +248,6 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 
 		populateFromStory();
 		updateMediaControls();
-	}
-
-	@Override
-	public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-		switch (requestCode) {
-			case WRITE_EXTERNAL_STORAGE_PERMISSION_REQUEST: {
-				// If request is cancelled, the result arrays are empty.
-				if (grantResults.length > 0
-						&& grantResults[0] == PackageManager.PERMISSION_GRANTED
-						&& grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-					if (LOGGING)
-						Log.d(LOGTAG, "Received permission!");
-					runOnUiThread(new Runnable() {
-						@Override
-						public void run() {
-							createMediaChooser(mReplaceThisIndex);
-						}
-					});
-				} else {
-					if (LOGGING)
-						Log.d(LOGTAG, "Aborted or denied permissions");
-				}
-			}
-		}
 	}
 
 	private void hookupMediaOperationButtons()
@@ -1091,7 +1066,24 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 		// replace, if any (set to -1
 		// for "add")
 		if (!hasSharePermissions()) {
-			return; // We'll ask and maybe come back if we get permission
+			AlertDialog.Builder alert = new Builder(this)
+					.setTitle(R.string.add_media_permission_needed_title)
+					.setMessage(R.string.add_media_permission_needed_message)
+					.setNegativeButton(android.R.string.cancel, null)
+					.setPositiveButton(R.string.add_media_permission_needed_settings, new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialogInterface, int i) {
+							Intent intent = new Intent();
+							intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+							Uri uri = Uri.fromParts("package", getPackageName(), null);
+							intent.setData(uri);
+							intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+							intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+							startActivity(intent);
+						}
+					});
+			alert.show();
+			return;
 		}
 
 		Builder alert = new AlertDialog.Builder(this);
@@ -1204,12 +1196,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 				Manifest.permission.WRITE_EXTERNAL_STORAGE);
 		if (permissionCheckRead != PackageManager.PERMISSION_GRANTED || permissionCheckWrite != PackageManager.PERMISSION_GRANTED) {
 			if (LOGGING)
-				Log.d(LOGTAG, "Permission not granted - ask");
-			ActivityCompat.requestPermissions(this, new String[]{
-						Manifest.permission.READ_EXTERNAL_STORAGE,
-						Manifest.permission.WRITE_EXTERNAL_STORAGE
-					},
-					WRITE_EXTERNAL_STORAGE_PERMISSION_REQUEST);
+				Log.d(LOGTAG, "Permission not granted");
 			return false;
 		} else {
 			if (LOGGING)
