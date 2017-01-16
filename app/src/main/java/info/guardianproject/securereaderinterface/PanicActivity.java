@@ -202,7 +202,7 @@ public class PanicActivity extends Activity implements OnTouchListener
 		else
 		{
 			// Do the wipe
-			App.getInstance().wipe(this, App.getSettings().wipeApp() ? SocialReader.FULL_APP_WIPE : SocialReader.DATA_WIPE);
+			App.getInstance().wipe(this, App.getSettings().wipeApp() ? SocialReader.FULL_APP_WIPE : SocialReader.DATA_WIPE, false);
 
 			LocalBroadcastManager.getInstance(this).sendBroadcastSync(new Intent(App.EXIT_BROADCAST_ACTION));
 			if (Build.VERSION.SDK_INT >= 21) {

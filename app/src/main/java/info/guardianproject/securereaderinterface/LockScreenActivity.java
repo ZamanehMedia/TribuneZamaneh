@@ -230,7 +230,7 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 				if (App.getSettings().useKillPassphrase() && mEnterPassphrase.getText().toString().equals(App.getSettings().killPassphrase()))
 				{
 					// Kill password entered, wipe!
-					App.getInstance().wipe(LockScreenActivity.this, SocialReader.DATA_WIPE);
+					App.getInstance().wipe(LockScreenActivity.this, SocialReader.DATA_WIPE, false);
 					mEnterPassphrase.setText("");
 					mErrorView.setVisibility(View.VISIBLE);
         			LocalBroadcastManager.getInstance(LockScreenActivity.this).sendBroadcastSync(new Intent(App.EXIT_BROADCAST_ACTION));
@@ -250,7 +250,7 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
                     if (failedAttempts == App.getSettings().numberOfPasswordAttempts())
                     {
                         // Ooops, to many attempts! Wipe the data...
-                        App.getInstance().wipe(LockScreenActivity.this, SocialReader.DATA_WIPE);
+                        App.getInstance().wipe(LockScreenActivity.this, SocialReader.DATA_WIPE, false);
             			LocalBroadcastManager.getInstance(LockScreenActivity.this).sendBroadcastSync(new Intent(App.EXIT_BROADCAST_ACTION));
                         finish();
                     }
@@ -347,8 +347,8 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
         	intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
-        Bitmap snap = takeSnapshot(mRootView);
-        App.getInstance().putTransitionBitmap(snap);
+        //Bitmap snap = takeSnapshot(mRootView);
+        //App.getInstance().putTransitionBitmap(snap);
 
         startActivity(intent);
         finish();
@@ -392,8 +392,8 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
       	intent = new Intent(this, MainActivity.class);
       intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
-      Bitmap snap = takeSnapshot(mRootView);
-      App.getInstance().putTransitionBitmap(snap);
+      //Bitmap snap = takeSnapshot(mRootView);
+      //App.getInstance().putTransitionBitmap(snap);
 
       startActivity(intent);
       finish();

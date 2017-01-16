@@ -60,6 +60,28 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="left|center_vertical|start"
+                    android:text="@string/add_media_permission_needed_title" />
+
+                <TextView
+                    style="@style/HelpTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/add_media_permission_needed_info"
+                    android:gravity="start|left" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@drawable/white_with_bottom_shadow"
+                android:orientation="vertical" >
+
+                <info.guardianproject.securereaderinterface.widgets.CustomFontTextView
+                    style="@style/HelpTitleStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left|center_vertical|start"
                     android:text="@string/help_tor_title" />
 
                 <TextView

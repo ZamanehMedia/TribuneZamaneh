@@ -5,6 +5,7 @@ import info.guardianproject.securereader.SocialReader;
 import info.guardianproject.securereader.XMLRPCPublisher;
 import info.guardianproject.securereader.XMLRPCPublisher.XMLRPCPublisherCallback;
 import info.guardianproject.securereaderinterface.*;
+import info.guardianproject.securereaderinterface.models.FeedFilterType;
 import info.guardianproject.securereaderinterface.ui.MediaViewCollection;
 import info.guardianproject.securereaderinterface.ui.UICallbacks;
 import info.guardianproject.securereaderinterface.uiutil.AnimationHelpers;
@@ -47,6 +48,7 @@ import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.SupportActivity;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ActionProvider;
 import android.support.v4.view.MenuItemCompat;
 import android.text.Editable;
@@ -88,6 +90,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 	private ProgressDialog loadingDialog;
 
 	private static final int REQ_CODE_PICK_IMAGE = 1;
+	private static final int REQ_CODE_SETTINGS = 2;
 	private StoryMediaContentView mMediaView;
 	private EditText mEditTitle;
 	private EditText mEditContent;
@@ -236,7 +239,9 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 			}
 		});
 
-		mEditTags.addTextChangedListener(new TagTextWatcher());
+		if (mEditTags != null) {
+			mEditTags.addTextChangedListener(new TagTextWatcher());
+		}
 
 		showHideCreateAccount();
 
@@ -244,7 +249,9 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 		// event
 		mEditTitle.setOnFocusChangeListener(this);
 		mEditContent.setOnFocusChangeListener(this);
-		mEditTags.setOnFocusChangeListener(this);
+		if (mEditTags != null) {
+			mEditTags.setOnFocusChangeListener(this);
+		}
 
 		populateFromStory();
 		updateMediaControls();
@@ -394,7 +401,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 		mEditContent.setText(mStory.getCleanMainContent());
 
 		ArrayList<String> tags = mStory.getTags();
-		if (tags != null)
+		if (mEditTags != null && tags != null)
 		{
 			StringBuilder sb = new StringBuilder();
 			for (String tag : tags)
@@ -415,7 +422,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 	private ArrayList<String> getTagsFromInput()
 	{
 		ArrayList<String> ret = null;
-		if (mEditTags.getText() != null) {
+		if (mEditTags != null && mEditTags.getText() != null) {
 			String tagsString = mEditTags.getText().toString();
 			tagsString = tagsString.replace("#", ""); // remove # from the
 														// string
@@ -434,7 +441,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 			outState.putString("title", mEditTitle.getText().toString());
 		if (mEditContent.getText().length() > 0)
 			outState.putString("content", mEditContent.getText().toString());
-		if (mEditTags.getText().length() > 0)
+		if (mEditTags != null && mEditTags.getText().length() > 0)
 			outState.putString("tags", mEditTags.getText().toString());
 	}
 
@@ -447,7 +454,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 			mEditTitle.setText(savedInstanceState.getString("title"));
 		if (savedInstanceState.containsKey("content"))
 			mEditContent.setText(savedInstanceState.getString("content"));
-		if (savedInstanceState.containsKey("tags"))
+		if (savedInstanceState.containsKey("tags") && mEditTags != null)
 			mEditTags.setText(savedInstanceState.getString("tags"));
 	}
 
@@ -601,6 +608,16 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 
 		switch (requestCode)
 		{
+			case REQ_CODE_SETTINGS:
+			{
+				if (hasSharePermissions()) {
+					// We got the permissions, need to restart!
+					Intent intent = new Intent(this, MainActivity.class);
+					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+					startActivity(intent);
+				}
+			}
+			break;
 		case REQ_CODE_PICK_IMAGE:
 			if (resultCode == RESULT_OK)
 			{
@@ -845,7 +862,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 		if (mStory == null)
 		{
 			// If nothing had been changed yet, no need to save!
-			if (!forceCreate && TextUtils.isEmpty(mEditTitle.getText()) && TextUtils.isEmpty(mEditContent.getText()) && TextUtils.isEmpty(mEditTags.getText()))
+			if (!forceCreate && TextUtils.isEmpty(mEditTitle.getText()) && TextUtils.isEmpty(mEditContent.getText()) && (mEditTags == null || TextUtils.isEmpty(mEditTags.getText())))
 				return false;
 
 			mStory = info.guardianproject.securereaderinterface.App.getInstance().socialReporter.createDraft(mEditTitle.getText().toString(), mEditContent.getText().toString(), getTagsFromInput(), null);
@@ -1070,16 +1087,18 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 					.setTitle(R.string.add_media_permission_needed_title)
 					.setMessage(R.string.add_media_permission_needed_message)
 					.setNegativeButton(android.R.string.cancel, null)
-					.setPositiveButton(R.string.add_media_permission_needed_settings, new DialogInterface.OnClickListener() {
+					.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialogInterface, int i) {
-							Intent intent = new Intent();
-							intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-							Uri uri = Uri.fromParts("package", getPackageName(), null);
-							intent.setData(uri);
-							intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-							intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-							startActivity(intent);
+
+							// Do the wipe
+							info.guardianproject.securereaderinterface.App.getInstance().wipe(AddPostActivity.this, SocialReader.DATA_WIPE, true);
+							finish();
+							//Intent intent = new Intent();
+							//intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+							//Uri uri = Uri.fromParts("package", getPackageName(), null);
+							//intent.setData(uri);
+							//startActivityForResult(intent, REQ_CODE_SETTINGS);
 						}
 					});
 			alert.show();

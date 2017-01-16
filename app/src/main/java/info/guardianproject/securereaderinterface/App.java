@@ -49,6 +49,7 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Request;
 import com.squareup.picasso.RequestHandler;
 import com.tinymission.rss.Feed;
+import com.tribunezamaneh.rss.AddPostActivity;
 
 public class App extends MultiDexApplication implements OnSharedPreferenceChangeListener, SocialReaderLockListener
 {
@@ -235,7 +236,7 @@ public class App extends MultiDexApplication implements OnSharedPreferenceChange
 		socialReader.setCacheWordTimeout(m_settings.passphraseTimeout());
 	}
 
-	public void wipe(Context context, int wipeMethod)
+	public void wipe(Context context, int wipeMethod, boolean restart)
 	{
 		mIsWiping = true;
 		socialReader.doWipe(wipeMethod);
@@ -246,6 +247,14 @@ public class App extends MultiDexApplication implements OnSharedPreferenceChange
 		// Notify activities (if any)
 		LocalBroadcastManager.getInstance(this).sendBroadcastSync(new Intent(App.WIPE_BROADCAST_ACTION));
 		mIsWiping = false;
+
+		if (restart) {
+			mCurrentFeedFilterType = FeedFilterType.ALL_FEEDS;
+			mCurrentFeed = null;
+			Intent intent = new Intent(context, SplashActivity.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+			startActivity(intent);
+		}
 	}
 	
 	public boolean isWiping()

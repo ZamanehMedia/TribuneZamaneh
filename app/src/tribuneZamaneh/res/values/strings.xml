@@ -96,9 +96,9 @@
     <string name="comment_error_unknown">Commenting Failed, Failure Unknown</string>
     <string name="about_zamaneh_title">About Radio Zamaneh</string>
     <string name="about_zamaneh_content">Since 2007, Radio Zamaneh has focused particularly on increasing public awareness on democracy and human rights in Iran. We strive for an informed, educated and empowered civil society that can act as a catalyst for change and reform and put an end to increasing violations of basic human rights in Iran.</string>
-    <string name="help_rz_info_title"></string>
-    <string name="help_rz_info_content"></string>
-    <string name="add_media_permission_needed_title">Permissions needed</string>
-    <string name="add_media_permission_needed_message">To add media you need to give the app \"Storage\" permission.</string>
-    <string name="add_media_permission_needed_settings">Settings</string>
+    <string name="help_rz_info_title">Welcome to Tribune Zamaneh!</string>
+    <string name="help_rz_info_content">The Tribune Zamaneh application is provided by Zamaneh Media. Read Tribune Zamaneh, comment on posts, and create your own posts.</string>
+    <string name="add_media_permission_needed_title">Media Access Permission</string>
+    <string name="add_media_permission_needed_message">Application reset required to change media access permission.</string>
+    <string name="add_media_permission_needed_info">Media access permission is required to add images, audio or video to your posts.</string>
 </resources>
