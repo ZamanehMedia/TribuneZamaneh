@@ -15,6 +15,7 @@ import android.view.MenuItem;
 
 import com.tinymission.rss.Feed;
 import com.tinymission.rss.Item;
+import com.tinymission.rss.MediaContent;
 import com.tribunezamaneh.rss.adapters.DrawerMenuAdapter;
 
 import java.io.ByteArrayInputStream;
@@ -37,6 +38,7 @@ import javax.xml.transform.stream.StreamSource;
 import info.guardianproject.securereader.Settings;
 import info.guardianproject.securereader.SocialReader;
 import info.guardianproject.securereader.SocialReporter;
+import info.guardianproject.securereader.SyncService;
 import info.guardianproject.securereaderinterface.BuildConfig;
 import info.guardianproject.securereaderinterface.R;
 import info.guardianproject.securereaderinterface.ui.ContentFormatter;
@@ -157,6 +159,15 @@ public class App extends info.guardianproject.securereaderinterface.App implemen
 					}
 				}
 				return super.onCommand(context, command, commandParameters);
+			}
+		});
+		addSyncServiceListener(new SyncService.SyncServiceListener() {
+			@Override
+			public void syncEvent(SyncService.SyncTask syncTask) {
+				if (syncTask != null && syncTask.status == SyncService.SyncTask.FINISHED && syncTask.type == SyncService.SyncTask.TYPE_MEDIA && syncTask.mediaContent != null) {
+					MediaContent mc = syncTask.mediaContent;
+					socialReader.setMediaContentDownloaded(mc);
+				}
 			}
 		});
 	}

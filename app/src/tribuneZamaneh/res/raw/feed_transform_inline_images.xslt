@@ -29,13 +29,11 @@
             <xsl:variable name="body" select="substring-before($afteropen, '&gt;')" />
             <xsl:variable name="srcstart" select="substring-after($body,'src=&quot;')" />
             <xsl:variable name="src" select="substring-before($srcstart,'&quot;')" />
-            <xsl:if test="contains($src, '://www.tribunezamaneh.com')">
-                <media:content>
-                    <xsl:attribute name="url">
-                        <xsl:value-of select="$src" />
-                    </xsl:attribute>
-                </media:content>
-            </xsl:if>
+            <media:content>
+                <xsl:attribute name="url">
+                    <xsl:value-of select="$src" />
+                </xsl:attribute>
+            </media:content>
             <xsl:call-template name="tokenize">
                 <xsl:with-param name="pText" select="$afteropen"/>
             </xsl:call-template>

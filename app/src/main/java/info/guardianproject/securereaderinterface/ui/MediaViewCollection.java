@@ -297,6 +297,14 @@ public class MediaViewCollection
 					onMediaAvailable(mContent, mIndex, mWasCached, mFileNonVFS, mFile);
 				if (mNotifyDownloadsAdapter)
 					DownloadsAdapter.downloaded(MediaViewCollection.this);
+
+				// If no file, we could not download! Delete this media!
+				if (mFile == null) {
+					if (getItem() != null && getItem().getMediaContent() != null) {
+						getItem().getMediaContent().remove(mContent);
+						App.getInstance().socialReader.setItemData(getItem());
+					}
+				}
 			}
 		}
 
