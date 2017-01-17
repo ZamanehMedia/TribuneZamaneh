@@ -1124,8 +1124,12 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 
 		// Populate photo intents
 		final ArrayList<HandlerIntent> rgIntentsPhoto = new ArrayList<HandlerIntent>();
-		Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-		getHandlersForIntent(cameraIntent, rgIntentsPhoto);
+		if (Build.VERSION.SDK_INT <= 18 ||
+			ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+			Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+			getHandlersForIntent(cameraIntent, rgIntentsPhoto);
+		}
+
 		Intent intent = new Intent(Build.VERSION.SDK_INT >= 19 ? Intent.ACTION_OPEN_DOCUMENT : Intent.ACTION_GET_CONTENT);
 		intent.addCategory(Intent.CATEGORY_OPENABLE);
 		intent.setType("image/*");
@@ -1160,8 +1164,11 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 		});
 
 		final ArrayList<HandlerIntent> rgIntentsVideo = new ArrayList<HandlerIntent>();
-		Intent cameraIntentVideo = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-		getHandlersForIntent(cameraIntentVideo, rgIntentsVideo);
+		if (Build.VERSION.SDK_INT <= 18 ||
+				ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+			Intent cameraIntentVideo = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+			getHandlersForIntent(cameraIntentVideo, rgIntentsVideo);
+		}
 		intent = new Intent(Build.VERSION.SDK_INT >= 19 ? Intent.ACTION_OPEN_DOCUMENT : Intent.ACTION_GET_CONTENT);
 		intent.addCategory(Intent.CATEGORY_OPENABLE);
 		intent.setType("video/*");

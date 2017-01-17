@@ -1,5 +1,6 @@
 package com.tribunezamaneh.rss.onboarding;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -74,10 +75,15 @@ public class OnboardingHelpFragment extends OnboardingFragment {
                 android.Manifest.permission.READ_EXTERNAL_STORAGE);
         int permissionCheckWrite = ActivityCompat.checkSelfPermission(getContext(),
                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        if (permissionCheckRead != PackageManager.PERMISSION_GRANTED || permissionCheckWrite != PackageManager.PERMISSION_GRANTED) {
+        int permissionCheckCamera = ActivityCompat.checkSelfPermission(getContext(),
+                Manifest.permission.CAMERA);
+        if (    permissionCheckRead != PackageManager.PERMISSION_GRANTED ||
+                permissionCheckWrite != PackageManager.PERMISSION_GRANTED ||
+                permissionCheckCamera != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{
                             android.Manifest.permission.READ_EXTERNAL_STORAGE,
-                            android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                            android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                            android.Manifest.permission.CAMERA
                     },
                     1);
             return false;
