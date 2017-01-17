@@ -106,7 +106,7 @@ public class FontManager
 		{
 			Typeface font = FontManager.getFontByName(context, "NotoNaskhArabic-Regular");
 			if (gFarsiTransformedPattern == null)
-				gFarsiTransformedPattern = Pattern.compile("[[\u0600-\u06FF][\u200C-\u200F][\u202A-\u202E][\uFB50-\uFDFF][\uFE70-\uFEFF]]+", 0);
+				gFarsiTransformedPattern = Pattern.compile("[\n\u0020\u0021\u002c\u002e\u0030-\u003a\u00a0\u00ab\u00bb\u0600-\u06FF\u200C-\u200F\u202A-\u202E\uFB50-\uFDFF\uFE70-\uFEFF]+", 0);
 			Matcher unicodeFarsiMatcher = gFarsiTransformedPattern.matcher(text);
 			while (unicodeFarsiMatcher.find())
 			{
