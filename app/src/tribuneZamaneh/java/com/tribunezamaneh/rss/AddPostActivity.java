@@ -488,7 +488,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 							}
 
 							saveDraft(false);
-							loadingDialog = ProgressDialog.show(AddPostActivity.this, "", "Posting. Please wait...", true, true);
+							loadingDialog = ProgressDialog.show(AddPostActivity.this, "", getString(R.string.post_posting), true, true);
 
 							XMLRPCPublisherCallback publisherCallback = new XMLRPCPublisherCallback()
 							{

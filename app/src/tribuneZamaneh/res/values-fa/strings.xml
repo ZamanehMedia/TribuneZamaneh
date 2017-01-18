@@ -102,6 +102,7 @@
   <string name="post_title_drafts">پیش‌نویس‌ها</string>
   <string name="post_title_outgoing">نوشته بعدی</string>
   <string name="post_title_published">منتشرشده</string>
+  <string name="post_posting">ارسال مطلب</string>
   <string name="title_activity_post">نوشته‌های من</string>
   <string name="comment_error_proxy">امکان نظردادن وجود ندارد. برای گذاشتن نظر باید پروکسی خود را روشن کنید.</string>
   <string name="comment_error_network">امکان نظر دادن وجود ندارد. اتصال به اینترنت را کنترل کنید.</string>

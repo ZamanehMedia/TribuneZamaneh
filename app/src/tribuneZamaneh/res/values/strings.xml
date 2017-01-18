@@ -90,6 +90,7 @@
     <string name="post_title_drafts">Drafts</string>
     <string name="post_title_outgoing">Outgoing</string>
     <string name="post_title_published">Published</string>
+    <string name="post_posting">Posting. Please wait...</string>
     <string name="title_activity_post">My Posts</string>
     <string name="comment_error_proxy">Commenting Failed, Proxy Required for Commenting</string>
     <string name="comment_error_network">Commenting Failed, No Network Connection</string>
