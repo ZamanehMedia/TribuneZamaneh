@@ -46,9 +46,10 @@ public class PostDraftsListAdapter extends PostPublishedListAdapter
 	protected void bindView(View view, int position, Item item)
 	{
 		super.bindView(view, position, item);
-		
-		StoryItemDraftPageView pv = (StoryItemDraftPageView) view;
-		pv.setButtonClickListeners(new DeleteButtonClickListener(item), new EditButtonClickListener(item));
+		if (view instanceof StoryItemDraftPageView) {
+			StoryItemDraftPageView pv = (StoryItemDraftPageView) view;
+			pv.setButtonClickListeners(new DeleteButtonClickListener(item), new EditButtonClickListener(item));
+		}
 	}
 
 

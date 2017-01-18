@@ -2,7 +2,10 @@ package com.tribunezamaneh.rss;
 
 import java.util.ArrayList;
 
+import info.guardianproject.securereader.DatabaseHelper;
 import info.guardianproject.securereader.SocialReporter;
+import info.guardianproject.securereader.XMLRPCDeleter;
+import info.guardianproject.securereader.XMLRPCPublisher;
 import info.guardianproject.securereaderinterface.*;
 import com.tribunezamaneh.rss.adapters.PostDraftsListAdapter;
 import com.tribunezamaneh.rss.adapters.PostOutgoingListAdapter;
@@ -12,21 +15,24 @@ import com.tribunezamaneh.rss.adapters.PostDraftsListAdapter.PostDraftsListAdapt
 import info.guardianproject.securereaderinterface.adapters.StoryListAdapter.OnTagClickedListener;
 import info.guardianproject.securereaderinterface.uiutil.UIHelpers;
 import info.guardianproject.securereaderinterface.views.StoryListView.StoryListListener;
+
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.tinymission.rss.Item;
 
-public class PostListFragment extends Fragment implements PostDraftsListAdapterListener
-{
+public class PostListFragment extends Fragment implements PostDraftsListAdapterListener, PostPublishedListAdapter.PostPublishedListAdapterListener {
 	public static final String LOGTAG = "PostListFragment";
 	public static final boolean LOGGING = false;
 	
@@ -165,6 +171,7 @@ public class PostListFragment extends Fragment implements PostDraftsListAdapterL
 					{
 						PostPublishedListAdapter adapter = new PostPublishedListAdapter(
 								getActivity(), result);
+						adapter.setPostPublishedListAdapterListener(PostListFragment.this);
 						adapter.setOnTagClickedListener(mOnTagClickedListener);
 						adapter.setListener(mStoryListListener);
 						adapter.setTagFilter(null, mCurrentTagFilter);
@@ -231,5 +238,30 @@ public class PostListFragment extends Fragment implements PostDraftsListAdapterL
 	{
 		info.guardianproject.securereaderinterface.App.getInstance().socialReporter.deleteDraft(item);
 		updateListAdapter();
+	}
+
+	@Override
+	public void onDeletePost(final Item item) {
+		final ProgressDialog loadingDialog = ProgressDialog.show(getContext(), "", getString(R.string.post_deleting), true, true);
+		XMLRPCDeleter.XMLRPCDeleterCallback deleterCallback = new XMLRPCDeleter.XMLRPCDeleterCallback() {
+			@Override
+			public void itemDeleted(int itemId) {
+				loadingDialog.dismiss();
+				socialReporter.deleteDraft(item);
+				updateListAdapter();
+				Toast.makeText(getContext(), getContext().getString(R.string.post_deleting_ok), Toast.LENGTH_SHORT).show();
+			}
+
+			@Override
+			public void deletionFailed(int reason) {
+				loadingDialog.dismiss();
+				if (reason == XMLRPCPublisher.FAILURE_REASON_NO_CONNECTION) {
+					Toast.makeText(getContext(), getContext().getString(R.string.post_deleting_failed_net), Toast.LENGTH_SHORT).show();
+				} else {
+					Toast.makeText(getContext(), getContext().getString(R.string.post_deleting_failed_unknown), Toast.LENGTH_SHORT).show();
+				}
+			}
+		};
+		info.guardianproject.securereaderinterface.App.getInstance().socialReporter.deletePost(item, deleterCallback);
 	}
 }

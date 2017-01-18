@@ -495,6 +495,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 
 								@Override
 								public void itemPublished(int itemId) {
+									App.getInstance().socialReader.setItemData(mStory);
 									if (loadingDialog.isShowing())
 									{
 										loadingDialog.dismiss();
@@ -514,9 +515,9 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 									if (reason == XMLRPCPublisher.FAILURE_REASON_NO_PRIVACY_PROXY) {
 										Toast.makeText(AddPostActivity.this, "Posting Failed, Tor or Psiphon Required for Posting", Toast.LENGTH_SHORT).show();
 									} else if (reason == XMLRPCPublisher.FAILURE_REASON_NO_CONNECTION) {
-										Toast.makeText(AddPostActivity.this, "Posting Failed, No Network Connection", Toast.LENGTH_SHORT).show();
+										Toast.makeText(AddPostActivity.this, getString(R.string.post_posting_failed_net), Toast.LENGTH_SHORT).show();
 									} else {
-										Toast.makeText(AddPostActivity.this, "Posting Failed, Failure Unknown", Toast.LENGTH_SHORT).show();
+										Toast.makeText(AddPostActivity.this, getString(R.string.post_posting_failed_unknown), Toast.LENGTH_SHORT).show();
 									}
 								}
 
