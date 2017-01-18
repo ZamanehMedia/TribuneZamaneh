@@ -44,7 +44,8 @@
         <string name="sync_mode_default">LetItFlow</string>
         <string name="sync_network_default">WifiAndMobile</string>
         <string name="sync_frequency_default">WhenRunning</string>
-        
+		<bool name="wipe_app_default">true</bool>
+
         <!-- Limit number of items to keep in database -1 for no limit -->
         <integer name="item_limit">-1</integer>
         
