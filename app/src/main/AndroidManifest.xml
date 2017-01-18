@@ -187,7 +187,7 @@
         </activity>
         <activity
             android:name="info.guardianproject.securereaderinterface.ViewMediaActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:configChanges="keyboardHidden|screenSize"
             android:label="@string/title_activity_view_media" >
         </activity>
         <activity

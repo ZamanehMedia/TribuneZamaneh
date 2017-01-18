@@ -61,7 +61,7 @@ public class ViewMediaFragment extends Fragment implements OnMediaOrientationLis
 
 		if (getActivity() != null)
 		{
-			getActivity().setRequestedOrientation(orientation);
+			; //getActivity().setRequestedOrientation(orientation);
 		}
 	}
 
