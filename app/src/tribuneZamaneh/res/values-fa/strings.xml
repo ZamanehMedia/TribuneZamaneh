@@ -54,7 +54,7 @@
   <string name="add_post_media_chooser_title">انتخاب نوع رسانه:‏</string>
   <string name="add_post_media_chooser_video">ویدئو</string>
   <string name="add_post_media_chooser_audio">صدا</string>
-  <string name="add_post_menu_post">نوشته جدید</string>
+  <string name="add_post_menu_post">ارسال</string>
   <string name="add_post_not_valid_data_warning_content">لازم است دست‌کم یک عکس و یک عنوان را مشخص کنید!‏</string>
   <string name="add_post_not_valid_data_warning_title">نوشته</string>
   <string name="add_post_operation_add_more">بیشتر اضافه کنید</string>
