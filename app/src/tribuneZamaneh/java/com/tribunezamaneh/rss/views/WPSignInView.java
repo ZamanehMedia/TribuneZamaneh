@@ -65,7 +65,10 @@ public class WPSignInView extends FrameLayout {
 		inflater.inflate(register ? R.layout.wp_sign_in_register : R.layout.wp_sign_in, this);
 		if (!this.isInEditMode()) {
 			mEditUsername = (EditText) findViewById(R.id.editUsername);
-			mEditUsername.setText(App.getInstance().socialReader.ssettings.getXMLRPCUsername());
+
+			if (App.getInstance().socialReader.ssettings != null)
+				mEditUsername.setText(App.getInstance().socialReader.ssettings.getXMLRPCUsername());
+
 			mEditEmail = (EditText) findViewById(R.id.editEmail);
 			mEditPassword = (EditText) findViewById(R.id.editPassword);
 			mErrorView = (TextView) findViewById(R.id.signInError);
