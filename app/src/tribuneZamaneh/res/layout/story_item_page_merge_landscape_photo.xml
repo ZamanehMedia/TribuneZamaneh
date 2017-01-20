@@ -56,6 +56,8 @@
 		app:borderSize="4dp"
 		>
 
+		<ImageView android:id="@+id/ivImagePlaceholder" android:layout_width="match_parent" android:layout_height="match_parent" android:src="@drawable/defaulttzicon" />
+
 		<info.guardianproject.securereaderinterface.widgets.NestedViewPager
 			android:id="@+id/mediaPager"
 			android:layout_width="match_parent"
