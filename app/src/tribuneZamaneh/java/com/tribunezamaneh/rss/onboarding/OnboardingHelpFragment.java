@@ -68,9 +68,11 @@ public class OnboardingHelpFragment extends OnboardingFragment {
     }
 
     private boolean tryGetStoragePermissions() {
-        if (Build.VERSION.SDK_INT <= 18) {
+
+        if (Build.VERSION.SDK_INT < 23) {
             return true;
         }
+
         int permissionCheckRead = ActivityCompat.checkSelfPermission(getContext(),
                 android.Manifest.permission.READ_EXTERNAL_STORAGE);
         int permissionCheckWrite = ActivityCompat.checkSelfPermission(getContext(),
