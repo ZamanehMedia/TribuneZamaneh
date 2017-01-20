@@ -93,8 +93,8 @@
     <string name="post_posting">Posting. Please wait...</string>
     <string name="post_posting_failed_net">Posting Failed, No Network Connection</string>
     <string name="post_posting_failed_unknown">Posting Failed, Failure Unknown</string>
-    <string name="post_deleting">Deleting post, please wait...</string>
-    <string name="post_deleting_ok">Post deleted</string>
+    <string name="post_deleting"></string>
+    <string name="post_deleting_ok"></string>
     <string name="post_deleting_failed_net">Deletion Failed, No Network Connection</string>
     <string name="post_deleting_failed_unknown">Deletion Failed, Failure Unknown</string>
     <string name="title_activity_post">My Posts</string>
