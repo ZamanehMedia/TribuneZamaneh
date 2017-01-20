@@ -533,7 +533,6 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 
 								@Override
 								public void itemPublished(int itemId) {
-									App.getInstance().socialReader.setItemData(mStory);
 									if (loadingDialog.isShowing())
 									{
 										loadingDialog.dismiss();
@@ -544,10 +543,6 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 								@Override
 								public void publishingFailed(int reason) {
 									loadingDialog.dismiss();
-
-									// Reset to draft
-									mStory.setFeedId(DatabaseHelper.DRAFTS_FEED_ID);
-									info.guardianproject.securereaderinterface.App.getInstance().socialReporter.saveDraft(mStory);
 
 									// Should add in reasons
 									if (reason == XMLRPCPublisher.FAILURE_REASON_NO_PRIVACY_PROXY) {

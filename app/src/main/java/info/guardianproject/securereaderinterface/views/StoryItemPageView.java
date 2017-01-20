@@ -46,7 +46,8 @@ public class StoryItemPageView extends RelativeLayout
 	protected TextView mTvAuthor;
 	protected View mLayoutTags;
 	protected LinearLayout mLlTags;
-	
+	protected View mImagePlaceholder;
+
 	protected StoryItemPageViewListener mListener;
 	
 	// Configuration
@@ -146,6 +147,7 @@ public class StoryItemPageView extends RelativeLayout
 		mTvAuthor = (TextView) view.findViewById(R.id.tvAuthor);
 		mLayoutTags = view.findViewById(R.id.layout_tags);
 		mLlTags = (LinearLayout) view.findViewById(R.id.llTags);
+		mImagePlaceholder = view.findViewById(R.id.ivImagePlaceholder);
 		if (mTvContent != null)
 			mTvContent.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTvContent.getTextSize() + App.getSettings().getContentFontSizeAdjustment());
 		
@@ -169,7 +171,9 @@ public class StoryItemPageView extends RelativeLayout
 			mMediaViewCollection = null;
 			if (mMediaViewCollection == null && item.getNumberOfMediaContent() > 0)
 				mMediaViewCollection = new MediaViewCollection(getContext(), item);
-			
+			if (mImagePlaceholder != null) {
+				mImagePlaceholder.setVisibility((mMediaViewCollection == null) ? View.VISIBLE : View.GONE);
+			}
 			createViews();
 
 			if (mMediaPager != null)
