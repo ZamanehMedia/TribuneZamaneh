@@ -1,5 +1,6 @@
 package com.tribunezamaneh.rss;
 
+import info.guardianproject.iocipher.FileOutputStream;
 import info.guardianproject.securereader.DatabaseHelper;
 import info.guardianproject.securereader.SocialReader;
 import info.guardianproject.securereader.XMLRPCPublisher;
@@ -36,6 +37,8 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -44,11 +47,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
-import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.SupportActivity;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ActionProvider;
 import android.support.v4.view.MenuItemCompat;
 import android.text.Editable;
@@ -81,6 +80,8 @@ import android.widget.Toast;
 import com.tinymission.rss.Item;
 import com.tinymission.rss.MediaContent;
 import com.tribunezamaneh.rss.views.WPSignInView;
+
+import org.apache.commons.io.IOUtils;
 
 public class AddPostActivity extends FragmentActivityWithMenu implements OnFocusChangeListener
 {
@@ -349,7 +350,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 		}
 	}
 
-	private void copyFileFromFStoAppFS(java.io.InputStream in, java.io.File src, info.guardianproject.iocipher.File dst) throws IOException
+	private void copyFileFromFStoAppFS(Uri mediaUri, String mediaType, java.io.InputStream in, java.io.File src, info.guardianproject.iocipher.File dst) throws IOException
 	{
 		if (in == null)
 			in = new java.io.FileInputStream(src);
@@ -360,21 +361,58 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 			Log.d(LOGTAG, "File length is " + cb);
 		}
 
-		// Transfer bytes from in to out
-		byte[] buf = new byte[8196];
-		int len;
-		while ((len = in.read(buf)) > 0)
+		if (mediaType.equals("image/jpeg"))
 		{
-			out.write(buf, 0, len);
-			if (LOGGING)
-				Log.v(LOGTAG, "Writing:"+len);
+			int defaultImageWidth = 600;
+			//load lower-res bitmap
+			Bitmap bmp = getThumbnailFile(this, mediaUri, in, defaultImageWidth);
+			bmp.compress(Bitmap.CompressFormat.JPEG, 90, out);
+
+			out.flush();
+			out.close();
+			bmp.recycle();
+
 		}
-		in.close();
-		out.close();
+		else {
+
+			IOUtils.copy(in, out);
+
+			// Transfer bytes from in to out
+			in.close();
+			out.close();
+		}
 
 		if (LOGGING)
 			Log.v(LOGTAG, "copyFileFromFStoAppFS Copied from " + ((src == null) ? "stream" : src.toString()) + " to " + dst.toString());
 	}
+
+	public static Bitmap getThumbnailFile(Context context, Uri mediaUri, InputStream is, int thumbnailSize) throws IOException {
+
+		BitmapFactory.Options options = new BitmapFactory.Options();
+		options.inJustDecodeBounds = true;
+		options.inInputShareable = true;
+		options.inPurgeable = true;
+
+		BitmapFactory.decodeStream(is, null, options);
+
+		if ((options.outWidth == -1) || (options.outHeight == -1))
+			return null;
+
+		int originalSize = (options.outHeight > options.outWidth) ? options.outHeight
+				: options.outWidth;
+
+		is.close();
+		is = context.getContentResolver().openInputStream(mediaUri);
+
+		BitmapFactory.Options opts = new BitmapFactory.Options();
+		opts.inSampleSize = originalSize / thumbnailSize;
+
+		Bitmap scaledBitmap = BitmapFactory.decodeStream(is, null, opts);
+
+		is.close();
+		return scaledBitmap;
+	}
+
 
 	private void updateMediaControls()
 	{
@@ -627,12 +665,12 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 					String defaultType = "image/jpeg";
 					if (mStartedIntent.getAction().equals(MediaStore.ACTION_IMAGE_CAPTURE))
 					{
-						this.addMediaItem(null, mCurrentPhotoFile, null, defaultType, mReplaceThisIndex, null);
+						this.addMediaItem(Uri.fromFile(mCurrentPhotoFile), null, mCurrentPhotoFile, null, defaultType, mReplaceThisIndex, null);
 					}
 					else if (mStartedIntent.getAction().equals(MediaStore.ACTION_VIDEO_CAPTURE))
 					{
 						defaultType = "video/mp4";
-						this.addMediaItem(null, mCurrentPhotoFile, null, defaultType, mReplaceThisIndex, null);
+						this.addMediaItem(Uri.fromFile(mCurrentPhotoFile), null, mCurrentPhotoFile, null, defaultType, mReplaceThisIndex, null);
 					}
 					else  if (imageReturnedIntent != null) {
 						Uri mediaUri = imageReturnedIntent.getData();
@@ -654,7 +692,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 							defaultType = type;
 
 						java.io.InputStream mediaItemStream = getContentResolver().openInputStream(mediaUri);
-						this.addMediaItem(mediaItemStream, null, imageReturnedIntent.getData().toString(), defaultType, mReplaceThisIndex, mediaDisplayName);
+						this.addMediaItem(mediaUri, mediaItemStream, null, imageReturnedIntent.getData().toString(), defaultType, mReplaceThisIndex, mediaDisplayName);
 					} else {
 						cleanupAfterFilePicking();
 					}
@@ -714,7 +752,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 	// private void addMediaItem(Uri mediaItem, String defaultType, int
 	// replaceIndex)
 	// We want files here so we can deal with them all the same
-	private void addMediaItem(java.io.InputStream mediaItemStream, java.io.File mediaItemFile, String mediaItemUrl, String mediaType, int replaceIndex, String displayName)
+	private void addMediaItem(Uri mediaUri, java.io.InputStream mediaItemStream, java.io.File mediaItemFile, String mediaItemUrl, String mediaType, int replaceIndex, String displayName)
 	{
 		if (LOGGING)
 			Log.d(LOGTAG, "addMediaItem called");
@@ -762,9 +800,11 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 			private java.io.File mediaItemFile;
 			private String mediaItemUrl;
 			private MediaContent mediaContent;
+			private Uri mediaUri;
 
-			public ThreadedTask<Void, Void, Void> init(java.io.InputStream mediaItemStream, java.io.File mediaItemFile, String mediaItemUrl, MediaContent mediaContent)
+			public ThreadedTask<Void, Void, Void> init(Uri mediaUri, java.io.InputStream mediaItemStream, java.io.File mediaItemFile, String mediaItemUrl, MediaContent mediaContent)
 			{
+				this.mediaUri = mediaUri;
 				this.mediaItemStream = mediaItemStream;
 				this.mediaItemFile = mediaItemFile;
 				this.mediaItemUrl = mediaItemUrl;
@@ -791,16 +831,17 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 					// First copy file to encrypted storage
 					try
 					{
-						copyFileFromFStoAppFS(mediaItemStream, mediaItemFile, outputFile);
+						copyFileFromFStoAppFS(mediaUri, mediaContent.getType(), mediaItemStream, mediaItemFile, outputFile);
 						mediaContent.setDownloaded(true);
 					}
-					catch (IOException e)
+					catch (Exception e)
 					{
 						e.printStackTrace();
 					}
 
 					// Update record in media content
 					mediaContent.setUrl("file://" + outputFile.getAbsolutePath());
+					//mediaContent.setUrl(mediaUri.toString());
 				}
 				else
 				{
@@ -826,7 +867,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 				deleteImageFile();
 				onMediaChanged();
 			}
-		}.init(mediaItemStream, mediaItemFile, mediaItemUrl, newMediaContent);
+		}.init(mediaUri, mediaItemStream, mediaItemFile, mediaItemUrl, newMediaContent);
 		if (LOGGING)
 			Log.d(LOGTAG, "addMediaItem - start async job");
 		addMediaTask.execute((Void)null);
