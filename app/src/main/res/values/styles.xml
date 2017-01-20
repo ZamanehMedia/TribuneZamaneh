@@ -20,7 +20,7 @@
         <item name="android:background">?attr/colorPrimary</item>
         <item name="android:elevation">4dp</item>
         <item name="theme">@style/ThemeOverlayActionBar</item>
-        <item name="homeAsUpIndicator">@drawable/abc_ic_ab_back_material</item>
+        <item name="android:homeAsUpIndicator">@drawable/abc_ic_ab_back_material</item>
     </style>
 
     <style name="AppSearchViewStyle" parent="Widget.AppCompat.Light.SearchView">
