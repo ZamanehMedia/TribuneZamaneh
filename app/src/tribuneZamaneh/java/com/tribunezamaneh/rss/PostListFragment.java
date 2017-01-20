@@ -249,7 +249,7 @@ public class PostListFragment extends Fragment implements PostDraftsListAdapterL
 				loadingDialog.dismiss();
 				socialReporter.deleteDraft(item);
 				updateListAdapter();
-				Toast.makeText(getContext(), getContext().getString(R.string.post_deleting_ok), Toast.LENGTH_SHORT).show();
+				//Toast.makeText(getContext(), getContext().getString(R.string.post_deleting_ok), Toast.LENGTH_SHORT).show();
 			}
 
 			@Override
@@ -258,8 +258,12 @@ public class PostListFragment extends Fragment implements PostDraftsListAdapterL
 				if (reason == XMLRPCPublisher.FAILURE_REASON_NO_CONNECTION) {
 					Toast.makeText(getContext(), getContext().getString(R.string.post_deleting_failed_net), Toast.LENGTH_SHORT).show();
 				} else {
+
+                    //dialog builder
+
 					Toast.makeText(getContext(), getContext().getString(R.string.post_deleting_failed_unknown), Toast.LENGTH_SHORT).show();
 				}
+
 			}
 		};
 		info.guardianproject.securereaderinterface.App.getInstance().socialReporter.deletePost(item, deleterCallback);
