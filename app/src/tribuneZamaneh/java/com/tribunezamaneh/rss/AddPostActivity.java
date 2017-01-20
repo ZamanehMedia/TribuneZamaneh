@@ -88,6 +88,8 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 	private static final String LOGTAG = "AddPostActivity";
 	private static final boolean LOGGING = false;
 
+	private static final long MEDIA_ITEM_MAX_LENGTH = 15 * 1024 * 1024;
+
 	private ProgressDialog loadingDialog;
 
 	private static final int REQ_CODE_PICK_IMAGE = 1;
@@ -686,8 +688,18 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 						if (type != null)
 							defaultType = type;
 
+                        File fileMedia = new File(mediaUri.toString());
+                        if (!fileMedia.exists())
+                        {
+							String realPath = getRealPathFromURI(this,mediaUri);
+							if (realPath != null)
+                            	fileMedia = new File(realPath);
+							else
+								fileMedia = null;
+                        }
+
 						java.io.InputStream mediaItemStream = getContentResolver().openInputStream(mediaUri);
-						this.addMediaItem(mediaUri, mediaItemStream, null, imageReturnedIntent.getData().toString(), defaultType, mReplaceThisIndex, mediaDisplayName);
+						this.addMediaItem(mediaUri, mediaItemStream, new File(mediaUri.toString()), imageReturnedIntent.getData().toString(), defaultType, mReplaceThisIndex, mediaDisplayName);
 					} else {
 						cleanupAfterFilePicking();
 					}
@@ -707,6 +719,21 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 			}
 		}
 	}
+
+    private String getRealPathFromURI(Context context, Uri contentUri) {
+        Cursor cursor = null;
+        try {
+            String[] proj = { MediaStore.MediaColumns.DATA };
+            cursor = context.getContentResolver().query(contentUri,  proj, null, null, null);
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+    }
 
 	private String getMediaDisplayName(final Uri uri) {
 		String result = null;
@@ -756,6 +783,24 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 				Log.d(LOGTAG, "addMediaItem - saveDraft");
 			saveDraft(true);
 		}
+
+        try {
+
+            if (mediaItemFile != null && mediaItemFile.exists()) {
+                if (mediaItemFile.length() > MEDIA_ITEM_MAX_LENGTH) {
+                    Toast.makeText(this, R.string.media_file_too_big, Toast.LENGTH_LONG).show();
+                    return;
+                }
+            } else if (mediaItemStream != null && mediaItemStream.available() > MEDIA_ITEM_MAX_LENGTH) {
+                Toast.makeText(this, R.string.media_file_too_big, Toast.LENGTH_LONG).show();
+                return;
+            }
+        }
+        catch (Exception e)
+        {
+            Log.e("AddPost","error checking media item size",e);
+        }
+
 
 		MediaContent newMediaContent = new MediaContent(mStory.getDatabaseId(), "", mediaType);
 

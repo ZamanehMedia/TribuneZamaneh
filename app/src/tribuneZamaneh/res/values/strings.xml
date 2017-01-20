@@ -108,4 +108,6 @@
     <string name="add_media_permission_needed_title">Media Access Permission</string>
     <string name="add_media_permission_needed_message">Application reset required to change media access permission.</string>
     <string name="add_media_permission_needed_info">Media access permission is required to add images, audio or video to your posts.</string>
+
+    <string name="media_file_too_big">Please choose a smaller file (less than 20MB)</string>
 </resources>
