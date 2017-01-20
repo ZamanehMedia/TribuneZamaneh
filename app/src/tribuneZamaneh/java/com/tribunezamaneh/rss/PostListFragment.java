@@ -1,12 +1,15 @@
 package com.tribunezamaneh.rss;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import info.guardianproject.securereader.DatabaseHelper;
 import info.guardianproject.securereader.SocialReporter;
 import info.guardianproject.securereader.XMLRPCDeleter;
 import info.guardianproject.securereader.XMLRPCPublisher;
 import info.guardianproject.securereaderinterface.*;
+
+import com.tinymission.rss.Feed;
 import com.tribunezamaneh.rss.adapters.PostDraftsListAdapter;
 import com.tribunezamaneh.rss.adapters.PostOutgoingListAdapter;
 import com.tribunezamaneh.rss.adapters.PostPublishedListAdapter;
@@ -20,6 +23,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -244,10 +248,43 @@ public class PostListFragment extends Fragment implements PostDraftsListAdapterL
 	public void onDeletePost(final Item item) {
 		final ProgressDialog loadingDialog = ProgressDialog.show(getContext(), "", getString(R.string.post_deleting), true, true);
 		XMLRPCDeleter.XMLRPCDeleterCallback deleterCallback = new XMLRPCDeleter.XMLRPCDeleterCallback() {
+
+			@Override
+			public void itemDelete(int remotePostId) {
+				// Called on background thread, just do syncronous work...
+				if (remotePostId != -1) {
+					// Also delete it from local feed!
+					// Warning: This will delete items with this remote post id from
+					// ALL feeds. It's ok, because we know in this particular instance there
+					// is only one feed, but if this code is reused somewhere...
+					for (Feed feed : App.getInstance().socialReader.getFeedsList()) {
+						App.getInstance().socialReader.getFeed(feed); // Fill in the items!
+						if (feed.getItems() != null) {
+							for (Item item : feed.getItems()) {
+								if (item.getRemotePostId() == Item.DEFAULT_REMOTE_POST_ID) {
+									// Try to parse it from GUID
+									String guid = item.getGuid();
+									if (!TextUtils.isEmpty(guid) && guid.contains("?p=")) {
+										try {
+											int id = Integer.valueOf(guid.substring(guid.indexOf("?p=") + 3));
+											item.dbsetRemotePostId(id);
+											App.getInstance().socialReader.setItemData(item);
+										} catch (NumberFormatException ignored) {}
+									}
+								}
+								if (item.getRemotePostId() == remotePostId) {
+									App.getInstance().socialReader.deleteItem(item);
+								}
+							}
+						}
+					}
+				}
+			}
+
 			@Override
 			public void itemDeleted(int itemId) {
 				loadingDialog.dismiss();
-				socialReporter.deleteDraft(item);
+				App.getInstance().socialReader.deleteItem(item);
 				updateListAdapter();
 				//Toast.makeText(getContext(), getContext().getString(R.string.post_deleting_ok), Toast.LENGTH_SHORT).show();
 			}
