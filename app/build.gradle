@@ -53,8 +53,8 @@ android {
         }
         tribuneZamaneh {
             applicationId = "com.tribunezamaneh.rss"
-            versionName = "1.0.0.45"
-            versionCode = 45
+            versionName = "1.0.0.46"
+            versionCode = 46
             minSdkVersion 17
             buildConfigField "boolean", "UI_ENABLE_COMMENTS", "true"
             buildConfigField "boolean", "UI_ENABLE_PROXY_VIEW", "false"
