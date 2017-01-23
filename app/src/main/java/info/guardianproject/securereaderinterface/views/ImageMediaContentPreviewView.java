@@ -51,7 +51,9 @@ public class ImageMediaContentPreviewView extends ImageView implements MediaCont
 	protected void onLayout(boolean changed, int left, int top, int right, int bottom)
 	{
 		super.onLayout(changed, left, top, right, bottom);
-		setBitmapIfDownloaded();
+
+		if (!mHasSetDrawable)
+			setBitmapIfDownloaded();
 	}
 
 	@Override

@@ -53,7 +53,7 @@ public class RoundRelativeLayout extends RelativeLayout {
             mFillPaint = new Paint();
             mFillPaint.setColor(((ColorDrawable)d).getColor());
             mFillPaint.setStyle(Paint.Style.FILL);
-            mFillPaint.setAntiAlias(true);
+         //   mFillPaint.setAntiAlias(true);
             setBackgroundColor(Color.TRANSPARENT);
         }
 
@@ -73,7 +73,7 @@ public class RoundRelativeLayout extends RelativeLayout {
             mBorderPaint.setColor(borderColor);
             mBorderPaint.setStrokeWidth(borderSize);
             mBorderPaint.setStyle(Paint.Style.STROKE);
-            mBorderPaint.setAntiAlias(true);
+         //   mBorderPaint.setAntiAlias(true);
         }
     }
 
