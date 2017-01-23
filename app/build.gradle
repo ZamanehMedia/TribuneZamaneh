@@ -31,7 +31,7 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 
@@ -53,8 +53,8 @@ android {
         }
         tribuneZamaneh {
             applicationId = "com.tribunezamaneh.rss"
-            versionName = "1.0.0.46"
-            versionCode = 46
+            versionName = "1.0.0.47"
+            versionCode = 47
             minSdkVersion 17
             buildConfigField "boolean", "UI_ENABLE_COMMENTS", "true"
             buildConfigField "boolean", "UI_ENABLE_PROXY_VIEW", "false"
