@@ -39,6 +39,7 @@ import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -88,7 +89,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 	private static final String LOGTAG = "AddPostActivity";
 	private static final boolean LOGGING = false;
 
-	private static final long MEDIA_ITEM_MAX_LENGTH = 15 * 1024 * 1024;
+	private static final long MEDIA_ITEM_MAX_LENGTH = 50 * 1024 * 1024;
 
 	private ProgressDialog loadingDialog;
 
@@ -188,21 +189,43 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 
 		if (Intent.ACTION_SEND.equals(action) && type != null)
 		{
-			if ("text/plain".equals(type))
-			{
-				String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
-				mEditContent.setText(sharedText);
-			}
-			else if (type.startsWith("image/"))
-			{
-				//Uri imageUri = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
-				// addMediaItem(imageUri, type, -1);
-			}
-			else if (type.startsWith("video/"))
-			{
-				//Uri imageUri = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
-				// addMediaItem(imageUri, type, -1);
-			}
+			Uri mediaUri = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
+            if (mediaUri == null)
+                mediaUri = intent.getData();
+
+            try {
+                InputStream mediaIs = null;
+                if (mediaUri != null)
+                    mediaIs = getContentResolver().openInputStream(mediaUri);
+
+                File mediaFile = new File(mediaUri.getPath());
+                if (!mediaFile.exists()) {
+                    String path =getPath(mediaUri, type);
+                    if (path != null) {
+                        mediaFile = new File(path);
+
+                        if (!mediaFile.exists())
+                            mediaFile = null;
+                    }
+                    else
+                        mediaFile = null;
+                }
+
+                if ("text/plain".equals(type)) {
+                    String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
+                    mEditContent.setText(sharedText);
+                } else if (type.startsWith("image/")) {
+                    addMediaItem(mediaUri, mediaIs, mediaFile, null, type, -1, null);
+                } else if (type.startsWith("audio/")) {
+                    addMediaItem(mediaUri, mediaIs, mediaFile, null, type, -1, null);
+                } else if (type.startsWith("video/")) {
+                    addMediaItem(mediaUri, mediaIs, mediaFile, null, type, -1, null);
+                }
+            }
+            catch (IOException ioe)
+            {
+                Log.e(LOGTAG,"error adding file",ioe);
+            }
 		}
 
 		// We need to react on the soft keyboard being shown, to make sure that
@@ -258,6 +281,26 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 
 		populateFromStory();
 		updateMediaControls();
+	}
+
+	private String getPath(Uri uri, String type)
+	{
+		String[] projection = new String[1];
+
+		if (type.startsWith("image"))
+			projection[0] = MediaStore.Images.Media.DATA;
+		else if (type.startsWith("audio"))
+			projection[0] = MediaStore.Audio.Media.DATA;
+		else if (type.startsWith("video"))
+			projection[0] = MediaStore.Video.Media.DATA;
+
+		Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
+		if (cursor == null) return null;
+		int column_index =             cursor.getColumnIndexOrThrow(projection[0]);
+		cursor.moveToFirst();
+		String s=cursor.getString(column_index);
+		cursor.close();
+		return s;
 	}
 
 	private void hookupMediaOperationButtons()
@@ -356,6 +399,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 	{
 		if (in == null)
 			in = new java.io.FileInputStream(src);
+
 		OutputStream out = new info.guardianproject.iocipher.FileOutputStream(dst);
 
 		if (LOGGING) {
@@ -363,11 +407,11 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 			Log.d(LOGTAG, "File length is " + cb);
 		}
 
-		if (mediaType.equals("image/jpeg"))
+		if (mediaType.startsWith("image"))
 		{
 			int defaultImageWidth = 600;
 			//load lower-res bitmap
-			Bitmap bmp = getThumbnailFile(this, mediaUri, in, defaultImageWidth);
+			Bitmap bmp = getCorrectlyOrientedImage(this, mediaUri, in, defaultImageWidth);
 			bmp.compress(Bitmap.CompressFormat.JPEG, 90, out);
 
 			out.flush();
@@ -388,32 +432,67 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 			Log.v(LOGTAG, "copyFileFromFStoAppFS Copied from " + ((src == null) ? "stream" : src.toString()) + " to " + dst.toString());
 	}
 
-	public static Bitmap getThumbnailFile(Context context, Uri mediaUri, InputStream is, int thumbnailSize) throws IOException {
 
-		BitmapFactory.Options options = new BitmapFactory.Options();
-		options.inJustDecodeBounds = true;
-		options.inInputShareable = true;
-		options.inPurgeable = true;
+    public static int getOrientation(Context context, Uri photoUri) {
+    /* it's on the external media. */
+        Cursor cursor = context.getContentResolver().query(photoUri,
+                new String[] { MediaStore.Images.ImageColumns.ORIENTATION }, null, null, null);
 
-		BitmapFactory.decodeStream(is, null, options);
+        if (cursor.getCount() != 1) {
+            return -1;
+        }
 
-		if ((options.outWidth == -1) || (options.outHeight == -1))
-			return null;
+        cursor.moveToFirst();
+        return cursor.getInt(0);
+    }
 
-		int originalSize = (options.outHeight > options.outWidth) ? options.outHeight
-				: options.outWidth;
+    public static Bitmap getCorrectlyOrientedImage(Context context, Uri photoUri, InputStream is, int maxImageDimension) throws IOException {
+        BitmapFactory.Options dbo = new BitmapFactory.Options();
+        dbo.inJustDecodeBounds = true;
+        BitmapFactory.decodeStream(is, null, dbo);
+        is.close();
 
-		is.close();
-		is = context.getContentResolver().openInputStream(mediaUri);
+        int rotatedWidth, rotatedHeight;
+        int orientation = getOrientation(context, photoUri);
 
-		BitmapFactory.Options opts = new BitmapFactory.Options();
-		opts.inSampleSize = originalSize / thumbnailSize;
+        if (orientation == 90 || orientation == 270) {
+            rotatedWidth = dbo.outHeight;
+            rotatedHeight = dbo.outWidth;
+        } else {
+            rotatedWidth = dbo.outWidth;
+            rotatedHeight = dbo.outHeight;
+        }
 
-		Bitmap scaledBitmap = BitmapFactory.decodeStream(is, null, opts);
+        Bitmap srcBitmap;
+        is = context.getContentResolver().openInputStream(photoUri);
+        if (rotatedWidth > maxImageDimension || rotatedHeight > maxImageDimension) {
+            float widthRatio = ((float) rotatedWidth) / ((float) maxImageDimension);
+            float heightRatio = ((float) rotatedHeight) / ((float) maxImageDimension);
+            float maxRatio = Math.max(widthRatio, heightRatio);
 
-		is.close();
-		return scaledBitmap;
-	}
+            // Create the bitmap from file
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inSampleSize = (int) maxRatio;
+            srcBitmap = BitmapFactory.decodeStream(is, null, options);
+        } else {
+            srcBitmap = BitmapFactory.decodeStream(is);
+        }
+        is.close();
+
+    /*
+     * if the orientation is not 0 (or -1, which means we don't know), we
+     * have to do a rotation.
+     */
+        if (orientation > 0) {
+            Matrix matrix = new Matrix();
+            matrix.postRotate(orientation);
+
+            srcBitmap = Bitmap.createBitmap(srcBitmap, 0, 0, srcBitmap.getWidth(),
+                    srcBitmap.getHeight(), matrix, true);
+        }
+
+        return srcBitmap;
+    }
 
 
 	private void updateMediaControls()
@@ -853,10 +932,11 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 			}
 			
 			@Override
-			protected Void doInBackground(Void... values) 
+			protected Void doInBackground(Void... values)
 			{
 				if (AddPostActivity.LOGGING)
 					Log.d(AddPostActivity.LOGTAG, "addMediaItem - doInBackground");
+
 				if (mediaItemStream != null || mediaItemFile != null)
 				{
 					if (AddPostActivity.LOGGING)
@@ -896,7 +976,6 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 			protected void onPostExecute(Void result) {
 				super.onPostExecute(result);
 				mIsAddingMedia = false;
-
 				mProgressIcon.clearAnimation();
 				mProgressIcon.setVisibility(View.GONE);
 
@@ -908,9 +987,11 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 				onMediaChanged();
 			}
 		}.init(mediaUri, mediaItemStream, mediaItemFile, mediaItemUrl, newMediaContent);
+
 		if (LOGGING)
 			Log.d(LOGTAG, "addMediaItem - start async job");
-		addMediaTask.execute((Void)null);
+
+        addMediaTask.execute((Void)null);
 	}
 
 	private void onMediaChanged()
