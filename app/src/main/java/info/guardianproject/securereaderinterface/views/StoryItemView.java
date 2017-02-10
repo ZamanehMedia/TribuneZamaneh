@@ -210,11 +210,6 @@ public class StoryItemView implements OnUpdateListener, OnMediaLoadedListener
 			}
 		}
 
-		tv = (TextView) blueprint.findViewById(R.id.tvSourceAuthor);
-		if (tv != null) {
-			tv.setText(story.getCleanAuthor());
-		}
-
 		// Author date
 		tv = (TextView) blueprint.findViewById(R.id.tvAuthorDate);
 		if (tv != null)
