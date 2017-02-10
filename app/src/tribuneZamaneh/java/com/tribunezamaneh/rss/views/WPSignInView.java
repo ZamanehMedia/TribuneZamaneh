@@ -20,20 +20,23 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.boye.httpclientandroidlib.HttpResponse;
-import ch.boye.httpclientandroidlib.NameValuePair;
-import ch.boye.httpclientandroidlib.client.entity.UrlEncodedFormEntity;
-import ch.boye.httpclientandroidlib.client.methods.HttpPost;
-import ch.boye.httpclientandroidlib.impl.client.DefaultRedirectStrategy;
-import ch.boye.httpclientandroidlib.impl.client.LaxRedirectStrategy;
-import ch.boye.httpclientandroidlib.impl.client.RedirectLocations;
-import ch.boye.httpclientandroidlib.message.BasicNameValuePair;
-import ch.boye.httpclientandroidlib.protocol.BasicHttpContext;
-import ch.boye.httpclientandroidlib.protocol.HttpContext;
-import info.guardianproject.netcipher.client.StrongHttpsClient;
+import cz.msebera.android.httpclient.client.entity.UrlEncodedFormEntity;
+import cz.msebera.android.httpclient.impl.client.DefaultRedirectStrategy;
+import cz.msebera.android.httpclient.impl.client.LaxRedirectStrategy;
+import cz.msebera.android.httpclient.impl.client.RedirectLocations;
+import cz.msebera.android.httpclient.message.BasicNameValuePair;
+import cz.msebera.android.httpclient.protocol.BasicHttpContext;
+import cz.msebera.android.httpclient.protocol.HttpContext;
 import info.guardianproject.securereader.SocialReader;
 import info.guardianproject.securereaderinterface.R;
 import info.guardianproject.securereaderinterface.widgets.compat.Toast;
+
+import cz.msebera.android.httpclient.client.HttpClient;
+import cz.msebera.android.httpclient.client.methods.HttpPost;
+import cz.msebera.android.httpclient.entity.StringEntity;
+import cz.msebera.android.httpclient.message.BasicHeader;
+import cz.msebera.android.httpclient.*;
+
 
 public class WPSignInView extends FrameLayout {
 
@@ -127,7 +130,7 @@ public class WPSignInView extends FrameLayout {
 	private class PostTask extends AsyncTask<String, Void, Integer> {
 
 		private boolean loggedIn;
-		private StrongHttpsClient httpClient;
+		private HttpClient httpClient;
 		private ProgressDialog progressDialog;
 		private String username;
 		private String password;
@@ -135,7 +138,7 @@ public class WPSignInView extends FrameLayout {
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			httpClient = new StrongHttpsClient(App.getInstance().socialReader.applicationContext);
+			httpClient = App.getInstance().socialReader.getHttpClient();
 			progressDialog = new ProgressDialog(getContext(),
 					R.style.ModalDialogTheme);
 			progressDialog.setIndeterminate(true);
@@ -158,14 +161,8 @@ public class WPSignInView extends FrameLayout {
 				password = data[1];
 
 				SocialReader socialReader = App.getInstance().socialReader;
-				if (socialReader.relaxedHTTPS) {
-					httpClient.enableSSLCompatibilityMode();
-				}
-				if (socialReader.useProxy())
-				{
-					httpClient.useProxy(true, socialReader.getProxyType(), socialReader.getProxyHost(), socialReader.getProxyPort());
-				}
-				httpClient.setRedirectStrategy(new LaxRedirectStrategy());
+
+			//	httpClient.setRedirectStrategy(new LaxRedirectStrategy());
 
 				HttpPost httpPost = new HttpPost(App.WORDPRESS_LOGIN_URL);
 				httpPost.setHeader("User-Agent", SocialReader.USERAGENT);
@@ -227,13 +224,13 @@ public class WPSignInView extends FrameLayout {
 	private class PostTaskRegister extends AsyncTask<String, Void, Integer> {
 
 		private boolean registered;
-		private StrongHttpsClient httpClient;
+		private HttpClient httpClient;
 		private ProgressDialog progressDialog;
 
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			httpClient = new StrongHttpsClient(App.getInstance().socialReader.applicationContext);
+			httpClient = App.getInstance().socialReader.getHttpClient();
 			progressDialog = new ProgressDialog(getContext(),
 					R.style.ModalDialogTheme);
 			progressDialog.setIndeterminate(true);
@@ -256,14 +253,8 @@ public class WPSignInView extends FrameLayout {
 				String email = data[1];
 
 				SocialReader socialReader = App.getInstance().socialReader;
-				if (socialReader.relaxedHTTPS) {
-					httpClient.enableSSLCompatibilityMode();
-				}
-				if (socialReader.useProxy())
-				{
-					httpClient.useProxy(true, socialReader.getProxyType(), socialReader.getProxyHost(), socialReader.getProxyPort());
-				}
-				httpClient.setRedirectStrategy(new LaxRedirectStrategy());
+
+			//	httpClient.setRedirectStrategy(new LaxRedirectStrategy());
 
 				HttpPost httpPost = new HttpPost(App.WORDPRESS_LOGIN_URL + "?action=register");
 				httpPost.setHeader("User-Agent", SocialReader.USERAGENT);

@@ -447,6 +447,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
     }
 
     public static Bitmap getCorrectlyOrientedImage(Context context, Uri photoUri, InputStream is, int maxImageDimension) throws IOException {
+
         BitmapFactory.Options dbo = new BitmapFactory.Options();
         dbo.inJustDecodeBounds = true;
         BitmapFactory.decodeStream(is, null, dbo);
