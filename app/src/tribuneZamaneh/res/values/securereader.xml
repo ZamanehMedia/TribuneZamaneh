@@ -33,6 +33,7 @@
 	
 	<!-- XMLRPC_ENDPOINT -->
 	<string name="xmlrpc_endpoint">https://www.tribunezamaneh.com/apprpc.php</string>
+	<string name="xmlrpc_endpoint_cert_pin">o+cLJOudSFO5j/QospKIAvPiMp++/OVDZm4PbLSGQus=</string>
 	    
 	<!-- Default values that should be referenced in Settings.java -->
 	<bool name="require_proxy_default">false</bool>
