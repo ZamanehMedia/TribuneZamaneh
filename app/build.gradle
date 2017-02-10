@@ -3,13 +3,12 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.3"
-    useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
         applicationId "info.guardianproject.securereaderinterface"
-        minSdkVersion 17
+        minSdkVersion 14
         targetSdkVersion 23
-        multiDexEnabled true
+        multiDexEnabled false
         vectorDrawables.useSupportLibrary = true
         buildConfigField "boolean", "UI_ENABLE_COMMENTS", "false"
         buildConfigField "boolean", "UI_ENABLE_PROXY_VIEW", "false"
@@ -55,7 +54,7 @@ android {
             applicationId = "com.tribunezamaneh.rss"
             versionName = "1.0.0.47"
             versionCode = 47
-            minSdkVersion 17
+            minSdkVersion 16
             buildConfigField "boolean", "UI_ENABLE_COMMENTS", "true"
             buildConfigField "boolean", "UI_ENABLE_PROXY_VIEW", "false"
             buildConfigField "boolean", "UI_ENABLE_TAGS", "true"
@@ -82,8 +81,8 @@ android {
     }
 
     dexOptions {
-        jumboMode = true
-        javaMaxHeapSize "4g"
+        jumboMode = false
+        javaMaxHeapSize "2g"
     }
 
     packagingOptions {
@@ -104,7 +103,6 @@ dependencies {
     compile 'com.android.support:support-v4:23.2.0'
     compile 'com.android.support:appcompat-v7:23.2.0'
     compile 'com.android.support:design:23.2.0'
-    compile 'com.android.support:multidex:1.0.1'
     compile 'com.squareup.okhttp:okhttp:2.3.0'
     compile 'com.google.code.gson:gson:2.4'
     compile 'com.squareup.picasso:picasso:2.5.3-SNAPSHOT'

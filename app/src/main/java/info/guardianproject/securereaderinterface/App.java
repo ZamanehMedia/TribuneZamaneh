@@ -24,8 +24,7 @@ import java.util.Locale;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.support.multidex.MultiDex;
-import android.support.multidex.MultiDexApplication;
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -49,9 +48,8 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Request;
 import com.squareup.picasso.RequestHandler;
 import com.tinymission.rss.Feed;
-import com.tribunezamaneh.rss.AddPostActivity;
 
-public class App extends MultiDexApplication implements OnSharedPreferenceChangeListener, SocialReaderLockListener
+public class App extends Application implements OnSharedPreferenceChangeListener, SocialReaderLockListener
 {
 	public static final String LOGTAG = "App";
 	public static final boolean LOGGING = false;
@@ -148,7 +146,7 @@ public class App extends MultiDexApplication implements OnSharedPreferenceChange
 	@Override
 	protected void attachBaseContext(Context base) {
 		super.attachBaseContext(base);
-		MultiDex.install(this);
+		//MultiDex.install(this);
 	}
 
 	public static Context getContext()
