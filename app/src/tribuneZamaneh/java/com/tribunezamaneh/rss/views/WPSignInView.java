@@ -160,10 +160,6 @@ public class WPSignInView extends FrameLayout {
 				username = data[0];
 				password = data[1];
 
-				SocialReader socialReader = App.getInstance().socialReader;
-
-			//	httpClient.setRedirectStrategy(new LaxRedirectStrategy());
-
 				HttpPost httpPost = new HttpPost(App.WORDPRESS_LOGIN_URL);
 				httpPost.setHeader("User-Agent", SocialReader.USERAGENT);
 

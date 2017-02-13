@@ -231,6 +231,9 @@ public class ExpandingFrameLayout extends FrameLayout
 
 		ViewGroup.MarginLayoutParams params = (MarginLayoutParams) this.getLayoutParams();
 
+		if (getParent() == null)
+			return;
+
 		int toHeight = ((View) getParent()).getHeight() - params.topMargin - params.bottomMargin;
 
 		final ExpandAnim anim = new ExpandAnim(mCollapsedClip, 0, mCollapsedTop, 0, mCollapsedHeight, toHeight);

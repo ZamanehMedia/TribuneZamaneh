@@ -461,6 +461,9 @@ public class StoryListView extends RelativeLayout implements OnTagClickedListene
 	
 	public void restoreScrollPosition(Point pt)
 	{
-		mListStories.setSelectionFromTop(pt.x, pt.y);
+        //TODO reimplement properly for SDK 16+
+
+	//	mListStories.setSelectionFromTop(pt.x, pt.y);
+
 	}
 }

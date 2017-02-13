@@ -648,7 +648,7 @@ public class SettingsActivity extends FragmentActivityWithMenu implements ICache
 						// Special case, if we set proxy need to set requireProxy
 						if (getString(R.string.settingsBindingProxyType).equalsIgnoreCase(mKey)) {
 							mSettings.setRequireProxy(mValue != Settings.ProxyType.None);
-							if (mSettings.requireProxy()) {
+							//if (mSettings.requireProxy()) {
 								mDrawerLayout.post(new Runnable() {
 									@Override
 									public void run() {
@@ -657,7 +657,7 @@ public class SettingsActivity extends FragmentActivityWithMenu implements ICache
 										App.getInstance().socialReader.connectProxy(SettingsActivity.this);
 									}
 								});
-							}
+							//}
 						}
 					}
 				}
