@@ -1,6 +1,3 @@
-[submodule "external/NetCipher"]
-	path = external/NetCipher
-	url = https://github.com/guardianproject/NetCipher.git
 [submodule "external/securereaderlibrary"]
 	path = external/securereaderlibrary
 	url = https://github.com/guardianproject/securereaderlibrary.git
