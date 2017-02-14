@@ -91,6 +91,8 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 
 	private static final long MEDIA_ITEM_MAX_LENGTH = 50 * 1024 * 1024;
 
+	private static final String ACTION_STORYMAKER_PUBLISH = "org.storymaker.PUBLISH";
+
 	private ProgressDialog loadingDialog;
 
 	private static final int REQ_CODE_PICK_IMAGE = 1;
@@ -187,7 +189,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 		String action = intent.getAction();
 		String type = intent.getType();
 
-		if (Intent.ACTION_SEND.equals(action) && type != null)
+		if ((Intent.ACTION_SEND.equals(action)||ACTION_STORYMAKER_PUBLISH.equals(action)) && type != null)
 		{
 			Uri mediaUri = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
             if (mediaUri == null)
@@ -197,6 +199,8 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
                 InputStream mediaIs = null;
                 if (mediaUri != null)
                     mediaIs = getContentResolver().openInputStream(mediaUri);
+                else
+                    return;
 
                 File mediaFile = new File(mediaUri.getPath());
                 if (!mediaFile.exists()) {
@@ -211,10 +215,15 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
                         mediaFile = null;
                 }
 
-                if ("text/plain".equals(type)) {
-                    String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
+                String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
+                if (!TextUtils.isEmpty(sharedText))
                     mEditContent.setText(sharedText);
-                } else if (type.startsWith("image/")) {
+
+                String sharedTitle = intent.getStringExtra(Intent.EXTRA_TITLE);
+                if (!TextUtils.isEmpty(sharedTitle))
+                    mEditTitle.setText(sharedTitle);
+
+                if (type.startsWith("image/")) {
                     addMediaItem(mediaUri, mediaIs, mediaFile, null, type, -1, null);
                 } else if (type.startsWith("audio/")) {
                     addMediaItem(mediaUri, mediaIs, mediaFile, null, type, -1, null);
