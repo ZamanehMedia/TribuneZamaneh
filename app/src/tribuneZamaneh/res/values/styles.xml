@@ -17,7 +17,7 @@
     </style>
 
     <style name="AppActionBarStyle">
-        <item name="android:background">@drawable/background_actionbar</item>
+        <item name="android:background">@drawable/paper</item>
         <item name="android:elevation">0dp</item>
         <item name="android:paddingLeft">20dp</item>
         <item name="android:paddingRight">20dp</item>
