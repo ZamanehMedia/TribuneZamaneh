@@ -20,6 +20,7 @@
         android:description="@string/app_description"
         android:theme="@style/AppTheme"
         android:supportsRtl="true"
+        android:largeHeap="true"
         >
 
 		<service android:name="info.guardianproject.cacheword.CacheWordService" 

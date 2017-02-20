@@ -25,7 +25,9 @@
         android:description="@string/app_description"
         android:theme="@style/AppTheme"
         tools:replace="name"
-        android:supportsRtl="true">
+        android:supportsRtl="true"
+        android:largeHeap="true"
+        >
         <activity
             android:name="com.tribunezamaneh.rss.PostActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
