@@ -126,6 +126,11 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 		setMenuIdentifier(R.menu.activity_add_post);
 		mReplaceThisIndex = -1;
 		mIsAddingMedia = false;
+
+		if (App.getInstance().socialReader != null) {
+			App.getInstance().socialReader.initialize();
+		}
+
 	}
 
 	@Override
@@ -202,11 +207,11 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
                 else
                     return;
 
-                File mediaFile = new File(mediaUri.getPath());
+                java.io.File mediaFile = new java.io.File(mediaUri.getPath());
                 if (!mediaFile.exists()) {
                     String path =getPath(mediaUri, type);
                     if (path != null) {
-                        mediaFile = new File(path);
+                        mediaFile = new java.io.File(path);
 
                         if (!mediaFile.exists())
                             mediaFile = null;
@@ -953,7 +958,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnFocus
 						Log.d(AddPostActivity.LOGTAG, "addMediaItem - copy file");
 					// Now we can copy the file
 					File outputFile;
-					outputFile = new File(info.guardianproject.securereaderinterface.App.getInstance().socialReader.getFileSystemDir(), SocialReader.MEDIA_CONTENT_FILE_PREFIX + mediaContent.getDatabaseId());
+					outputFile = new File(App.getInstance().socialReader.getFileSystemDir(), SocialReader.MEDIA_CONTENT_FILE_PREFIX + mediaContent.getDatabaseId());
 					
 					if (AddPostActivity.LOGGING)
 						Log.v(AddPostActivity.LOGTAG, "Local App Storage File: " + outputFile);
